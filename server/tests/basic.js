@@ -3,7 +3,7 @@ describe("Testing Script Check", () => {
 		expect(true).toBe(true);
 	});
 
-	it("Should fail", () => {
+	it("Should failed", () => {
 		expect(true).toBe(false);
 	});
 });
