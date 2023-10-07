@@ -5,6 +5,11 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
+      - name: Use server repository
+        uses: actions/checkout@v2 
+        with:
+          repository: yale-swe/f23-here/server
+          path: './server'
       - name: Install dependencies
         run: npm i
       - name: Build app
