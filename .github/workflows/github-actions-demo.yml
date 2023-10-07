@@ -5,6 +5,9 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - run: npm run build --if-present
-      - run: npm test
-
+      - name: Install dependencies
+        run: npm ci
+      - name: Build app
+        run: npm run build --if-present
+      - name: Run tests
+        run: npm test
