@@ -24,3 +24,7 @@ jobs:
       - name: Run tests
         run: npm test
         working-directory: server
+
+      - name: Set status check
+        if: failure()
+        run: gh pr status set "Test failed" -c failure
