@@ -9,6 +9,7 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
+      # must use this step to ensure that repository properly checked out
       - name: Checkout repository
         uses: actions/checkout@v2
         
