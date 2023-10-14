@@ -16,7 +16,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "node index.js"
+    "build": "node server.js"
   },
   "jest": {
     "testMatch": ["**/tests/**/*.js"]
