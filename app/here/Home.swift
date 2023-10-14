@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomePageView: View {
+    @State private var isShowingProfile = false
     var body: some View {
         VStack(){
             Spacer()
@@ -42,7 +43,7 @@ struct HomePageView: View {
                         Image(systemName: "square.and.arrow.up")
                     }
                     
-                    Button{
+                    Button{isShowingProfile.toggle()
                         
                     }label:
                     {
@@ -54,6 +55,9 @@ struct HomePageView: View {
                     .padding(10)
             }
          }
+        .sheet(isPresented: $isShowingProfile) {
+            ProfilePopup(isPresented: $isShowingProfile) // Pass the binding to control visibility
+        }
     }
 }
 
