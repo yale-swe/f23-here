@@ -36,7 +36,7 @@ export const getUserByEmailOrUsername = async (req, res) => {
 export const getUserFriends = async (req, res) => {
 	try {
 		const userId = req.params.userId;
-		const user = await User.findById(userId).select("friends");
+		const user = await User.findById(userId);
 
 		if (!user) {
 			return handleNotFound(res, "User not found");
@@ -115,7 +115,7 @@ export const getUserMessages = async (req, res) => {
 	try {
 		const { userId } = req.params;
 
-		const user = await User.findById(userId).populate("messages");
+		const user = await User.findById(userId);
 
 		if (!user) {
 			return handleNotFound(res, "User not found");
