@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3BDFCFB72AD9E6D40088E497 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFCFB62AD9E6D40088E497 /* Profile.swift */; };
+		3BDFCFB92ADB0CCB0088E497 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFCFB82ADB0CCB0088E497 /* Home.swift */; };
 		4BC8F3F42AC8868100A47671 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC8F3F32AC8868100A47671 /* AppDelegate.swift */; };
 		4BC8F3F62AC8868100A47671 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC8F3F52AC8868100A47671 /* SceneDelegate.swift */; };
 		4BC8F3F82AC8868100A47671 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC8F3F72AC8868100A47671 /* ViewController.swift */; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		3BDFCFB62AD9E6D40088E497 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		3BDFCFB82ADB0CCB0088E497 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		4BC8F3F02AC8868100A47671 /* here.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = here.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BC8F3F32AC8868100A47671 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4BC8F3F52AC8868100A47671 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 			children = (
 				4BC8F3F32AC8868100A47671 /* AppDelegate.swift */,
 				3BDFCFB62AD9E6D40088E497 /* Profile.swift */,
+				3BDFCFB82ADB0CCB0088E497 /* Home.swift */,
 				4BC8F3F52AC8868100A47671 /* SceneDelegate.swift */,
 				4BC8F3F72AC8868100A47671 /* ViewController.swift */,
 				4BC8F3F92AC8868100A47671 /* Main.storyboard */,
@@ -263,6 +266,7 @@
 			files = (
 				4BC8F3F82AC8868100A47671 /* ViewController.swift in Sources */,
 				3BDFCFB72AD9E6D40088E497 /* Profile.swift in Sources */,
+				3BDFCFB92ADB0CCB0088E497 /* Home.swift in Sources */,
 				4BC8F3F42AC8868100A47671 /* AppDelegate.swift in Sources */,
 				4BC8F3F62AC8868100A47671 /* SceneDelegate.swift in Sources */,
 			);
