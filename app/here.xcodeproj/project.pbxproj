@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15E71F672ADB24FB0076B662 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E71F662ADB24FB0076B662 /* Messages.swift */; };
 		3BDFCFB72AD9E6D40088E497 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFCFB62AD9E6D40088E497 /* Profile.swift */; };
 		3BDFCFB92ADB0CCB0088E497 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDFCFB82ADB0CCB0088E497 /* Home.swift */; };
 		4BC8F3F42AC8868100A47671 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC8F3F32AC8868100A47671 /* AppDelegate.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		15E71F662ADB24FB0076B662 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		3BDFCFB62AD9E6D40088E497 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		3BDFCFB82ADB0CCB0088E497 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		4BC8F3F02AC8868100A47671 /* here.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = here.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +108,7 @@
 				4BC8F3F32AC8868100A47671 /* AppDelegate.swift */,
 				3BDFCFB62AD9E6D40088E497 /* Profile.swift */,
 				3BDFCFB82ADB0CCB0088E497 /* Home.swift */,
+				15E71F662ADB24FB0076B662 /* Messages.swift */,
 				4BC8F3F52AC8868100A47671 /* SceneDelegate.swift */,
 				4BC8F3F72AC8868100A47671 /* ViewController.swift */,
 				4BC8F3F92AC8868100A47671 /* Main.storyboard */,
@@ -265,6 +268,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BC8F3F82AC8868100A47671 /* ViewController.swift in Sources */,
+				15E71F672ADB24FB0076B662 /* Messages.swift in Sources */,
 				3BDFCFB72AD9E6D40088E497 /* Profile.swift in Sources */,
 				3BDFCFB92ADB0CCB0088E497 /* Home.swift in Sources */,
 				4BC8F3F42AC8868100A47671 /* AppDelegate.swift in Sources */,
