@@ -49,37 +49,3 @@ export const login = async (req, res) => {
 		handleServerError(res, err);
 	}
 };
-
-export const updateUserProfile = async (req, res) => {
-	try {
-		const userId = req.params.id;
-		const { userName, password, firstName, lastName, email, avatar } =
-			req.body;
-
-		const user = await User.findById(userId);
-
-		if (!user) {
-			return handleNotFound(res, "User not found.");
-		}
-
-		if (userName) user.userName = userName;
-		if (firstName) user.firstName = firstName;
-		if (lastName) user.lastName = lastName;
-		if (email) user.email = email;
-		if (email) user.avatar = avatar;
-
-		if (password) {
-			const salt = await bcrypt.genSalt(10);
-			user.password = await bcrypt.hash(password, salt);
-		}
-
-		await user.save();
-
-		handleSuccess(res, {
-			message: "User profile updated successfully.",
-			user,
-		});
-	} catch (err) {
-		handleServerError(res, err);
-	}
-};
