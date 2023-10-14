@@ -22,9 +22,24 @@ export const UserSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	messages: [MessageSchema],
-	friends: [UserSchema],
-	notifyFriends: Boolean,
+	messages: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Message",
+			default: [],
+		},
+	],
+	friends: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "User",
+			default: [],
+		},
+	],
+	notifyFriends: {
+		type: Boolean,
+		default: true,
+	},
 	email: {
 		type: String,
 		required: [true, "Please enter a valid email"],
@@ -39,4 +54,5 @@ export const UserSchema = new Schema({
 	},
 });
 
-export const UserModel = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", UserSchema);
+export default User;
