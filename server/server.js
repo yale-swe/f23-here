@@ -4,6 +4,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import cors from "cors";
 import { connectDB } from "./db.js";
+import authRoutes from "./routes/auth.js";
 
 // run and set env variables
 dotenv.config();
@@ -23,10 +24,9 @@ app.use(
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
-const server = app.listen(
-	PORT,
-	console.log(`Server running on port ${PORT}`)
-);
+app.use("/auth", authRoutes);
+
+const server = app.listen(PORT, console.log(`Server running on port ${PORT}`));
 
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err, promise) => {

@@ -13,7 +13,7 @@ export const ReplySchema = new Schema({
     },
     likes: {
         type: Number,
-        default: true,
+        default: false,
     },
 });
 
