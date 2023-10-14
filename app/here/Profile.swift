@@ -7,32 +7,73 @@
 
 import SwiftUI
 
-struct ContentView: View {
+//struct ContentView: View {
+//    @State private var isShowingProfile = false
+//
+//    var body: some View {
+//        NavigationView {
+//            ScrollView {
+//                VStack {
+//                    Button(action: {
+//                        isShowingProfile.toggle()
+//                    }) {
+//                        Text("Show Profile")
+//                            .font(.headline)
+//                            .padding()
+//                            .background(Color.blue)
+//                            .foregroundColor(.white)
+//                            .cornerRadius(10)
+//                    }
+//                }
+//            }
+//            .navigationBarTitle("Home", displayMode: .inline)
+//        }
+//        .sheet(isPresented: $isShowingProfile) {
+//            ProfilePopup(isPresented: $isShowingProfile) // Pass the binding to control visibility
+//        }
+//    }
+//}
+
+
+
+struct ProfilePopup: View {
+    @Binding var isPresented: Bool // Added binding to control visibility
+
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack {
-                    ProfileHeader()
-
-                    Divider()
-
-                    ProfileStats()
-
-                    Divider()
-
-                    PostGrid()
+        ZStack {
+            Color.white
+            VStack {
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        isPresented.toggle() // Close the popup
+                    }) {
+                        Text("Close")
+                            .font(.headline)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    .padding(.trailing, 20) // Adjust the position of the close button
                 }
+                ProfileHeader()
+                Divider()
+                ProfileStats()
+                Divider()
+                PostGrid()
             }
-            .navigationBarTitle("Profile", displayMode: .inline)
         }
+        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .top) // Adjust size and alignment
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}
 
 struct ProfileHeader: View {
     var body: some View {
@@ -40,7 +81,7 @@ struct ProfileHeader: View {
             Image("profilePicture")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 100, height: 100)
+                .frame(width: 80, height: 80)
                 .clipShape(Circle())
                 .padding()
 
@@ -67,22 +108,13 @@ struct ProfileButtons: View {
             Button(action: {
                 // Action for Edit Profile
             }) {
-                Text("Edit Profile")
+                Text("Edit")
                     .font(.headline)
                     .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
                     .border(Color.gray, width: 1)
                     .cornerRadius(5)
             }
 
-            Button(action: {
-                // Action for Share Profile
-            }) {
-                Text("Share Profile")
-                    .font(.headline)
-                    .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
-                    .border(Color.gray, width: 1)
-                    .cornerRadius(5)
-            }
 
             Button(action: {
                 // Action for Add Friend
@@ -151,6 +183,6 @@ struct PostGrid: View {
     }
 }
 
-#Preview {
-    ContentView()
-}
+//#Preview {
+//    ContentView()
+//}
