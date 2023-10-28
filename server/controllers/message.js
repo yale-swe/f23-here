@@ -1,16 +1,28 @@
 import MessageModel from "../models/Message.js";
-import { handleServerError, handleSuccess } from '../utils/handlers.js';
+import UserModel from "../models/User.js";
+import { handleNotFound, handleServerError, handleSuccess } from '../utils/handlers.js';
 
 // Post message
 export const post_message = async (req, res) => {
     try {
-        const message = await MessageModel.create({
-            id: req.body.id,
+        const user = await UserModel.findById(req.body.user_id);
+        if (!user) {
+            return handleNotFound(res, "User posting this message is not found");
+        }
+        const message = new MessageModel({
             user_id: req.body.user_id,
             text: req.body.text,
             visibility: req.body.visibility,
-        }).exec();
-        handleSuccess(res, message);
+            location: req.body.location,
+        });
+        const saved_message = await message.save();
+
+        // Add to user
+        user.messages.push(saved_message._id);
+        await user.save();
+
+        handleSuccess(res, saved_message);
+
     } catch (err) {
         handleServerError(res, err);
     }
@@ -19,7 +31,15 @@ export const post_message = async (req, res) => {
 // Delete message
 export const delete_message = async (req, res) => {
     try {
+        const user = await UserModel.findById(req.body.user_id);
         const delete_res = await MessageModel.findByIdAndDelete(req.body.id).exec();
+
+        // Delete from user
+        if (user) {
+            console.log("deleting");
+            user.messages.remove(req.body.id);
+            await user.save();
+        }
         handleSuccess(res, delete_res);
 
     } catch (err) {

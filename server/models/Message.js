@@ -4,13 +4,8 @@ import { ReplySchema } from "./Reply.js";
 const { Schema } = mongoose;
 
 export const MessageSchema = new Schema({
-    id: {
-        type: Schema.Types.UUID,
-        required: true,
-        unique: true,
-    },
     user_id: {
-        type: Schema.Types.UUID,
+        type: Schema.Types.ObjectId,
         required: true,
     },
     text: {

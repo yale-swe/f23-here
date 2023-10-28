@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 export const ReplySchema = new Schema({
     parent_message: {
-        type: Schema.Types.UUID,
+        type: Schema.Types.ObjectId,
         required: true,
     },
     content: {

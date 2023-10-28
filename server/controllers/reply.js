@@ -4,11 +4,12 @@ import { handleServerError, handleSuccess } from "../utils/handlers.js";
 // Reply to a message
 export const reply_to_message = async (req, res) => {
 	try {
-		const reply = await ReplyModel.create({
+		const reply = new ReplyModel({
 			parent_message: req.body.message_id,
 			content: req.body.content,
-		}).exec();
-		handleSuccess(res, reply);
+		});
+		const saved_reply = await reply.save();
+		handleSuccess(res, saved_reply);
 	} catch (err) {
 		handleServerError(res, err);
 	}
