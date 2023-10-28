@@ -1,11 +1,12 @@
 import UserModel from "../models/User.js";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import {
 	handleServerError,
 	handleSuccess,
 	handleNotFound,
 	handleBadRequest,
 } from "../utils/handlers.js";
+import MessageModel from "../models/Message.js";
 
 export const getUserById = async (req, res) => {
 	try {
@@ -137,20 +138,22 @@ export const deleteUser = async (req, res) => {
 	try {
 		const { userId } = req.params;
 
-		const result = await UserModel.findByIdAndDelete(userId);
+		const user = await UserModel.findById(userId);
 
-		if (!result) {
+		if (!user) {
 			return handleNotFound(res, "User not found");
 		}
 
-		// await user.remove();
+		await MessageModel.deleteMany({ _id: { $in: user.messages } });
+		await UserModel.findByIdAndDelete(userId);
 
-		handleSuccess(res, { message: "User successfully deleted" });
+		handleSuccess(res, {
+			message: "User and their messages successfully deleted",
+		});
 	} catch (err) {
 		handleServerError(res, err);
 	}
 };
-
 export const toggleNotifyFriends = async (req, res) => {
 	try {
 		const { userId } = req.params;
