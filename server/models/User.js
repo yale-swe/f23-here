@@ -5,11 +5,6 @@ import { MessageSchema } from "./Message.js";
 const { Schema } = mongoose;
 
 export const UserSchema = new Schema({
-	id: {
-		type: Schema.Types.UUID,
-		required: true,
-		unique: true,
-	},
 	userName: {
 		type: String,
 		required: true,
