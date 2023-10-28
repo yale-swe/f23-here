@@ -1,4 +1,5 @@
 import UserModel from "../models/User.js";
+import bcrypt from 'bcrypt';
 import {
 	handleServerError,
 	handleSuccess,
@@ -170,7 +171,7 @@ export const toggleNotifyFriends = async (req, res) => {
 
 export const updateUserProfile = async (req, res) => {
 	try {
-		const userId = req.params.id;
+		const userId = req.params.userId;
 		const { userName, password, firstName, lastName, email, avatar } =
 			req.body;
 
@@ -184,7 +185,7 @@ export const updateUserProfile = async (req, res) => {
 		if (firstName) user.firstName = firstName;
 		if (lastName) user.lastName = lastName;
 		if (email) user.email = email;
-		if (email) user.avatar = avatar;
+		if (avatar) user.avatar = avatar;
 
 		if (password) {
 			const salt = await bcrypt.genSalt(10);
