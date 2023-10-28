@@ -8,6 +8,7 @@ export const UserSchema = new Schema({
 	userName: {
 		type: String,
 		required: true,
+		unique: true,
 	},
 	firstName: {
 		type: String,
@@ -38,6 +39,7 @@ export const UserSchema = new Schema({
 	email: {
 		type: String,
 		required: [true, "Please enter a valid email"],
+		unique: true,
 	},
 	password: {
 		type: String,

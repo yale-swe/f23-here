@@ -11,14 +11,6 @@ export const register = async (req, res) => {
 	try {
 		const { userName, password, email, firstName, lastName } = req.body;
 
-		const existingUser = await UserModel.findOne({ userName });
-		if (existingUser) {
-			return handleBadRequest(
-				res,
-				"Username already found. Please try again."
-			);
-		}
-
 		const salt = await bcrypt.genSalt(10);
 		const passwordHash = await bcrypt.hash(password, salt);
 
