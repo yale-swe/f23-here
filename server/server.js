@@ -5,6 +5,9 @@ import dotenv from "dotenv";
 import cors from "cors";
 import { connectDB } from "./db.js";
 import authRoutes from "./routes/auth.js";
+import messageRoutes from "./routes/message.js";
+import replyRoutes from "./routes/reply.js";
+import userRoutes from "./routes/user.js";
 
 // run and set env variables
 dotenv.config();
@@ -24,7 +27,12 @@ app.use(
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
+// Add backend routes
 app.use("/auth", authRoutes);
+app.use("/message", messageRoutes);
+app.use("/reply", replyRoutes);
+app.use("/user", userRoutes);
+
 
 const server = app.listen(PORT, console.log(`Server running on port ${PORT}`));
 

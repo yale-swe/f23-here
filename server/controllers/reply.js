@@ -1,4 +1,4 @@
-const ReplyModel = require('../models/Reply.js');
+import ReplyModel from "../models/Reply.js";
 import { handleServerError, handleSuccess } from '../utils/handlers.js';
 
 // Reply to a message

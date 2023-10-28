@@ -17,4 +17,5 @@ export const ReplySchema = new Schema({
     },
 });
 
-export const ReplyModel = mongoose.model("Reply", ReplySchema);
+const ReplyModel = mongoose.model("Reply", ReplySchema);
+export default ReplyModel;

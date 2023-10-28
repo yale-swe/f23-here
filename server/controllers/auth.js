@@ -1,4 +1,4 @@
-import User from "../models/User.js";
+import UserModel from "../models/User.js";
 import { handleServerError, handleSuccess } from "../utils/handlers.js";
 
 export const register = async (req, res) => {
@@ -8,7 +8,7 @@ export const register = async (req, res) => {
 		const salt = await bcrypt.genSalt(10);
 		const passwordHash = await bcrypt.hash(password, salt);
 
-		const newUser = new User({
+		const newUser = new UserModel({
 			userName,
 			firstName,
 			lastName,
