@@ -1,4 +1,4 @@
-const MessageModel = require('../models/Message.js');
+import MessageModel from "../models/Message.js";
 import { handleServerError, handleSuccess } from '../utils/handlers.js';
 
 // Post message

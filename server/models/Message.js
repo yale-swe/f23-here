@@ -40,4 +40,5 @@ export const MessageSchema = new Schema({
     replies: [ReplySchema],
 });
 
-export const MessageModel = mongoose.model("Message", MessageSchema);
+const MessageModel = mongoose.model("Message", MessageSchema);
+export default MessageModel;
