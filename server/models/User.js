@@ -5,14 +5,10 @@ import { MessageSchema } from "./Message.js";
 const { Schema } = mongoose;
 
 export const UserSchema = new Schema({
-	id: {
-		type: Schema.Types.UUID,
-		required: true,
-		unique: true,
-	},
 	userName: {
 		type: String,
 		required: true,
+		unique: true,
 	},
 	firstName: {
 		type: String,
@@ -43,6 +39,7 @@ export const UserSchema = new Schema({
 	email: {
 		type: String,
 		required: [true, "Please enter a valid email"],
+		unique: true,
 	},
 	password: {
 		type: String,
@@ -54,5 +51,5 @@ export const UserSchema = new Schema({
 	},
 });
 
-const User = mongoose.model("User", UserSchema);
-export default User;
+const UserModel = mongoose.model("User", UserSchema);
+export default UserModel;

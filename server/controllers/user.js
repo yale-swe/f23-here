@@ -1,9 +1,14 @@
-import User from "../models/User.js";
-import { handleBadRequest } from "../utils/handlers.js";
+import UserModel from "../models/User.js";
+import {
+	handleServerError,
+	handleSuccess,
+	handleNotFound,
+	handleBadRequest,
+} from "../utils/handlers.js";
 
 export const getUserById = async (req, res) => {
 	try {
-		const user = await User.findById(req.params.userId);
+		const user = await UserModel.findById(req.params.userId);
 
 		if (!user) {
 			return handleNotFound(res, "User not found");
@@ -19,7 +24,7 @@ export const getUserByEmailOrUsername = async (req, res) => {
 	try {
 		const { emailOrUsername } = req.params;
 
-		const user = await User.findOne({
+		const user = await UserModel.findOne({
 			$or: [{ email: emailOrUsername }, { userName: emailOrUsername }],
 		});
 
@@ -36,7 +41,7 @@ export const getUserByEmailOrUsername = async (req, res) => {
 export const getUserFriends = async (req, res) => {
 	try {
 		const userId = req.params.userId;
-		const user = await User.findById(userId);
+		const user = await UserModel.findById(userId);
 
 		if (!user) {
 			return handleNotFound(res, "User not found");
@@ -57,8 +62,8 @@ export const addUserFriend = async (req, res) => {
 			return handleBadRequest(res, "You can't friend yourself!");
 		}
 
-		const user = await User.findById(userId);
-		const friend = await User.findById(friendId);
+		const user = await UserModel.findById(userId);
+		const friend = await UserModel.findById(friendId);
 
 		if (!user) {
 			return handleNotFound(res, "User not found");
@@ -88,8 +93,8 @@ export const removeUserFriend = async (req, res) => {
 	const { friendId } = req.body;
 
 	try {
-		const user = await User.findById(userId);
-		const friend = await User.findById(friendId);
+		const user = await UserModel.findById(userId);
+		const friend = await UserModel.findById(friendId);
 
 		if (!user) {
 			return handleNotFound(res, "User not found");
@@ -115,7 +120,7 @@ export const getUserMessages = async (req, res) => {
 	try {
 		const { userId } = req.params;
 
-		const user = await User.findById(userId);
+		const user = await UserModel.findById(userId);
 
 		if (!user) {
 			return handleNotFound(res, "User not found");
@@ -131,7 +136,7 @@ export const deleteUser = async (req, res) => {
 	try {
 		const { userId } = req.params;
 
-		const user = await User.findById(userId);
+		const user = await UserModel.findById(userId);
 
 		if (!user) {
 			return handleNotFound(res, "User not found");
@@ -149,7 +154,7 @@ export const toggleNotifyFriends = async (req, res) => {
 	try {
 		const { userId } = req.params;
 
-		const user = await User.findById(userId);
+		const user = await UserModel.findById(userId);
 
 		if (!user) {
 			return handleNotFound(res, "User not found");
@@ -169,7 +174,7 @@ export const updateUserProfile = async (req, res) => {
 		const { userName, password, firstName, lastName, email, avatar } =
 			req.body;
 
-		const user = await User.findById(userId);
+		const user = await UserModel.findById(userId);
 
 		if (!user) {
 			return handleNotFound(res, "User not found.");

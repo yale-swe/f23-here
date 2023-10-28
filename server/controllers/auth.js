@@ -1,5 +1,11 @@
-import User from "../models/User.js";
-import { handleServerError, handleSuccess } from "../utils/handlers.js";
+import UserModel from "../models/User.js";
+import {
+	handleServerError,
+	handleSuccess,
+	handleNotFound,
+	handleBadRequest,
+} from "../utils/handlers.js";
+import bcrypt from "bcrypt";
 
 export const register = async (req, res) => {
 	try {
@@ -8,7 +14,7 @@ export const register = async (req, res) => {
 		const salt = await bcrypt.genSalt(10);
 		const passwordHash = await bcrypt.hash(password, salt);
 
-		const newUser = new User({
+		const newUser = new UserModel({
 			userName,
 			firstName,
 			lastName,
@@ -27,9 +33,11 @@ export const login = async (req, res) => {
 	try {
 		const { inputLogin, password } = req.body;
 
-		const user = await User.findOne({
-			$or: [{ email: inputLogin }, { username: inputLogin }],
+		const user = await UserModel.findOne({
+			$or: [{ email: inputLogin }, { userName: inputLogin }],
 		});
+
+		console.log(inputLogin);
 
 		if (!user) {
 			return handleNotFound(res, "User not found");
