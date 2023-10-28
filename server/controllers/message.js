@@ -57,7 +57,7 @@ export const deleteMessage = async (req, res) => {
 export const incrementLikes = async (req, res) => {
 	try {
 		const message = await MessageModel.findByIdAndUpdate(
-			req.body.id,
+			req.body.messageId,
 			{ $inc: { likes: 1 } },
 			{ new: true }
 		);
@@ -69,12 +69,24 @@ export const incrementLikes = async (req, res) => {
 
 export const changeVisibility = async (req, res) => {
 	try {
-		const message = await MessageModel.findByIdAndUpdate(
-			req.body.id,
-			req.body.new_data,
-			{ new: true }
-		);
-		handleSuccess(res, message);
+		const message = await MessageModel.findById(req.body.messageId);
+
+		if (!message) {
+			return handleNotFound(res, "Message not found");
+		}
+		let newVisibility;
+		if (message.visibility === "public") {
+			newVisibility = "friends";
+		} else if (message.visibility === "friends") {
+			newVisibility = "public";
+		} else {
+			return handleServerError(res, "Unexpected visibility value");
+		}
+
+		message.visibility = newVisibility;
+		const updatedMessage = await message.save();
+
+		handleSuccess(res, updatedMessage);
 	} catch (err) {
 		handleServerError(res, err);
 	}
