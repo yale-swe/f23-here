@@ -137,13 +137,13 @@ export const deleteUser = async (req, res) => {
 	try {
 		const { userId } = req.params;
 
-		const user = await UserModel.findById(userId);
+		const result = await UserModel.findByIdAndDelete(userId);
 
-		if (!user) {
+		if (!result) {
 			return handleNotFound(res, "User not found");
 		}
 
-		await user.remove();
+		// await user.remove();
 
 		handleSuccess(res, { message: "User successfully deleted" });
 	} catch (err) {
