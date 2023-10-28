@@ -1,5 +1,6 @@
 import UserModel from "../models/User.js";
 import { handleServerError, handleSuccess } from "../utils/handlers.js";
+import bcrypt from "bcrypt";
 
 export const register = async (req, res) => {
 	try {
