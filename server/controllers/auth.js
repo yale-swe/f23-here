@@ -1,5 +1,10 @@
 import UserModel from "../models/User.js";
-import { handleServerError, handleSuccess } from "../utils/handlers.js";
+import {
+	handleServerError,
+	handleSuccess,
+	handleNotFound,
+	handleBadRequest,
+} from "../utils/handlers.js";
 import bcrypt from "bcrypt";
 
 export const register = async (req, res) => {
@@ -28,9 +33,11 @@ export const login = async (req, res) => {
 	try {
 		const { inputLogin, password } = req.body;
 
-		const user = await User.findOne({
-			$or: [{ email: inputLogin }, { username: inputLogin }],
+		const user = await UserModel.findOne({
+			$or: [{ email: inputLogin }, { userName: inputLogin }],
 		});
+
+		console.log(inputLogin);
 
 		if (!user) {
 			return handleNotFound(res, "User not found");

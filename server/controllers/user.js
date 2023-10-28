@@ -1,5 +1,10 @@
 import UserModel from "../models/User.js";
-import { handleBadRequest } from "../utils/handlers.js";
+import {
+	handleServerError,
+	handleSuccess,
+	handleNotFound,
+	handleBadRequest,
+} from "../utils/handlers.js";
 
 export const getUserById = async (req, res) => {
 	try {
