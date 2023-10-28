@@ -24,10 +24,14 @@ export const getUserById = async (req, res) => {
 
 export const getUserByEmailOrUsername = async (req, res) => {
 	try {
-		const { emailOrUsername } = req.params;
+		const { email, username } = req.body;
+
+		const conditions = [];
+		if (email) conditions.push({ email });
+		if (username) conditions.push({ userName: username });
 
 		const user = await UserModel.findOne({
-			$or: [{ email: emailOrUsername }, { userName: emailOrUsername }],
+			$or: conditions,
 		});
 
 		if (!user) {

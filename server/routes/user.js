@@ -13,7 +13,7 @@ import {
 
 const router = express.Router();
 
-router.get("/search/:emailOrUsername", getUserByEmailOrUsername);
+router.post("/search", getUserByEmailOrUsername);
 router.get("/:userId", getUserById);
 
 router.get("/:userId/friends", getUserFriends);
