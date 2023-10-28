@@ -18,7 +18,7 @@ export const register = async (req, res) => {
 			userName,
 			firstName,
 			lastName,
-			email,
+			email: email.toLowerCase(),
 			password: passwordHash,
 		});
 
