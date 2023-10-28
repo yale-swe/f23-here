@@ -10,6 +10,7 @@ import SwiftUI
 struct HomePageView: View {
     @State private var isShowingProfile = false
     @State private var isShowingMessages = false
+    @State private var isShowingPosts = false
     
     var body: some View {
         VStack(){
@@ -30,7 +31,7 @@ struct HomePageView: View {
                         Image(systemName: "message")
                     }
                     
-                    Button{
+                    Button{isShowingPosts.toggle()
                         
                     }label:
                     {
@@ -62,6 +63,9 @@ struct HomePageView: View {
         }
         .sheet(isPresented: $isShowingMessages) {
             MessagesPopup(isPresented: $isShowingMessages)
+        }
+        .sheet(isPresented: $isShowingPosts){
+            PostsPopup(isPresented: $isShowingPosts)
         }
     }
 }
