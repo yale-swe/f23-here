@@ -32,7 +32,13 @@ export const MessageSchema = new Schema({
         enum : ['friends','public'],
         default: 'friends'
     },
-    replies: [ReplySchema],
+    replies: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Reply",
+            default: [],
+        }
+    ],
 });
 
 const MessageModel = mongoose.model("Message", MessageSchema);
