@@ -9,9 +9,6 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var locationDataManager = LocationDataManager()
-    
-    
-    
     var body: some View {        
         HomePageView()
             .environmentObject(locationDataManager)
