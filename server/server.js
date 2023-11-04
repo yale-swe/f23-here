@@ -14,6 +14,21 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 6001;
 
+// API Key Middleware
+const apiKeyAuth = (req, res, next) => {
+	const userApiKey = req.get("X-API-Key");
+	if (!userApiKey) {
+		return res.status(401).json({ error: "API key is required" });
+	}
+	if (userApiKey !== process.env.API_KEY) {
+		return res.status(403).json({ error: "Invalid API key" });
+	}
+	next();
+};
+
+// Apply the API Key middleware globally
+app.use(apiKeyAuth);
+
 // Connect to DB
 connectDB();
 
@@ -32,7 +47,6 @@ app.use("/auth", authRoutes);
 app.use("/message", messageRoutes);
 app.use("/reply", replyRoutes);
 app.use("/user", userRoutes);
-
 
 const server = app.listen(PORT, console.log(`Server running on port ${PORT}`));
 

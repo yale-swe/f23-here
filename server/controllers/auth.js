@@ -37,8 +37,6 @@ export const login = async (req, res) => {
 			$or: [{ email: inputLogin }, { userName: inputLogin }],
 		});
 
-		console.log(inputLogin);
-
 		if (!user) {
 			return handleNotFound(res, "User not found");
 		}
