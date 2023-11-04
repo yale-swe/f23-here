@@ -35,7 +35,9 @@ struct HomePageView: View {
                                       ForEach(0..<storedMessages.count, id:\.self) { i in
                                           Text(storedMessages[i].displayMessage())
                                       }
-                                  }.opaciy
+                                  }
+                                  .listStyle(PlainListStyle())
+                                  .background(Color.clear) // Set the list background to clear
                               }
                               else {
                                   Text("No Messages Stored!")
