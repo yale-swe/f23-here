@@ -1,108 +1,221 @@
-Note that base url will change with deployment of backend.
+# API Documentation
 
-# AUTH 
-- REGISTER: POST "http://localhost:6000/auth/register"
-    - params:
-    {
-        "userName": "JohnDED",
-        "firstName": "John",
-        "lastName": "Doe",
-        "email": "johnDoE@yale.edu",
-        "password": "secretpassword"
-    }
+This document outlines the API endpoints for Here. Please contact the developer for the X-API-Key.
 
-- LOGIN: GET "http://localhost:6000/auth/login"
-    - params:
-    {
-        "inputLogin": "JaneD",
-        "password": "secretpassword"
-    }
+## Base URL
 
-# MESSAGE
-- POST MESSAGE: POST "http://localhost:6000/message/post_message"
-    - params:
-    {
-        "user_id": "653d51478ff5b3c9ace45c26",
-        "text": "Hi, this is a test message - Jane",
-        "visibility": "friends",
-        "location": {
-            "type": "Point",
-            "coordinates": [40.7128, -74.0060]
-        }
-    }
+- **Base URL:** `https://here-swe.vercel.app/`
 
-- DELETE MESSAGE: POST "http://localhost:6000/message/delete_message"
-    - params:
-    {
-        "messageId": "653d62a37ce9c61f28dcaa7f"
-    }
+## Authentication Endpoints
 
-- INCREMENT LIKES: POST "http://localhost:6000/message/increment_likes"
-    - params:
-    {
-        "id": "653d62de7ce9c61f28dcaa87"
-    }
+### Register
 
-- CHANGE VISIBILITY: POST "http://localhost:6000/message/change_visibility"
-    - params:
-    {
-        "id": "dsfsf",
-        "new_data": ""
-    }   
+Creates a new user account.
 
-# REPLY
-- ADD REPLY: POST "http://localhost:6000/reply/reply_to_message"
-    - params:
-    {
-        "message_id": "653ea4a35b858b2542ea4f13",
-        "content": "this is a test reply to a test message"
-    }
+- **Endpoint:** `POST /auth/register`
+- **Body:**
 
-- LIKE REPLY: GET "http://localhost:6000/reply/like_reply"
-    - params:
-    {
-        "reply_id": "somekindofreplyid"
-    }
+```json
+{
+  "userName": "JohnD",
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "johndoe@yale.edu",
+  "password": "secretpassword"
+}
+```
 
-# USER
-- SEARCH USER BY USER_ID: GET "http://localhost:6000/user/search"
-    - params:
-    {
-        "userId": ""
-    }
-- SEARCH USER BY EMAIL: GET "http://localhost:6000/user/search"
-    - params:
-    {
-        "email": "janedoe@yale.edu"
-    }
+### Login
 
-- SEARCH USER BY USERNAME: GET "http://localhost:6000/user/search"
-    - params:
-    {
-        "userName": ""
-    }
+Authenticates a user and returns user data if successful.
 
-- ADD USER FRIEND: PUT "http://localhost:6000/user/userid"
-    - params:
-    {
-        "friendId": "friend's id"
-    }
+- **Endpoint:** `GET /auth/login`
+- **Body:**
 
-- GET FRIEND OF USER: GET "http://localhost:6000/user/userId/friends"
+```json
+{
+  "inputLogin": "JohnD",
+  "password": "secretpassword"
+}
+```
 
-- TOGGLE NOTIFY FRIENDS: PUT "http://localhost:6000/user/userId/toggle-notify-friends"
+## User Endpoints
 
-- UPDATE PROFILE: PUT "http://localhost:6000/user/userId/update-profile"
-    - params:
-    {
-    "userName": "john_d",
-    "password": "hello",
-    "firstName": "Johnn",
-    "lastName": "Doee",
-    "email": "john.doe@yale.edu",
-    "avatar": ""
-    }
+### Search User by Email or Username
 
-- REMOVE USER FRIEND: GET "http://localhost:6000/user/search/johndoe@yale.edu"
+Search for a user by their email address or username. Do not need to include both.
 
-- DELETE USER: DELETE "http://localhost:6000/user/653d58a37ab5eaf376965b82"
+- **Endpoint:** `GET /user/search`
+- **Body:**
+
+```json
+{
+  "email": "user@yale.edu",
+  "userName": "JohnD"
+}
+```
+
+### Get User by ID
+
+Retrieve a user by their unique identifier.
+
+- **Endpoint:** `GET /user/:userId`
+
+### Get User Friends
+
+Retrieve a list of friends for a user.
+
+- **Endpoint:** `GET /user/:userId/friends`
+
+### Get User's Messages
+
+Retrieve messages for a user.
+
+- **Endpoint:** `GET /user/:userId/messages`
+
+### Add User's Friend
+
+Add a friend to a user's friend list. Will also add that user to the other user's friend list.
+
+- **Endpoint:** `PUT /user/:userId/friends`
+- **Body:**
+
+```json
+{
+  "friendId": "friendUserId"
+}
+```
+
+### Remove User's Friend
+
+Remove a friend from a user's friend list.
+
+- **Endpoint:** `DELETE /user/:userId/friends`
+- **Body:**
+
+```json
+{
+  "friendId": "friendUserId"
+}
+```
+
+### Toggle Notify Friends
+
+Toggle the notification setting for a user's friends.
+
+- **Endpoint:** `PUT /user/:userId/toggle-notify-friends`
+
+### Update User's Profile
+
+Update a user's profile information.
+
+- **Endpoint:** `PUT /user/:userId/update-profile`
+- **Body:**
+
+```json
+{
+  "userName": "newUserName",
+  "password": "newPassword",
+  "firstName": "newFirstName",
+  "lastName": "newLastName",
+  "email": "newEmail@yale.edu",
+  "avatar": "urlToAvatar"
+}
+```
+
+### Delete User
+
+Delete a user and their associated messages.
+
+- **Endpoint:** `DELETE /user/:userId`
+
+
+## Message Endpoints
+
+### Post Message
+
+Allows a user to post a message.
+
+- **Endpoint:** `POST /message/post_message`
+- **Body:**
+
+```json
+{
+  "user_id": "653d51478ff5b3c9ace45c26",
+  "text": "Hi, this is a test message - Jane",
+  "visibility": "friends",
+  "location": {
+    "type": "Point",
+    "coordinates": [40.7128, -74.0060]
+  }
+}
+```
+
+### Delete Message
+
+Allows a user to delete their message.
+
+- **Endpoint:** `POST /message/delete_message`
+- **Body:**
+
+```json
+{
+  "messageId": "653d62a37ce9c61f28dcaa7f"
+}
+```
+
+### Increment Likes
+
+Increments the number of likes on a message.
+
+- **Endpoint:** `POST /message/increment_likes`
+- **Body:**
+
+```json
+{
+  "id": "653d62de7ce9c61f28dcaa87"
+}
+```
+
+### Change Visibility
+
+Changes the visibility of a user's message.
+
+- **Endpoint:** `POST /message/change_visibility`
+- **Body:**
+
+```json
+{
+  "id": "653d62de7ce9c61f28dcaa87",
+  "new_visibility": "public"
+}
+```
+
+## Reply Endpoints
+
+### Like Reply
+
+Increments the number of likes on a reply.
+
+- **Endpoint:** `GET /reply/like_reply`
+- **Body:**
+
+```json
+{
+  "reply_id": "653d62de7ce9c61f28dcaa87"
+}
+```
+
+### Add Reply
+
+Add a reply to a message.
+
+- **Endpoint:** `POST /reply/reply_to_message`
+- **Body:**
+
+```json
+{
+  "message_id": "653ea4a35b858b2542ea4f13",
+  "content": "this is a test reply to a test message"
+}
+```
