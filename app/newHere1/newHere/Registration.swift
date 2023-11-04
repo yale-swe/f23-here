@@ -57,12 +57,12 @@ struct RegistrationView: View {
             "password": password
         ]
 
-        let jsonData = try ? JSONSerialization.data(withJSONObject: requestBody) else {
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: requestBody)
+        else {
             return
         }
 
-        let url = URL(string: registerUrlString) else {
-            print("Invalid URL")
+        guard let url = URL(string: registerUrlString) else {
             return
         }
 
@@ -78,6 +78,6 @@ struct RegistrationView: View {
 
 struct RegistrationView_Previews: PreviewProvider {
     static var previews: some View {
-        RegistrationView()
+        RegistrationView(isRegistered: self.isRegistered)
     }
 }
