@@ -9,13 +9,16 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var isRegistered = false
-
+    @ObservedObject var locationDataManager = LocationDataManager()
+    
     var body: some View {
-        if isRegistered {
-            HomePageView()
-        } else {
-            RegistrationView(isRegistered: $isRegistered)
-        }
+        HomePageView()
+            .environmentObject(locationDataManager)
+        //        if isRegistered {
+//            HomePageView()
+//        } else {
+//            RegistrationView(isRegistered: $isRegistered)
+//        }
     }
 }
 
