@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreLocation
+import Foundation
 
 struct PostsPopup: View {
     @Binding var isPresented: Bool
@@ -14,12 +15,19 @@ struct PostsPopup: View {
     
     @State private var noteMessage: String = "This is your message!"
     
-    @State private var storedMessage: Message?
-    
     
     let senderName: String = "Username"
 
     @EnvironmentObject var locationDataManager: LocationDataManager
+    
+    func handleSubmitForm() {
+        if let currentLocation = locationDataManager.location {
+            let newMessage = Message(location: currentLocation,
+                                 author: senderName,
+                                 messageStr: noteMessage)
+            self.storedMessages.append(newMessage)
+        }
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -69,13 +77,7 @@ struct PostsPopup: View {
                                 Spacer()
 
                                 Button(action: {
-                                    if let currentLocation = locationDataManager.location {
-                                        let newMessage = Message(location: currentLocation,
-                                                             author: senderName,
-                                                             messageStr: noteMessage)
-                                        self.storedMessages.append(newMessage)
-                                    }
-                                    
+                                    handleSubmitForm()
                                 }, label: {
                                     Image(systemName: "paperplane.fill")
                                         .resizable()
