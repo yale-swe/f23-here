@@ -17,6 +17,7 @@ struct RegistrationView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
+    @Binding var isRegistered: Bool
     
     var body: some View {
         NavigationView {
@@ -44,7 +45,7 @@ struct RegistrationView: View {
             .navigationBarTitle("Registration")
         }
     }
-    
+
     func registerUser() {
         // Implement registration logic
         print("User registration logic goes here.")
@@ -70,7 +71,8 @@ struct RegistrationView: View {
         request.httpBody = jsonData
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        URLSession.shared.dataTask(with: request) { data, response, error in }.resume
+        URLSession.shared.dataTask(with: request) { data, response, error in }.resume()
+        self.isRegistered = true
     }
 }
 
