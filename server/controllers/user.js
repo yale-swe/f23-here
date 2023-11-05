@@ -7,6 +7,7 @@ import {
 	handleBadRequest,
 } from "../utils/handlers.js";
 import MessageModel from "../models/Message.js";
+import ReplyModel from "../models/Reply.js";
 
 export const getUserById = async (req, res) => {
 	try {
@@ -125,7 +126,14 @@ export const getUserMessages = async (req, res) => {
 	try {
 		const { userId } = req.params;
 
-		const user = await UserModel.findById(userId);
+		const user = await UserModel.findById(userId).populate({
+			path: "messages",
+			model: MessageModel,
+			populate: {
+				path: "replies",
+				model: ReplyModel,
+			},
+		});
 
 		if (!user) {
 			return handleNotFound(res, "User not found");
