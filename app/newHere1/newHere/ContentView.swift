@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var isRegistered = false
-    @ObservedObject var locationDataManager = LocationDataManager()
+    @ObservedObject var locationDataManager = LocationDataManager()    
     
     var body: some View {
         HomePageView()

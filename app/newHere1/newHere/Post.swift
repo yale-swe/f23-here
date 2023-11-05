@@ -32,11 +32,11 @@ struct PostsPopup: View {
     
     @State private var noteMessage: String = "This is your message!"
     
+    @EnvironmentObject var messageState: MessageState
     
     let senderName: String = "Username"
 
     @EnvironmentObject var locationDataManager: LocationDataManager
-    
     
     func postMessage(user_id: String, text: String, visibility: String, completion: @escaping (Result<MessageResponse, Error>) -> Void) {
         // make sure you can get the current location
@@ -139,6 +139,9 @@ struct PostsPopup: View {
                                                 let newMessage = try Message(id: response._id, location: response.location.toCLLocation(), author: "Anna", messageStr: response.text)
                                                 // Use newMessage here
                                                     self.storedMessages.append(newMessage)
+                                                
+                                                messageState.currentMessage = newMessage
+                                                
                                             } catch {
                                                 // Handle the error
                                                 print("Error: \(error)")

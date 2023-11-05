@@ -6,17 +6,26 @@
 //
 
 import SwiftUI
+import ARKit
+
+class MessageState: ObservableObject {
+    @Published var currentMessage: Message?
+}
 
 struct HomePageView: View {
     @State private var isShowingProfile = false
     @State private var isShowingMessages = false
     @State private var isShowingPosts = false
     @State private var storedMessages: [Message] = []
-
+    
+    
     @EnvironmentObject var locationDataManager: LocationDataManager
+    
+    @StateObject var messageState = MessageState()
     
     var body: some View {
         CustomARViewRepresentable()
+            .environmentObject(messageState)
             .ignoresSafeArea()
             .overlay(alignment: .bottom){
                     VStack(){
@@ -95,6 +104,7 @@ struct HomePageView: View {
                     }
                     .sheet(isPresented: $isShowingPosts){
                         PostsPopup(isPresented: $isShowingPosts, storedMessages: $storedMessages)
+                            .environmentObject(messageState)
                     }
                 
             }
