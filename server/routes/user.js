@@ -17,7 +17,7 @@ router.get("/search", getUserByEmailOrUsername);
 router.get("/:userId", getUserById);
 
 router.get("/:userId/friends", getUserFriends);
-router.get("/:userId/friends", getUserMessages);
+router.get("/:userId/messages", getUserMessages);
 
 router.put("/:userId/friends", addUserFriend);
 router.put("/:userId/toggle-notify-friends", toggleNotifyFriends);
