@@ -28,7 +28,7 @@ struct MessageResponse: Codable {
 
 struct PostsPopup: View {
     @Binding var isPresented: Bool
-    @Binding var storedMessages: [Message]
+//    @Binding var storedMessages: [Message]
     
     @State private var noteMessage: String = "This is your message!"
     
@@ -37,7 +37,7 @@ struct PostsPopup: View {
     let senderName: String = "Username"
 
     @EnvironmentObject var locationDataManager: LocationDataManager
-    
+
     func postMessage(user_id: String, text: String, visibility: String, completion: @escaping (Result<MessageResponse, Error>) -> Void) {
         // make sure you can get the current location
         if let currentLocation = locationDataManager.location {
@@ -136,9 +136,12 @@ struct PostsPopup: View {
                                             
                                             
                                             do {
-                                                let newMessage = try Message(id: response._id, location: response.location.toCLLocation(), author: "Anna", messageStr: response.text)
+                                                let newMessage = try Message(
+                                                    id: response._id,
+                                                    location: response.location.toCLLocation(),
+                                                    messageStr: response.text)
                                                 // Use newMessage here
-                                                    self.storedMessages.append(newMessage)
+//                                                    self.storedMessages.append(newMessage)
                                                 
                                                 messageState.currentMessage = newMessage
                                                 
