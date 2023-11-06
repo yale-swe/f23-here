@@ -12,6 +12,15 @@ struct ContentView: View {
     @ObservedObject var locationDataManager = LocationDataManager()    
     
     var body: some View {
+        if isRegistered {
+//            NavigationView {
+                HomePageView()
+                    .environmentObject(locationDataManager)
+                    
+//            }
+        } else {
+            RegistrationView(isRegistered: $isRegistered)
+        }
         HomePageView()
             .environmentObject(locationDataManager)
         //        if isRegistered {
@@ -27,3 +36,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
