@@ -35,7 +35,7 @@ struct HomePageView: View {
                                       ForEach(0..<storedMessages.count, id:\.self) { i in
                                           Text(storedMessages[i].displayMessage())
                                       }
-                                  }.opaciy
+                                  }
                               }
                               else {
                                   Text("No Messages Stored!")

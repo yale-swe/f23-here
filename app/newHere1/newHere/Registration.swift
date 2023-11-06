@@ -70,14 +70,25 @@ struct RegistrationView: View {
         request.httpMethod = "POST"
         request.httpBody = jsonData
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
 
-        URLSession.shared.dataTask(with: request) { data, response, error in }.resume()
-        self.isRegistered = true
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error{
+                print("error:\(error)")
+            } else if let data = data {
+                if let responseString = String(data: data, encoding: .utf8) {
+                    print("Response: \(responseString)")
+                }
+                self.isRegistered = true
+            }
+        }.resume()
+        
     }
 }
 
-struct RegistrationView_Previews: PreviewProvider {
-    static var previews: some View {
-        RegistrationView(isRegistered: self.isRegistered)
-    }
-}
+//struct RegistrationView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        RegistrationView()
+//    }
+//}
