@@ -6,39 +6,55 @@
 //
 
 import SwiftUI
+import ARKit
+
+class MessageState: ObservableObject {
+    @Published var currentMessage: Message?
+}
+
+class FetchedMessagesState: ObservableObject {
+    var fetchedMessages: [Message]?
+}
 
 struct HomePageView: View {
     @State private var isShowingProfile = false
     @State private var isShowingMessages = false
     @State private var isShowingPosts = false
-    @State private var storedMessages: [Message] = []
-
+    
     @EnvironmentObject var locationDataManager: LocationDataManager
+    
+    @StateObject var messageState = MessageState()
+    @StateObject var fetchedMessagesState = FetchedMessagesState()
     
     var body: some View {
         CustomARViewRepresentable()
+            .environmentObject(messageState)
+            .environmentObject(fetchedMessagesState)
             .ignoresSafeArea()
             .overlay(alignment: .bottom){
                     VStack(){
-                        if let currentLocation = locationDataManager.location {
-                          Text("Your current location is:")
-                          Text("Latitude: \(currentLocation.coordinate.latitude.description)")
-                          Text("Longitude: \(currentLocation.coordinate.longitude.description)\n")
-                          } else {
-                              Text("Finding your location...\n")
-                              ProgressView()
-                          }
+//                        if let currentLocation = locationDataManager.location {
+//                          Text("Your current location is:")
+//                          Text("Latitude: \(currentLocation.coordinate.latitude.description)")
+//                          Text("Longitude: \(currentLocation.coordinate.longitude.description)\n")
+//                          } else {
+//                              Text("Finding your location...\n")
+//                              ProgressView()
+//                          }
 
-                              // render the stored messages on the screen
-                              if !storedMessages.isEmpty {
-                                  List {
-                                      ForEach(0..<storedMessages.count, id:\.self) { i in
-                                          Text(storedMessages[i].displayMessage())
-                                      }
-                                  }
-                              }
-                              else {
-                                  Text("No Messages Stored!")
+
+//                              // render the stored messages on the screen
+//                              if !storedMessages.isEmpty {
+//                                  List {
+//                                      ForEach(0..<storedMessages.count, id:\.self) { i in
+//                                          Text(storedMessages[i].displayMessage())
+//                                      }
+//                                  }
+//                                  .listStyle(PlainListStyle())
+//                                  .background(Color.clear) // Set the list background to clear
+//                              }
+//                              else {
+//                                  Text("No Messages Stored!")
                           }
                           
                         Spacer()
@@ -92,14 +108,15 @@ struct HomePageView: View {
                         MessagesPopup(isPresented: $isShowingMessages)
                     }
                     .sheet(isPresented: $isShowingPosts){
-                        PostsPopup(isPresented: $isShowingPosts, storedMessages: $storedMessages)
+                        PostsPopup(isPresented: $isShowingPosts)
+                            .environmentObject(messageState)
                     }
                 
             }
         }
         
     
-}
+
 
 //struct HomePageView: View {
 //    @State private var isShowingProfile = false
