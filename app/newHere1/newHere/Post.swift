@@ -95,8 +95,8 @@ struct PostsPopup: View {
                             Text("Close")
                                 .font(.headline)
                                 .padding()
-                                .background(Color.blue)
-                                .foregroundColor(.white)
+                                .background(Color.blue.opacity(0.8))
+                                .foregroundColor(.white.opacity(0.8))
                                 .cornerRadius(10)
                         }
                         .padding(.trailing, 20) // Adjust the position of the close button
@@ -120,7 +120,7 @@ struct PostsPopup: View {
                                 }, label: {
                                     Image(systemName: "square.and.arrow.up.fill")
                                         .resizable()
-                                        .foregroundColor(.blue)
+                                        .foregroundColor(.blue.opacity(0.8))
                                         .frame(width: 24, height: 24)
                                         .padding(.leading, 20)
                                 })
@@ -158,7 +158,7 @@ struct PostsPopup: View {
                                 }, label: {
                                     Image(systemName: "paperplane.fill")
                                         .resizable()
-                                        .foregroundColor(.blue)
+                                        .foregroundColor(.blue.opacity(0.8))
                                         .frame(width: 24, height: 24)
                                         .padding(.trailing, 20)
                                 })

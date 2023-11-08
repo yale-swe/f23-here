@@ -8,18 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var isAuthenticated = false
     @State private var isRegistered = false
-    @ObservedObject var locationDataManager = LocationDataManager()    
+    @ObservedObject var locationDataManager = LocationDataManager()
     
     var body: some View {
-        if isRegistered {
+        if isAuthenticated {
 //            NavigationView {
                 HomePageView()
                     .environmentObject(locationDataManager)
                     
 //            }
         } else {
-            RegistrationView(isRegistered: $isRegistered)
+            LoginView(isAuthenticated: $isAuthenticated)
+//            RegistrationView(isRegistered: $isRegistered)
         }
 //        HomePageView()
 //            .environmentObject(locationDataManager)
