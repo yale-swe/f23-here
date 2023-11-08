@@ -29,7 +29,7 @@ Creates a new user account.
 
 Authenticates a user and returns user data if successful.
 
-- **Endpoint:** `GET /auth/login`
+- **Endpoint:** `POST /auth/login`
 - **Body:**
 
 ```json

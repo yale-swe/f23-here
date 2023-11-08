@@ -59,7 +59,7 @@ export const getUserFriends = async (req, res) => {
 	}
 };
 
-export const addUserFriend = async (req, res) => {
+export const addUserFriendById = async (req, res) => {
 	const { userId } = req.params;
 	const { friendId } = req.body;
 
@@ -75,6 +75,40 @@ export const addUserFriend = async (req, res) => {
 			return handleNotFound(res, "User not found");
 		} else if (!friend) {
 			return handleNotFound(res, "Friend not found");
+		}
+
+		if (user.friends.includes(friendId)) {
+			return handleBadRequest(
+				res,
+				"Friend is already in user's friend list"
+			);
+		}
+
+		user.friends.push(friendId);
+		friend.friends.push(userId);
+		await user.save();
+		await friend.save();
+		handleSuccess(res, { message: "Friend added successfully" });
+	} catch (err) {
+		handleServerError(res, err);
+	}
+};
+
+
+export const addUserFriendByName = async (req, res) => {
+	const { userId } = req.params;
+	const { friendName } = req.body;
+
+	try {
+		const user = await UserModel.findById(userId);
+		const friend = await UserModel.findOne({userName: friendName });
+
+		if (!user) {
+			return handleNotFound(res, "User not found");
+		} else if (!friend) {
+			return handleNotFound(res, "Friend not found");
+		} else if (friend._id == user._id) {
+			return handleBadRequest(res, "You can't friend yourself!");
 		}
 
 		if (user.friends.includes(friendId)) {

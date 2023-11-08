@@ -3,12 +3,13 @@ import {
 	getUserFriends,
 	getUserById,
 	getUserByEmailOrUsername,
-	addUserFriend,
+	addUserFriendById,
 	removeUserFriend,
 	getUserMessages,
 	deleteUser,
 	toggleNotifyFriends,
 	updateUserProfile,
+	addUserFriendByName
 } from "../controllers/user.js";
 
 const router = express.Router();
@@ -19,7 +20,8 @@ router.get("/:userId", getUserById);
 router.get("/:userId/friends", getUserFriends);
 router.get("/:userId/messages", getUserMessages);
 
-router.put("/:userId/friends", addUserFriend);
+router.put("/:userId/friends", addUserFriendById);
+router.put("/:userId/friends_name", addUserFriendByName);
 router.put("/:userId/toggle-notify-friends", toggleNotifyFriends);
 router.put("/:userId/update-profile", updateUserProfile);
 
