@@ -118,7 +118,7 @@ export const addUserFriendByName = async (req, res) => {
 			);
 		}
 
-		user.friends.push(friendId);
+		user.friends.push(friend._id);
 		friend.friends.push(userId);
 		await user.save();
 		await friend.save();
