@@ -51,8 +51,8 @@ struct ProfilePopup: View {
                         Text("Close")
                             .font(.headline)
                             .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
+                            .background(Color.blue.opacity(0.8))
+                            .foregroundColor(.white.opacity(0.8))
                             .cornerRadius(10)
                     }
                     .padding(.trailing, 20) // Adjust the position of the close button
@@ -122,8 +122,8 @@ struct ProfileButtons: View {
                 Image(systemName: "person.badge.plus")
                     .font(.system(size: 20))
                     .padding(10)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
+                    .background(Color.blue.opacity(0.8))
+                    .foregroundColor(.white.opacity(0.8))
                     .clipShape(Circle())
             }
         }
@@ -142,13 +142,13 @@ struct ProfileStats: View {
                 VStack {
                     Text(stat.title)
                         .font(.caption)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.gray.opacity(0.8))
 
                     Text(stat.value)
                         .font(.headline)
                 }
                 .padding()
-                .background(Color.white)
+                .background(Color.white.opacity(0.8))
                 .cornerRadius(8)
                 .shadow(radius: 3)
             }
@@ -169,7 +169,7 @@ struct ProfileStatItem: View {
 
             Text(title)
                 .font(.subheadline)
-                .foregroundColor(.gray)
+                .foregroundColor(.gray.opacity(0.8))
         }
     }
 }
