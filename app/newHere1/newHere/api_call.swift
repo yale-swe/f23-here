@@ -16,7 +16,7 @@ struct UserMessage: Codable {
         let coordinates: [Double]
     }
 
-    let location: Location
+    let location: GeoJSONPoint
     let _id: String
     let user_id: String
     let text: String
@@ -25,7 +25,7 @@ struct UserMessage: Codable {
     let replies: [String]
 }
 
-func getUserMessages(userId: String, completion: @escaping (Result<[UserMessage], Error>) -> Void) {
+func getUserMessages(userId: String, completion: @escaping (Result<[MessageResponse], Error>) -> Void) {
     let urlString = "https://here-swe.vercel.app/user/\(userId)/messages"
     
     guard let url = URL(string: urlString) else {
@@ -55,8 +55,11 @@ func getUserMessages(userId: String, completion: @escaping (Result<[UserMessage]
         }
         
         do {
-            let messages = try JSONDecoder().decode([UserMessage].self, from: data)
+            let messages = try JSONDecoder().decode([MessageResponse].self, from: data)
             completion(.success(messages))
+            
+            
+            
         } catch {
             completion(.failure(error))
         }
