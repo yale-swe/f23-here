@@ -103,7 +103,7 @@ struct CustomARViewRepresentable: UIViewRepresentable {
 
         // Define the range of random positions for x, y, and z coordinates
         let xRange: ClosedRange<Float> = -3.0...3.0  // Represents a 10-meter width (-5m to +5m)
-        let yRange: ClosedRange<Float> = 0.0...3.0   // Represents a height range above the ground (0m to +2m)
+        let yRange: ClosedRange<Float> = -1.5...2.0   // Represents a height range above the ground (0m to +2m)
         let zRange: ClosedRange<Float> = -3.0...3.0  // Represents a 10-meter depth (-5m to +5m)
 
         for message in messages {

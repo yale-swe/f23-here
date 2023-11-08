@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1506543B2AF8484A004C7909 /* api_call.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1506543A2AF84849004C7909 /* api_call.swift */; };
 		1531A8DE2AED95FD009F644E /* newHereApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1531A8DD2AED95FD009F644E /* newHereApp.swift */; };
 		1531A8E02AED95FD009F644E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1531A8DF2AED95FD009F644E /* ContentView.swift */; };
 		1531A8E22AED95FF009F644E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1531A8E12AED95FF009F644E /* Assets.xcassets */; };
@@ -20,6 +21,9 @@
 		1531A90F2AED9917009F644E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1531A90E2AED9917009F644E /* Post.swift */; };
 		1531A9132AEDAE2A009F644E /* LocationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1531A9122AEDAE2A009F644E /* LocationDataManager.swift */; };
 		1531A9152AEDCADB009F644E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1531A9142AEDCADB009F644E /* Message.swift */; };
+		15582E372AFB1544003910A2 /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15582E362AFB1544003910A2 /* Registration.swift */; };
+		1562EDE82AF6EA2B00A41779 /* CustomARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1562EDE62AF6EA2B00A41779 /* CustomARView.swift */; };
+		1562EDE92AF6EA2B00A41779 /* CustomARViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1562EDE72AF6EA2B00A41779 /* CustomARViewRepresentable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1506543A2AF84849004C7909 /* api_call.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = api_call.swift; sourceTree = "<group>"; };
 		1531A8DA2AED95FD009F644E /* newHere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = newHere.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1531A8DD2AED95FD009F644E /* newHereApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = newHereApp.swift; sourceTree = "<group>"; };
 		1531A8DF2AED95FD009F644E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -57,6 +62,9 @@
 		1531A90E2AED9917009F644E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		1531A9122AEDAE2A009F644E /* LocationDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManager.swift; sourceTree = "<group>"; };
 		1531A9142AEDCADB009F644E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		15582E362AFB1544003910A2 /* Registration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
+		1562EDE62AF6EA2B00A41779 /* CustomARView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomARView.swift; sourceTree = "<group>"; };
+		1562EDE72AF6EA2B00A41779 /* CustomARViewRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomARViewRepresentable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,9 +118,13 @@
 				1531A8DD2AED95FD009F644E /* newHereApp.swift */,
 				1531A8DF2AED95FD009F644E /* ContentView.swift */,
 				1531A9082AED9618009F644E /* Home.swift */,
+				1562EDE62AF6EA2B00A41779 /* CustomARView.swift */,
+				1562EDE72AF6EA2B00A41779 /* CustomARViewRepresentable.swift */,
 				1531A90C2AED9663009F644E /* Messages.swift */,
 				1531A90A2AED964A009F644E /* Profile.swift */,
 				1531A90E2AED9917009F644E /* Post.swift */,
+				15582E362AFB1544003910A2 /* Registration.swift */,
+				1506543A2AF84849004C7909 /* api_call.swift */,
 				1531A9142AEDCADB009F644E /* Message.swift */,
 				1531A9122AEDAE2A009F644E /* LocationDataManager.swift */,
 				1531A8E12AED95FF009F644E /* Assets.xcassets */,
@@ -281,6 +293,10 @@
 				1531A8E02AED95FD009F644E /* ContentView.swift in Sources */,
 				1531A90B2AED964A009F644E /* Profile.swift in Sources */,
 				1531A90D2AED9663009F644E /* Messages.swift in Sources */,
+				15582E372AFB1544003910A2 /* Registration.swift in Sources */,
+				1562EDE82AF6EA2B00A41779 /* CustomARView.swift in Sources */,
+				1506543B2AF8484A004C7909 /* api_call.swift in Sources */,
+				1562EDE92AF6EA2B00A41779 /* CustomARViewRepresentable.swift in Sources */,
 				1531A90F2AED9917009F644E /* Post.swift in Sources */,
 				1531A9152AEDCADB009F644E /* Message.swift in Sources */,
 				1531A9092AED9618009F644E /* Home.swift in Sources */,
@@ -449,6 +465,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Here needs access to your camera.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Here needs to access your location data to tell you your location";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -460,7 +477,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -489,6 +506,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Here needs access to your camera.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Here needs to access your location data to tell you your location";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -500,7 +518,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
