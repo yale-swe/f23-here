@@ -111,7 +111,7 @@ export const addUserFriendByName = async (req, res) => {
 			return handleBadRequest(res, "You can't friend yourself!");
 		}
 
-		if (user.friends.includes(friendId)) {
+		if (user.friends.includes(friend._id)) {
 			return handleBadRequest(
 				res,
 				"Friend is already in user's friend list"
