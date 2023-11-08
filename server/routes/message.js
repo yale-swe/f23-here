@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.post("/get_all_messages", getAllMessages);
+router.get("/get_all_messages", getAllMessages);
 router.post("/post_message", postMessage);
 router.post("/delete_message", deleteMessage);
 router.post("/increment_likes", incrementLikes);
