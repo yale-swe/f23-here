@@ -21,8 +21,8 @@ struct ContentView: View {
         } else {
             RegistrationView(isRegistered: $isRegistered)
         }
-        HomePageView()
-            .environmentObject(locationDataManager)
+//        HomePageView()
+//            .environmentObject(locationDataManager)
         //        if isRegistered {
 //            HomePageView()
 //        } else {

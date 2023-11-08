@@ -8,7 +8,7 @@
 import SwiftUI
 
 let registerUrlString = "https://here-swe.vercel.app/auth/register"
-let apiKey = "qe5YT6jOgiA422_UcdbmVxxG1Z6G48aHV7fSV4TbAPs"
+let regApiKey = "qe5YT6jOgiA422_UcdbmVxxG1Z6G48aHV7fSV4TbAPs"
 
 struct RegistrationView: View {
     @State private var firstName: String = ""
@@ -70,7 +70,7 @@ struct RegistrationView: View {
         request.httpMethod = "POST"
         request.httpBody = jsonData
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
+        request.setValue(regApiKey, forHTTPHeaderField: "x-api-key")
 
 
         URLSession.shared.dataTask(with: request) { data, response, error in
