@@ -8,10 +8,10 @@ import {
 
 export const getAllMessages = async (req, res) => {
 	try {
-		const messages = await MessageModel.find({}).populate("replies").exec();
-		handleSuccess(messages);
+		const messages = await MessageModel.find({}).populate("replies");
+		handleSuccess(res, messages);
 	} catch (error) {
-		handleServerError(res, err);
+		handleServerError(res, error);
 	}
 };
 
