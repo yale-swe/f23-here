@@ -23,6 +23,11 @@ struct MessageResponse: Codable {
     let location: GeoJSONPoint
 }
 
+struct AddFriendResponse: Codable {
+    let message: String
+}
+
+
 struct AddFriendRequest: Codable {
     let friendName: String
 }
@@ -128,7 +133,7 @@ func postMessage(user_id: String, text: String, visibility: String, locationData
 }
 
 
-func getAllUserFriends(userId: String, completion: @escaping (Result<[MessageResponse], Error>) -> Void) {
+func getAllUserFriends(userId: String, completion: @escaping (Result<[String], Error>) -> Void) {
     let urlString = "https://here-swe.vercel.app/user/\(userId)/friends"
     
     guard let url = URL(string: urlString) else {
@@ -158,21 +163,23 @@ func getAllUserFriends(userId: String, completion: @escaping (Result<[MessageRes
         }
         
         do {
-            let messages = try JSONDecoder().decode([MessageResponse].self, from: data)
-            completion(.success(messages))
+            // Deserialize the JSON response into an array of strings
+            let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [String]
             
-            
-            
+            if let friends = jsonArray {
+                completion(.success(friends))
+            } else {
+                completion(.failure(URLError(.cannotParseResponse)))
+            }
         } catch {
             completion(.failure(error))
         }
     }
     
     task.resume()
-    
 }
 
-func addFriendByName(userId: String, friendName: String, completion: @escaping (Result<[MessageResponse], Error>) -> Void) {
+func addFriendByName(userId: String, friendName: String, completion: @escaping (Result<AddFriendResponse, Error>) -> Void) {
     let urlString = "https://here-swe.vercel.app/user/\(userId)/friends_name"
     
     guard let url = URL(string: urlString) else {
@@ -205,26 +212,14 @@ func addFriendByName(userId: String, friendName: String, completion: @escaping (
             return
         }
         
-        if httpResponse.statusCode != 200 {
-            // For debugging: print out the response body when status code is not 200
-            if let data = data, let body = String(data: data, encoding: .utf8) {
-                print(data)
-                print("Status Code: \(httpResponse.statusCode)")
-                print("Response Body: \(body)")
-            }
-            completion(.failure(URLError(.badServerResponse)))
-            return
-        }
-        
         guard let data = data else {
-            print(data)
             completion(.failure(URLError(.cannotParseResponse)))
             return
         }
         
-        do {
-            let messages = try JSONDecoder().decode([MessageResponse].self, from: data)
-            completion(.success(messages))
+           do {
+            let addFriendResponse = try JSONDecoder().decode(AddFriendResponse.self, from: data)
+            completion(.success(addFriendResponse))
         } catch {
             completion(.failure(error))
         }
