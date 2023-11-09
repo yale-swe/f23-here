@@ -38,7 +38,9 @@ import SwiftUI
 
 struct ProfilePopup: View {
     @Binding var isPresented: Bool // Added binding to control visibility
-
+    @State private var isShowingFriends: Bool = false
+    @Binding var userId: String
+    
     var body: some View {
         ZStack {
             Color.white
@@ -61,7 +63,19 @@ struct ProfilePopup: View {
                 Divider()
                 ProfileStats()
                 Divider()
+                Button(action: {
+                    isShowingFriends.toggle()
+                }) {
+                    Text("Show Friends")
+                        .font(.headline)
+                        .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
+                        .border(Color.gray, width: 1)
+                        .cornerRadius(5)
+                }
                 PostGrid()
+            }
+            .sheet(isPresented: $isShowingFriends) {
+                Friends(isPresented: $isShowingFriends, userId: $userId) // Pass the binding to control visibility
             }
         }
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .top) // Adjust size and alignment
@@ -93,7 +107,8 @@ struct ProfileHeader: View {
                 Text("Bio or description")
                     .font(.subheadline)
 
-                ProfileButtons()
+//                ProfileButtons()
+                
             }
 
             Spacer()
@@ -105,6 +120,7 @@ struct ProfileHeader: View {
 struct ProfileButtons: View {
     var body: some View {
         HStack {
+                           
             Button(action: {
                 // Action for Edit Profile
             }) {
