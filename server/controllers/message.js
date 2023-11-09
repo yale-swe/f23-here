@@ -6,6 +6,15 @@ import {
 	handleSuccess,
 } from "../utils/handlers.js";
 
+export const getAllMessages = async (req, res) => {
+	try {
+		const messages = await MessageModel.find({}).populate("replies").exec();
+		handleSuccess(messages);
+	} catch (error) {
+		handleServerError(res, err);
+	}
+};
+
 export const postMessage = async (req, res) => {
 	try {
 		const user = await UserModel.findById(req.body.user_id);

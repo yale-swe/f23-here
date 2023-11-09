@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var isAuthenticated = false
     @State private var isRegistered = false
     @ObservedObject var locationDataManager = LocationDataManager()    
     
@@ -16,20 +17,18 @@ struct ContentView: View {
     @State var userId = "653d51478ff5b3c9ace45c26"
     
     var body: some View {
-        
-//        Friends(isPresented: $friendsPresented, userId: $userId)
-        
-//        if isRegistered {
-////            NavigationView {
-//                HomePageView()
-//                    .environmentObject(locationDataManager)
-//                    
-////            }
-//        } else {
+        if isAuthenticated {
+//            NavigationView {
+                HomePageView()
+                    .environmentObject(locationDataManager)
+                    
+//            }
+        } else {
+            LoginView(isAuthenticated: $isAuthenticated)
 //            RegistrationView(isRegistered: $isRegistered)
-//        }
-        HomePageView()
-            .environmentObject(locationDataManager)
+        }
+//        HomePageView()
+//            .environmentObject(locationDataManager)
         //        if isRegistered {
 //            HomePageView()
 //        } else {

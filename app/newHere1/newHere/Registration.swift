@@ -18,6 +18,7 @@ struct RegistrationView: View {
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
     @Binding var isRegistered: Bool
+    @State private var isAuthenticated = false
     
     var body: some View {
         NavigationView {
@@ -37,8 +38,13 @@ struct RegistrationView: View {
                 }
                 
                 Section {
-                    Button(action: registerUser) {
-                        Text("Submit")
+                    NavigationLink(destination: LoginView(isAuthenticated: $isAuthenticated)) {
+                        Button(action: registerUser) {
+                            Text("Submit")
+                        }
+                    }
+                    NavigationLink(destination: LoginView(isAuthenticated: $isAuthenticated)) {
+                        Text("Already have an account? Login")
                     }
                 }
             }
