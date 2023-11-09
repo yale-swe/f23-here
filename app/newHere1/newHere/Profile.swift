@@ -38,7 +38,9 @@ import SwiftUI
 
 struct ProfilePopup: View {
     @Binding var isPresented: Bool // Added binding to control visibility
-
+    @State private var isShowingFriends: Bool = false
+    @Binding var userId: String
+    
     var body: some View {
         ZStack {
             Color.white
@@ -51,8 +53,8 @@ struct ProfilePopup: View {
                         Text("Close")
                             .font(.headline)
                             .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
+                            .background(Color.blue.opacity(0.8))
+                            .foregroundColor(.white.opacity(0.8))
                             .cornerRadius(10)
                     }
                     .padding(.trailing, 20) // Adjust the position of the close button
@@ -61,7 +63,19 @@ struct ProfilePopup: View {
                 Divider()
                 ProfileStats()
                 Divider()
+                Button(action: {
+                    isShowingFriends.toggle()
+                }) {
+                    Text("Show Friends")
+                        .font(.headline)
+                        .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
+                        .border(Color.gray, width: 1)
+                        .cornerRadius(5)
+                }
                 PostGrid()
+            }
+            .sheet(isPresented: $isShowingFriends) {
+                Friends(isPresented: $isShowingFriends, userId: $userId) // Pass the binding to control visibility
             }
         }
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .top) // Adjust size and alignment
@@ -93,7 +107,8 @@ struct ProfileHeader: View {
                 Text("Bio or description")
                     .font(.subheadline)
 
-                ProfileButtons()
+//                ProfileButtons()
+                
             }
 
             Spacer()
@@ -105,6 +120,7 @@ struct ProfileHeader: View {
 struct ProfileButtons: View {
     var body: some View {
         HStack {
+                           
             Button(action: {
                 // Action for Edit Profile
             }) {
@@ -122,8 +138,8 @@ struct ProfileButtons: View {
                 Image(systemName: "person.badge.plus")
                     .font(.system(size: 20))
                     .padding(10)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
+                    .background(Color.blue.opacity(0.8))
+                    .foregroundColor(.white.opacity(0.8))
                     .clipShape(Circle())
             }
         }
@@ -142,13 +158,13 @@ struct ProfileStats: View {
                 VStack {
                     Text(stat.title)
                         .font(.caption)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.gray.opacity(0.8))
 
                     Text(stat.value)
                         .font(.headline)
                 }
                 .padding()
-                .background(Color.white)
+                .background(Color.white.opacity(0.8))
                 .cornerRadius(8)
                 .shadow(radius: 3)
             }
@@ -169,7 +185,7 @@ struct ProfileStatItem: View {
 
             Text(title)
                 .font(.subheadline)
-                .foregroundColor(.gray)
+                .foregroundColor(.gray.opacity(0.8))
         }
     }
 }

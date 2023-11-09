@@ -21,6 +21,8 @@ struct HomePageView: View {
     @State private var isShowingMessages = false
     @State private var isShowingPosts = false
     
+    @State var userId = "653d51478ff5b3c9ace45c26"
+    
     @EnvironmentObject var locationDataManager: LocationDataManager
     
     @StateObject var messageState = MessageState()
@@ -101,7 +103,7 @@ struct HomePageView: View {
                         }
                      }
                     .sheet(isPresented: $isShowingProfile) {
-                        ProfilePopup(isPresented: $isShowingProfile) // Pass the binding to control visibility
+                        ProfilePopup(isPresented: $isShowingProfile, userId: $userId) // Pass the binding to control visibility
                     }
                     .sheet(isPresented: $isShowingMessages) {
                         MessagesPopup(isPresented: $isShowingMessages)
