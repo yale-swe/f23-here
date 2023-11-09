@@ -20,16 +20,10 @@
 		1531A90F2AED9917009F644E /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1531A90E2AED9917009F644E /* Post.swift */; };
 		1531A9132AEDAE2A009F644E /* LocationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1531A9122AEDAE2A009F644E /* LocationDataManager.swift */; };
 		1531A9152AEDCADB009F644E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1531A9142AEDCADB009F644E /* Message.swift */; };
-<<<<<<< HEAD
 		15582E372AFB1544003910A2 /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15582E362AFB1544003910A2 /* Registration.swift */; };
 		15582E392AFB2659003910A2 /* Friends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15582E382AFB2659003910A2 /* Friends.swift */; };
 		1562EDE82AF6EA2B00A41779 /* CustomARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1562EDE62AF6EA2B00A41779 /* CustomARView.swift */; };
 		1562EDE92AF6EA2B00A41779 /* CustomARViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1562EDE72AF6EA2B00A41779 /* CustomARViewRepresentable.swift */; };
-=======
-		71D79D8A2AFB3AEE009A054C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D79D892AFB3AEE009A054C /* LoginView.swift */; };
-		71D79D8C2AFB3BA9009A054C /* CustomARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D79D8B2AFB3BA9009A054C /* CustomARView.swift */; };
-		71D79D8E2AFB3BBA009A054C /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D79D8D2AFB3BBA009A054C /* Registration.swift */; };
->>>>>>> 3083790db4859ebce1f19c14f4caa6a837adc4f3
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,16 +61,10 @@
 		1531A90E2AED9917009F644E /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		1531A9122AEDAE2A009F644E /* LocationDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManager.swift; sourceTree = "<group>"; };
 		1531A9142AEDCADB009F644E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
-<<<<<<< HEAD
 		15582E362AFB1544003910A2 /* Registration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
 		15582E382AFB2659003910A2 /* Friends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friends.swift; sourceTree = "<group>"; };
 		1562EDE62AF6EA2B00A41779 /* CustomARView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomARView.swift; sourceTree = "<group>"; };
 		1562EDE72AF6EA2B00A41779 /* CustomARViewRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomARViewRepresentable.swift; sourceTree = "<group>"; };
-=======
-		71D79D892AFB3AEE009A054C /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		71D79D8B2AFB3BA9009A054C /* CustomARView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomARView.swift; sourceTree = "<group>"; };
-		71D79D8D2AFB3BBA009A054C /* Registration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
->>>>>>> 3083790db4859ebce1f19c14f4caa6a837adc4f3
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -306,11 +294,7 @@
 				1531A9132AEDAE2A009F644E /* LocationDataManager.swift in Sources */,
 				1531A8E02AED95FD009F644E /* ContentView.swift in Sources */,
 				1531A90B2AED964A009F644E /* Profile.swift in Sources */,
-<<<<<<< HEAD
 				15582E392AFB2659003910A2 /* Friends.swift in Sources */,
-=======
-				71D79D8A2AFB3AEE009A054C /* LoginView.swift in Sources */,
->>>>>>> 3083790db4859ebce1f19c14f4caa6a837adc4f3
 				1531A90D2AED9663009F644E /* Messages.swift in Sources */,
 				1531A90F2AED9917009F644E /* Post.swift in Sources */,
 				1531A9152AEDCADB009F644E /* Message.swift in Sources */,
