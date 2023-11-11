@@ -20,6 +20,9 @@ struct RegistrationView: View {
     @Binding var isRegistered: Bool
     @State private var isAuthenticated = false
     
+    @State private var showingAlert = false
+    @State private var alertMessage = ""
+    
     var body: some View {
         NavigationView {
             Form {
@@ -43,17 +46,19 @@ struct RegistrationView: View {
                 }
                 
                 Section {
-                    NavigationLink(destination: LoginView(isAuthenticated: $isAuthenticated)) {
-                        Button(action: registerUser) {
-                            Text("Submit")
-                        }
+                    Button(action: registerUser) {
+                        Text("Submit")
                     }
+              
                     NavigationLink(destination: LoginView(isAuthenticated: $isAuthenticated)) {
                         Text("Already have an account? Login")
                     }
                 }
             }
             .navigationBarTitle("Registration")
+            .alert(isPresented: $showingAlert){
+                Alert(title: Text("Registration Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            }
         }
     }
 
@@ -83,21 +88,37 @@ struct RegistrationView: View {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue(regApiKey, forHTTPHeaderField: "x-api-key")
 
-
         URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error{
-                print("error:\(error)")
-            }
-            if let response = response {
-                print("response:\(response)")
-            }
-            if let data = data {
-                if let responseString = String(data: data, encoding: .utf8) {
-                    print("Response: \(responseString)")
-                }
-                self.isRegistered = true
-            }
-        }.resume()
+               DispatchQueue.main.async {
+                   if let error = error {
+                       self.alertMessage = "Registration failed: \(error.localizedDescription)"
+                       self.showingAlert = true
+                   } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                       // Assuming status code 200 means success
+                       self.alertMessage = "Registration successful"
+                       self.showingAlert = true
+                       self.isRegistered = true
+                   } else {
+                       self.alertMessage = "Failed to register. Please try again."
+                       self.showingAlert = true
+                   }
+               }
+           }.resume()
+        
+//        URLSession.shared.dataTask(with: request) { data, response, error in
+//            if let error = error{
+//                print("error:\(error)")
+//            }
+//            if let response = response {
+//                print("response:\(response)")
+//            }
+//            if let data = data {
+//                if let responseString = String(data: data, encoding: .utf8) {
+//                    print("Response: \(responseString)")
+//                }
+//                self.isRegistered = true
+//            }
+//        }.resume()
         
     }
 }
