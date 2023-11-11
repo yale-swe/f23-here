@@ -32,7 +32,7 @@ struct HomePageView: View {
         CustomARViewRepresentable()
             .environmentObject(messageState)
             .environmentObject(fetchedMessagesState)
-            .ignoresSafeArea()
+            //.ignoresSafeArea()
             .overlay(alignment: .bottom){
                     VStack(){
 //                        if let currentLocation = locationDataManager.location {

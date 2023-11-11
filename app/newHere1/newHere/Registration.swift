@@ -25,16 +25,21 @@ struct RegistrationView: View {
             Form {
                 Section(header: Text("Name")) {
                     TextField("First Name", text: $firstName)
+                        .disableAutocorrection(true)
                     TextField("Last Name", text: $lastName)
+                        .disableAutocorrection(true)
                 }
                 
                 Section(header: Text("Credentials")) {
                     TextField("Username", text: $userName)
+                        .disableAutocorrection(true)
                     TextField("Email", text: $email)
                         .keyboardType(.emailAddress)
-                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
                     SecureField("Password", text: $password)
+                        .disableAutocorrection(true)
                     SecureField("Confirm Password", text: $confirmPassword)
+                        .disableAutocorrection(true)
                 }
                 
                 Section {
@@ -82,7 +87,11 @@ struct RegistrationView: View {
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error{
                 print("error:\(error)")
-            } else if let data = data {
+            }
+            if let response = response {
+                print("response:\(response)")
+            }
+            if let data = data {
                 if let responseString = String(data: data, encoding: .utf8) {
                     print("Response: \(responseString)")
                 }

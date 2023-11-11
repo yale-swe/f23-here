@@ -14,7 +14,7 @@ struct ContentView: View {
     
     // testing
     @State var friendsPresented = true
-    //@State var userId = "653d51478ff5b3c9ace45c26"
+    //@State var userId = ""
     
     var body: some View {
         if isAuthenticated {
