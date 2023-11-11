@@ -102,6 +102,24 @@ struct LoginView: View {
                             if let data = data {
                                 if let responseString = String(data: data, encoding: .utf8) {
                                     print("Login Response: \(responseString)")
+
+                                    if let jsonData = responseString.data(using: .utf8) {
+                                    do {
+                                        if let json = try JSONSerialization.jsonObject(with: jsonData, options:[]) as? [String: Any],
+                                        let userId = json["_id"] as? String {
+                                            print("User ID:\(userId)")
+                                            UserDefaults.standard.set(userId, forKey: "UserId")
+                                        }
+                                        
+                                        if let json = try JSONSerialization.jsonObject(with: jsonData, options:[]) as? [String: Any],
+                                        let userName = json["userName"] as? String {
+                                            print("User Name:\(userName)")
+                                            UserDefaults.standard.set(userName, forKey: "UserName")
+                                        }
+                                    } catch {
+                                        print("Error parsing JSON: \(error)")
+                                    }
+                                }
                                 }
                                 self.isAuthenticated = true;
                             }
@@ -118,30 +136,6 @@ struct LoginView: View {
                         self.showingAlert = true
                     }
                 }
-                
-                //            guard let httpResponse = response as? HTTPURLResponse else {
-                //                self.alertMessage = "Login failed: Server returned status code \(httpResponse.statusCode)"
-                //                self.showingAlert = true
-                ////                print("Invalid HTTP Response")
-                //                return
-                //            }
-                //
-                //            let statusCode = httpResponse.statusCode
-                //
-                //            if statusCode == 200 {
-                //                if let data = data {
-                //                    if let responseString = String(data: data, encoding: .utf8) {
-                //                        print("Login Response: \(responseString)")
-                //                    }
-                //                    self.isAuthenticated = true;
-                //                }
-                //            }
-                //            // else got error from server
-                //            else {
-                //                if let response = response {
-                //                    print("response:\(response)")
-                //                }
-                //            }
                 
             }.resume()
             

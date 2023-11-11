@@ -1,3 +1,4 @@
+
 //
 //  Profile.swift
 //  here
@@ -7,34 +8,10 @@
 
 import SwiftUI
 
-//struct ContentView: View {
-//    @State private var isShowingProfile = false
-//
-//    var body: some View {
-//        NavigationView {
-//            ScrollView {
-//                VStack {
-//                    Button(action: {
-//                        isShowingProfile.toggle()
-//                    }) {
-//                        Text("Show Profile")
-//                            .font(.headline)
-//                            .padding()
-//                            .background(Color.blue)
-//                            .foregroundColor(.white)
-//                            .cornerRadius(10)
-//                    }
-//                }
-//            }
-//            .navigationBarTitle("Home", displayMode: .inline)
-//        }
-//        .sheet(isPresented: $isShowingProfile) {
-//            ProfilePopup(isPresented: $isShowingProfile) // Pass the binding to control visibility
-//        }
-//    }
-//}
-
-
+let apiString = "https://here-swe.vercel.app/auth/user"
+let apiKey = "qe5YT6jOgiA422_UcdbmVxxG1Z6G48aHV7fSV4TbAPs"
+let userId = UserDefaults.standard.string(forKey: "UserId") ?? ""
+let userName = UserDefaults.standard.string(forKey: "UserName") ?? ""
 
 struct ProfilePopup: View {
     @Binding var isPresented: Bool // Added binding to control visibility
@@ -75,19 +52,13 @@ struct ProfilePopup: View {
                 PostGrid()
             }
             .sheet(isPresented: $isShowingFriends) {
+                // Friends.swift => Friends struct
                 Friends(isPresented: $isShowingFriends, userId: $userId) // Pass the binding to control visibility
             }
         }
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .top) // Adjust size and alignment
     }
 }
-
-
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
-//}
 
 struct ProfileHeader: View {
     var body: some View {
@@ -100,14 +71,13 @@ struct ProfileHeader: View {
                 .padding()
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Username")
+                
+                Text(userName)
                     .font(.title)
                     .bold()
                 
                 Text("Bio or description")
                     .font(.subheadline)
-
-//                ProfileButtons()
                 
             }
 
@@ -198,7 +168,3 @@ struct PostGrid: View {
             .padding()
     }
 }
-
-//#Preview {
-//    ContentView()
-//}
