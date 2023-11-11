@@ -59,6 +59,7 @@ struct LoginView: View {
     }
     
     func LogInUser(){
+        print("Login user called")
         let requestBody: [String: Any] = [
             "inputLogin": username,
             "password": password]
@@ -78,16 +79,31 @@ struct LoginView: View {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue(logApiKey, forHTTPHeaderField: "x-api-key")
 
-
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error{
                 print("error:\(error)")
-            } else if let data = data {
-                if let responseString = String(data: data, encoding: .utf8) {
-                    print("Response: \(responseString)")
-                }
-                self.isAuthenticated = true;
             }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid HTTP Response")
+                return
+            }
+            let statusCode = httpResponse.statusCode
+            
+            if statusCode == 200 {
+                if let data = data {
+                    if let responseString = String(data: data, encoding: .utf8) {
+                        print("Login Response: \(responseString)")
+                    }
+                    self.isAuthenticated = true;
+                }
+            }
+            // else got error from server
+            else {
+                if let response = response {
+                    print("response:\(response)")
+                }
+            }
+            
         }.resume()
         
     }
