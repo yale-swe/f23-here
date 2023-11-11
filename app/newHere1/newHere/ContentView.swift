@@ -18,18 +18,13 @@ struct ContentView: View {
     
     var body: some View {
         if isAuthenticated {
-//            NavigationView {
                 HomePageView()
                     .environmentObject(locationDataManager)
-                    
-//            }
         } else {
             LoginView(isAuthenticated: $isAuthenticated)
-//            RegistrationView(isRegistered: $isRegistered)
         }
-//        HomePageView()
-//            .environmentObject(locationDataManager)
-        //        if isRegistered {
+//
+//        if isRegistered {
 //            HomePageView()
 //        } else {
 //            RegistrationView(isRegistered: $isRegistered)
