@@ -60,7 +60,7 @@ struct LoginView: View {
     
     func LogInUser(){
         let requestBody: [String: Any] = [
-            "userName": username,
+            "inputLogin": username,
             "password": password]
         
         guard let jsonData = try? JSONSerialization.data(withJSONObject: requestBody)
