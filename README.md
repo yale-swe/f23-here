@@ -14,4 +14,4 @@ We are using TestFlight Internal to deploy Here Beta Version. To use this app:
 3. Download TestFlight on you iPhone and accept the invitation in TestFlight, enter the redeem code, then TestFlight will automatically download the app for you.
 4. Try our app!
 
-Refer to api_documentation.md for API Deployment.
+Refer to API_DOC.md for API Deployment.
