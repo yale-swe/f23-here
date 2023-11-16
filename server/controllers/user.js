@@ -157,7 +157,6 @@ export const removeUserFriend = async (req, res) => {
 export const getUserMessages = async (req, res) => {
 	try {
 		const { userId } = req.params;
-		console.log("test1");
 
 		const user = await UserModel.findById(userId).populate({
 			path: "messages",
