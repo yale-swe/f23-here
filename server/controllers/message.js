@@ -89,12 +89,14 @@ export const changeVisibility = async (req, res) => {
 		} else if (message.visibility === "friends") {
 			newVisibility = "public";
 		} else {
-			return handleServerError(res, "Unexpected visibility value");
+			return handleServerError(res, {
+				message: "Unexpected visibility value",
+			});
 		}
 
 		message.visibility = newVisibility;
-		const updatedMessage = await message.save();
-
+		const updatedMessage = message;
+		await message.save();
 		handleSuccess(res, updatedMessage);
 	} catch (err) {
 		handleServerError(res, err);

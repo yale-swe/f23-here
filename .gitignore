@@ -1,4 +1,5 @@
 server/.env
+server/coverage/
 server/node_modules
 app/newHere1/newHere.xcodeproj/xcuserdata/*
 app/newHere1/newHere.xcodeproj/xcshareddata/*

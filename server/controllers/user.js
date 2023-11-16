@@ -37,7 +37,6 @@ export const getUserByEmailOrUsername = async (req, res) => {
 		if (!user) {
 			return handleNotFound(res, "User not found");
 		}
-
 		handleSuccess(res, user);
 	} catch (err) {
 		handleServerError(res, err);
@@ -94,14 +93,13 @@ export const addUserFriendById = async (req, res) => {
 	}
 };
 
-
 export const addUserFriendByName = async (req, res) => {
 	const { userId } = req.params;
 	const { friendName } = req.body;
 
 	try {
 		const user = await UserModel.findById(userId);
-		const friend = await UserModel.findOne({userName: friendName });
+		const friend = await UserModel.findOne({ userName: friendName });
 
 		if (!user) {
 			return handleNotFound(res, "User not found");
@@ -159,6 +157,7 @@ export const removeUserFriend = async (req, res) => {
 export const getUserMessages = async (req, res) => {
 	try {
 		const { userId } = req.params;
+		console.log("test1");
 
 		const user = await UserModel.findById(userId).populate({
 			path: "messages",
@@ -168,6 +167,8 @@ export const getUserMessages = async (req, res) => {
 				model: ReplyModel,
 			},
 		});
+
+		console.log("test");
 
 		if (!user) {
 			return handleNotFound(res, "User not found");

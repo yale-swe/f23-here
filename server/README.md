@@ -132,6 +132,12 @@ Delete a user and their associated messages.
 
 ## Message Endpoints
 
+### Get All Messages
+
+Gets all the messages in the database
+
+- **Endpoint:** `GET /message/get_all_messages`
+
 ### Post Message
 
 Allows a user to post a message.
