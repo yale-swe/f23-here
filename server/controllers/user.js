@@ -168,8 +168,6 @@ export const getUserMessages = async (req, res) => {
 			},
 		});
 
-		console.log("test");
-
 		if (!user) {
 			return handleNotFound(res, "User not found");
 		}

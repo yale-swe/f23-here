@@ -17,7 +17,6 @@ import ReplyModel from "../../models/Reply.js";
 import MessageModel from "../../models/Message.js";
 import httpMocks from "node-mocks-http";
 import bcrypt from "bcrypt";
-import sinon from 'sinon';
 jest.mock("../../models/User");
 jest.mock("../../models/Reply");
 jest.mock("../../models/Message");
@@ -39,52 +38,54 @@ const mockMessages = [
 		text: "Hello this is message 1",
 		likes: 10,
 		location: {
-			type: 'Point',
+			type: "Point",
 			coordinates: [45.1234, -75.5678],
 		},
-		visibility: 'public',
-		replies: ['reply1', 'reply2']
-	}
+		visibility: "public",
+		replies: ["reply1", "reply2"],
+	},
 ];
 
-describe('getUserMessages', () => {
-	it('should successfully find user messages and return them', async () => {
-	  const mockUserId = 'validUserId';
-	  const mockUser = { _id: mockUserId, messages: ['message1', 'message2'] };
-	  const mockMessages = [
-		{
-		  _id: 'message1',
-		  text: 'Hello, this is message 1!',
-		  replies: ['reply1', 'reply2'],
-		},
-		{
-		  _id: 'message2',
-		  text: 'Hey, message 2 here!',
-		  replies: ['reply3'],
-		},
-	  ];
-  
-	  const populateMock = jest.fn();
+describe("getUserMessages", () => {
+	it("should successfully find user messages and return them", async () => {
+		const mockUserId = "validUserId";
+		const mockUser = {
+			_id: mockUserId,
+			messages: ["message1", "message2"],
+		};
+		const mockMessages = [
+			{
+				_id: "message1",
+				text: "Hello, this is message 1!",
+				replies: ["reply1", "reply2"],
+			},
+			{
+				_id: "message2",
+				text: "Hey, message 2 here!",
+				replies: ["reply3"],
+			},
+		];
 
-	  populateMock.mockResolvedValue({
-		messages: mockMessages
-	  });
+		const populateMock = jest.fn();
 
-	  UserModel.findById = jest.fn().mockReturnValue({
-		populate: populateMock,
-	  });
-  
-	  const req = httpMocks.createRequest({ params: { userId: mockUserId } });
-	  const res = httpMocks.createResponse();
-  
-	  await getUserMessages(req, res);
-  
-	  expect(res.statusCode).toBe(200);
-	  expect(JSON.parse(res._getData())).toMatchObject(mockMessages);
+		populateMock.mockResolvedValue({
+			messages: mockMessages,
+		});
+
+		UserModel.findById = jest.fn().mockReturnValue({
+			populate: populateMock,
+		});
+
+		const req = httpMocks.createRequest({ params: { userId: mockUserId } });
+		const res = httpMocks.createResponse();
+
+		await getUserMessages(req, res);
+
+		expect(res.statusCode).toBe(200);
+		expect(JSON.parse(res._getData())).toMatchObject(mockMessages);
 	});
 
 	it("should return a 404 if no user is found", async () => {
-		
 		const populateMock = jest.fn();
 
 		populateMock.mockResolvedValue(null);
@@ -93,17 +94,15 @@ describe('getUserMessages', () => {
 			populate: populateMock,
 		});
 
-		const req = httpMocks.createRequest({ params: { userId }});
+		const req = httpMocks.createRequest({ params: { userId } });
 		const res = httpMocks.createResponse();
 
 		await getUserMessages(req, res);
 
 		expect(UserModel.findById).toHaveBeenCalledWith(userId);
 		expect(res.statusCode).toBe(404);
-		expect(res._getData()).toContain('User not found');
+		expect(res._getData()).toContain("User not found");
 	});
-
-
 
 	it("should return a 500 if an error occurs", async () => {
 		const errorMessage = "Error occurred";
@@ -111,7 +110,7 @@ describe('getUserMessages', () => {
 			throw new Error(errorMessage);
 		});
 
-		const req = httpMocks.createRequest({ params: {userId}});
+		const req = httpMocks.createRequest({ params: { userId } });
 		const res = httpMocks.createResponse();
 
 		await getUserMessages(req, res);
