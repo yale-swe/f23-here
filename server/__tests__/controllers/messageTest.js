@@ -5,8 +5,10 @@ import {
 	postMessage,
 	incrementLikes,
 	changeVisibility,
+	deleteMessage,
 } from "../../controllers/message.js";
 
+import UserModel from "../../models/User.js";
 import MessageModel from "../../models/Message.js";
 import httpMocks from "node-mocks-http";
 jest.mock("../../models/User");
@@ -211,6 +213,76 @@ describe("changeVisibility", () => {
 		const res = httpMocks.createResponse();
 
 		await changeVisibility(req, res);
+
+		expect(res.statusCode).toBe(500);
+		expect(res._getData()).toContain("Internal Server Error");
+	});
+});
+
+describe("deleteMessage", () => {
+	it("should successfully delete a message", async () => {
+		const mockMessageId = "messageId";
+		const mockMessage = { _id: mockMessageId };
+		const mockUser = {
+			messages: [mockMessageId],
+			save: jest.fn().mockResolvedValue({}),
+			messages: {
+				remove: jest.fn(),
+			},
+		};
+
+		MessageModel.findById = jest.fn().mockResolvedValue(mockMessage);
+		MessageModel.findByIdAndDelete = jest
+			.fn()
+			.mockResolvedValue(mockMessage);
+		UserModel.findOne = jest.fn().mockResolvedValue(mockUser);
+
+		const req = httpMocks.createRequest({
+			body: { messageId: mockMessageId },
+		});
+		const res = httpMocks.createResponse();
+
+		await deleteMessage(req, res);
+
+		expect(MessageModel.findById).toHaveBeenCalledWith(mockMessageId);
+		expect(UserModel.findOne).toHaveBeenCalledWith({
+			messages: mockMessageId,
+		});
+
+		expect(mockUser.messages.remove).toHaveBeenCalledWith(mockMessageId);
+		expect(mockUser.save).toHaveBeenCalled();
+		expect(MessageModel.findByIdAndDelete).toHaveBeenCalledWith(
+			mockMessageId
+		);
+
+		expect(res.statusCode).toBe(200);
+		const responseData = JSON.parse(res._getData());
+		expect(responseData).toEqual(mockMessage);
+	});
+	it("should return 404 if the message is not found", async () => {
+		MessageModel.findById.mockResolvedValue(null);
+
+		const req = httpMocks.createRequest({
+			body: { messageId: "nonexistentMessageId" },
+		});
+		const res = httpMocks.createResponse();
+
+		await deleteMessage(req, res);
+
+		expect(res.statusCode).toBe(404);
+		expect(res._getData()).toContain("Message not found");
+	});
+	it("should handle server errors", async () => {
+		MessageModel.findById.mockImplementationOnce(() => {
+			throw new Error("Internal Server Error");
+		});
+
+		const req = httpMocks.createRequest({
+			body: { messageId: "messageId" },
+		});
+		const res = httpMocks.createResponse();
+
+		await deleteMessage(req, res);
 
 		expect(res.statusCode).toBe(500);
 		expect(res._getData()).toContain("Internal Server Error");
