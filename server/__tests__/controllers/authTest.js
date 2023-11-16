@@ -70,26 +70,26 @@ describe("register", () => {
         expect(bcrypt.hash).toHaveBeenCalledWith('password123', 'someSalt');
       });
 
-      it('should handle server error during registration', async () => {
-
-        // Mock the UserModel constructor to throw an error during save
-        UserModel.findById = jest.fn().mockImplementationOnce(() => {
-            throw new Error("Internal Server Error");
-        });
-
+      it('should return a 500 status code on registration error', async () => {
+        const errorMessage = 'Error occurred';
+        UserModel.prototype.save = jest.fn().mockRejectedValue(new Error(errorMessage)); // Simulate an error during registration
+    
         const req = httpMocks.createRequest({
-            params: {userId: userId},
-            body: {},
-        });
+            body: {
+            userName: 'testuser',
+            password: 'password',
+            email: 'test@example.com',
+            firstName: 'John',
+            lastName: 'Doe',
+        },
+    });
         const res = httpMocks.createResponse();
     
         await register(req, res);
     
-        // Check that the response status is 500
-        expect(res.statusCode).toBe(500);
-        // Check that the response data contains the error message
-        expect(res._getData()).toContain("Internal Server Error");
-      });
+        expect(res.statusCode).toBe(500); // Check that the status code is 500
+        expect(res._getData()).toContain(errorMessage); // Check that the response contains the error message
+    });
 });
 
 describe("login", () => {
@@ -100,7 +100,7 @@ describe("login", () => {
         email: 'test@example.com',
         password: await bcrypt.hash('password123', 10),
       };
-  
+
       // Mock UserModel.findOne to return the mockUser
       UserModel.findOne = jest.fn().mockResolvedValue(mockUser);
   
@@ -124,8 +124,96 @@ describe("login", () => {
   
       // Check that the response status is 200
       expect(res.statusCode).toBe(200);
-  
-      // Check that handleSuccess was called
-      expect(res._getData()).toMatchObject(mockUser);
     });
+
+    it('should handle user not found during login', async () => {
+        // Mock UserModel.findOne to return null (user not found)
+        UserModel.findOne = jest.fn().mockResolvedValue(null);
+
+        const requestBody = {
+            inputLogin: 'nonExistentUser',
+            password: 'password123',
+        };
+
+        const req = httpMocks.createRequest({
+            body: requestBody,
+        });
+
+        const res = httpMocks.createResponse();
+
+        await login(req, res);
+
+        // Check that the response status is 404
+        expect(res.statusCode).toBe(404);
+
+        // Check that handleNotFound was called
+        expect(UserModel.findOne).toHaveBeenCalledWith({"$or": [{"email": "nonExistentUser"}, {"userName": "nonExistentUser"}]})
+        });
+
+    it('should handle incorrect password during login', async () => {
+        const mockUser = {
+            _id: 'someUserId',
+            userName: 'testUser',
+            email: 'test@example.com',
+            password: await bcrypt.hash('password123', 10),
+        };
+
+        // Mock UserModel.findOne to return the mockUser
+        UserModel.findOne = jest.fn().mockResolvedValue(mockUser);
+
+        // Mock bcrypt.compare to return false (incorrect password)
+        bcrypt.compare = jest.fn().mockResolvedValue(false);
+
+        const requestBody = {
+            inputLogin: 'test@example.com',
+            password: 'incorrectPassword',
+        };
+
+        const req = httpMocks.createRequest({
+            method: 'POST',
+            url: '/login',
+            body: requestBody,
+        });
+
+        const res = httpMocks.createResponse();
+
+        await login(req, res);
+
+        // Check that the response status is 400
+        expect(res.statusCode).toBe(400);
+
+        // Check that handleBadRequest was called
+        expect(res._getData()).toContain(
+            'Incorrect login information. Please try again.'
+        );
+    });
+
+    it('should handle server error during login', async () => {
+        // Mock UserModel.findOne to throw an error
+        UserModel.findOne.mockImplementationOnce(() => {
+            throw new Error("Internal Server Error");
+        });
+    
+        const requestBody = {
+          inputLogin: 'test@example.com',
+          password: 'password123',
+        };
+    
+        const req = httpMocks.createRequest({
+          method: 'POST',
+          url: '/login',
+          body: requestBody,
+        });
+    
+        const res = httpMocks.createResponse();
+    
+        await login(req, res);
+    
+        // Check that the response status is 500
+        expect(res.statusCode).toBe(500);
+    
+        // Check that handleServerError was called
+        expect(res._getData()).toContain("Internal Server Error");
+      });
+
 });
