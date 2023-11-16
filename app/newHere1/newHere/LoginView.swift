@@ -11,13 +11,13 @@ let loginUrlString = "https://here-swe.vercel.app/auth/login"
 let logApiKey = "qe5YT6jOgiA422_UcdbmVxxG1Z6G48aHV7fSV4TbAPs"
 
 struct LoginView: View {
-    @State private var username: String = ""
-    @State private var password: String = ""
-    @State private var isRegistered = false
+    @State internal var username: String = ""
+    @State internal var password: String = ""
+    @State internal var isRegistered = false
     @Binding var isAuthenticated: Bool
     
-    @State private var showingAlert = false
-    @State private var alertMessage = ""
+    @State internal var showingAlert = false
+    @State internal var alertMessage = ""
     
     var body: some View {
         
