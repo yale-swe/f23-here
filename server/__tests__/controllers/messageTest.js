@@ -1,17 +1,91 @@
 import { jest } from "@jest/globals";
-
 import {
 	getAllMessages,
 	postMessage,
 	incrementLikes,
 	changeVisibility,
+	deleteMessage,
 } from "../../controllers/message.js";
 
+import UserModel from "../../models/User.js";
 import MessageModel from "../../models/Message.js";
 import httpMocks from "node-mocks-http";
+
 jest.mock("../../models/User");
 jest.mock("../../models/Reply");
 jest.mock("../../models/Message");
+
+describe("postMessage", () => {
+	it("should successfully post a message", async () => {
+		const mockUserId = "userId";
+		const mockUser = {
+			_id: mockUserId,
+			messages: [],
+			save: jest.fn().mockResolvedValue({}),
+		};
+		const mockMessageData = {
+			user_id: mockUserId,
+			text: "Test message",
+			visibility: "public",
+			location: { type: "Point", coordinates: [50.0, 50.0] },
+		};
+		const mockSavedMessage = {
+			...mockMessageData,
+			_id: "newMessageId",
+		};
+		MessageModel.prototype.save = jest
+			.fn()
+			.mockResolvedValue(mockSavedMessage);
+
+		UserModel.findById = jest.fn().mockResolvedValue(mockUser);
+
+		const req = httpMocks.createRequest({
+			body: mockMessageData,
+		});
+
+		const res = httpMocks.createResponse();
+
+		await postMessage(req, res);
+
+		expect(UserModel.findById).toHaveBeenCalledWith(mockUserId);
+		expect(MessageModel.prototype.save).toHaveBeenCalled();
+		expect(mockUser.messages).toContain(mockSavedMessage._id);
+		expect(mockUser.save).toHaveBeenCalled();
+		expect(res.statusCode).toBe(200);
+		expect(JSON.parse(res._getData())).toEqual(mockSavedMessage);
+	});
+	it("should return 404 if the user posting the message is not found", async () => {
+		UserModel.findById = jest.fn().mockResolvedValue(null);
+
+		const req = httpMocks.createRequest({
+			body: { user_id: "nonexistentUserId", text: "Test message" },
+		});
+		const res = httpMocks.createResponse();
+
+		await postMessage(req, res);
+
+		expect(UserModel.findById).toHaveBeenCalledWith("nonexistentUserId");
+		expect(res.statusCode).toBe(404);
+		expect(res._getData()).toContain(
+			"User posting this message is not found"
+		);
+	});
+	it("should handle server errors", async () => {
+		UserModel.findById.mockImplementationOnce(() => {
+			throw new Error("Internal Server Error");
+		});
+
+		const req = httpMocks.createRequest({
+			body: { user_id: "userId", text: "Test message" },
+		});
+		const res = httpMocks.createResponse();
+
+		await postMessage(req, res);
+
+		expect(res.statusCode).toBe(500);
+		expect(res._getData()).toContain("Internal Server Error");
+	});
+});
 
 describe("getAllMessages", () => {
 	const mockReplies = [{ _id: "reply1Id" }, { _id: "reply2Id" }];
@@ -211,6 +285,107 @@ describe("changeVisibility", () => {
 		const res = httpMocks.createResponse();
 
 		await changeVisibility(req, res);
+
+		expect(res.statusCode).toBe(500);
+		expect(res._getData()).toContain("Internal Server Error");
+	});
+});
+
+describe("deleteMessage", () => {
+	it("should successfully delete a message", async () => {
+		const mockMessageId = "messageId";
+		const mockMessage = { _id: mockMessageId };
+		const mockUser = {
+			messages: [mockMessageId],
+			save: jest.fn().mockResolvedValue({}),
+			messages: {
+				remove: jest.fn(),
+			},
+		};
+
+		MessageModel.findById = jest.fn().mockResolvedValue(mockMessage);
+		MessageModel.findByIdAndDelete = jest
+			.fn()
+			.mockResolvedValue(mockMessage);
+		UserModel.findOne = jest.fn().mockResolvedValue(mockUser);
+
+		const req = httpMocks.createRequest({
+			body: { messageId: mockMessageId },
+		});
+		const res = httpMocks.createResponse();
+
+		await deleteMessage(req, res);
+
+		expect(MessageModel.findById).toHaveBeenCalledWith(mockMessageId);
+		expect(UserModel.findOne).toHaveBeenCalledWith({
+			messages: mockMessageId,
+		});
+
+		expect(mockUser.messages.remove).toHaveBeenCalledWith(mockMessageId);
+		expect(mockUser.save).toHaveBeenCalled();
+		expect(MessageModel.findByIdAndDelete).toHaveBeenCalledWith(
+			mockMessageId
+		);
+
+		expect(res.statusCode).toBe(200);
+		const responseData = JSON.parse(res._getData());
+		expect(responseData).toEqual(mockMessage);
+	});
+	it("should delete a message even if no user is associated with it", async () => {
+		const mockMessageId = "messageId";
+		const mockMessage = {
+			_id: mockMessageId,
+		};
+
+		MessageModel.findById = jest.fn().mockResolvedValue(mockMessage);
+		UserModel.findOne = jest.fn().mockResolvedValue(null);
+
+		MessageModel.findByIdAndDelete = jest
+			.fn()
+			.mockResolvedValue(mockMessage);
+
+		const req = httpMocks.createRequest({
+			body: { messageId: mockMessageId },
+		});
+		const res = httpMocks.createResponse();
+
+		await deleteMessage(req, res);
+
+		expect(MessageModel.findById).toHaveBeenCalledWith(mockMessageId);
+		expect(UserModel.findOne).toHaveBeenCalledWith({
+			messages: mockMessageId,
+		});
+		expect(MessageModel.findByIdAndDelete).toHaveBeenCalledWith(
+			mockMessageId
+		);
+		expect(res.statusCode).toBe(200);
+		expect(JSON.parse(res._getData())).toEqual(mockMessage);
+	});
+
+	it("should return 404 if the message is not found", async () => {
+		MessageModel.findById.mockResolvedValue(null);
+
+		const req = httpMocks.createRequest({
+			body: { messageId: "nonexistentMessageId" },
+		});
+		const res = httpMocks.createResponse();
+
+		await deleteMessage(req, res);
+
+		expect(res.statusCode).toBe(404);
+		expect(res._getData()).toContain("Message not found");
+	});
+	it("should handle server errors", async () => {
+		MessageModel.findById.mockImplementationOnce(() => {
+			throw new Error("Internal Server Error");
+		});
+
+		const req = httpMocks.createRequest({
+			body: { messageId: "messageId" },
+		});
+		const res = httpMocks.createResponse();
+
+		await deleteMessage(req, res);
 
 		expect(res.statusCode).toBe(500);
 		expect(res._getData()).toContain("Internal Server Error");

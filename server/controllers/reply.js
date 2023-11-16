@@ -1,16 +1,17 @@
 import MessageModel from "../models/Message.js";
 import ReplyModel from "../models/Reply.js";
-import { handleServerError, handleSuccess, handleNotFound } from "../utils/handlers.js";
+import {
+	handleServerError,
+	handleSuccess,
+	handleNotFound,
+} from "../utils/handlers.js";
 
 // Reply to a message
-export const reply_to_message = async (req, res) => {
+export const replyToMessage = async (req, res) => {
 	try {
 		const message = await MessageModel.findById(req.body.message_id);
 		if (!message) {
-			return handleNotFound(
-				res,
-				"Parent message not found"
-			);
+			return handleNotFound(res, "Parent message not found");
 		}
 		const reply = new ReplyModel({
 			parent_message: req.body.message_id,
@@ -20,7 +21,6 @@ export const reply_to_message = async (req, res) => {
 
 		message.replies.push(saved_reply._id);
 		await message.save();
-
 		handleSuccess(res, saved_reply);
 	} catch (err) {
 		handleServerError(res, err);
@@ -28,7 +28,7 @@ export const reply_to_message = async (req, res) => {
 };
 
 // changes value of like field in ReplySchema to true.
-export const like_reply = async (req, res) => {
+export const likeReply = async (req, res) => {
 	try {
 		const reply = await ReplyModel.findById(req.body.reply_id);
 		if (!reply) {
