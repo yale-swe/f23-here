@@ -13,3 +13,5 @@ We are using TestFlight Internal to deploy Here Beta Version. To use this app:
 2. You will receive an email from TestFlight saying that "Here - discover messages in AR 0.1.0 for iOS is now available to test." Click on "View in TestFlight" to find the redeem code.
 3. Download TestFlight on you iPhone and accept the invitation in TestFlight, enter the redeem code, then TestFlight will automatically download the app for you.
 4. Try our app!
+
+Refer to api_documentation.md for API Deployment.
