@@ -21,7 +21,7 @@ struct HomePageView: View {
     @State private var isShowingMessages = false
     @State private var isShowingPosts = false
     
-    @State var userId = "653d51478ff5b3c9ace45c26"
+    @State var userId = "6546a496b72c080d30e20493"
     
     @EnvironmentObject var locationDataManager: LocationDataManager
     
@@ -32,7 +32,7 @@ struct HomePageView: View {
         CustomARViewRepresentable()
             .environmentObject(messageState)
             .environmentObject(fetchedMessagesState)
-            .ignoresSafeArea()
+            //.ignoresSafeArea()
             .overlay(alignment: .bottom){
                     VStack(){
 //                        if let currentLocation = locationDataManager.location {

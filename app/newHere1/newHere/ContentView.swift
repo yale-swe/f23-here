@@ -14,22 +14,17 @@ struct ContentView: View {
     
     // testing
     @State var friendsPresented = true
-    @State var userId = "653d51478ff5b3c9ace45c26"
+    //@State var userId = ""
     
     var body: some View {
         if isAuthenticated {
-//            NavigationView {
                 HomePageView()
                     .environmentObject(locationDataManager)
-                    
-//            }
         } else {
             LoginView(isAuthenticated: $isAuthenticated)
-//            RegistrationView(isRegistered: $isRegistered)
         }
-//        HomePageView()
-//            .environmentObject(locationDataManager)
-        //        if isRegistered {
+//
+//        if isRegistered {
 //            HomePageView()
 //        } else {
 //            RegistrationView(isRegistered: $isRegistered)

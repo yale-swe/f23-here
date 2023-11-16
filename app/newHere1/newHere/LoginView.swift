@@ -16,6 +16,9 @@ struct LoginView: View {
     @State private var isRegistered = false
     @Binding var isAuthenticated: Bool
     
+    @State private var showingAlert = false
+    @State private var alertMessage = ""
+    
     var body: some View {
         
         NavigationView {
@@ -29,7 +32,7 @@ struct LoginView: View {
                     .background(Color(.systemGray6))
                     .cornerRadius(5.0)
                     .padding(.bottom, 20)
-
+                
                 SecureField("Password", text: $password)
                     .padding()
                     .background(Color(.systemGray6))
@@ -46,7 +49,7 @@ struct LoginView: View {
                         .cornerRadius(5.0)
                 }
                 .padding(.horizontal)
-
+                
                 NavigationLink(destination: RegistrationView(isRegistered: $isRegistered)) {
                     Text("Don't have an account? Signup")
                 }
@@ -55,45 +58,90 @@ struct LoginView: View {
                 Spacer()
             }
             .padding()
-        }
-    }
-    
-    func LogInUser(){
-        let requestBody: [String: Any] = [
-            "userName": username,
-            "password": password]
-        
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: requestBody)
-        else{
-            return
-        }
-        
-        guard let url = URL(string: loginUrlString) else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = jsonData
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(logApiKey, forHTTPHeaderField: "x-api-key")
-
-
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error{
-                print("error:\(error)")
-            } else if let data = data {
-                if let responseString = String(data: data, encoding: .utf8) {
-                    print("Response: \(responseString)")
-                }
-                self.isAuthenticated = true;
+            .alert(isPresented: $showingAlert) {
+                Alert(title: Text("Login Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
             }
-        }.resume()
-        
+        }
     }
+        
+        func LogInUser(){
+            if username.isEmpty || password.isEmpty {
+                self.alertMessage = "Please enter both username and password."
+                self.showingAlert = true
+                return
+            }
+            
+            print("Login user called")
+            let requestBody: [String: Any] = [
+                "inputLogin": username,
+                "password": password]
+            
+            guard let jsonData = try? JSONSerialization.data(withJSONObject: requestBody)
+            else{
+                return
+            }
+            
+            guard let url = URL(string: loginUrlString) else {
+                return
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.httpBody = jsonData
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue(logApiKey, forHTTPHeaderField: "x-api-key")
+            
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                DispatchQueue.main.async {
+                    if let error = error{
+                        self.alertMessage = "Login failed: \(error.localizedDescription)"
+                        self.showingAlert = true
+                    }else if let httpResponse = response as? HTTPURLResponse{
+                        let statusCode = httpResponse.statusCode
+                        if statusCode == 200 {
+                            if let data = data {
+                                if let responseString = String(data: data, encoding: .utf8) {
+                                    print("Login Response: \(responseString)")
 
+                                    if let jsonData = responseString.data(using: .utf8) {
+                                    do {
+                                        if let json = try JSONSerialization.jsonObject(with: jsonData, options:[]) as? [String: Any],
+                                        let userId = json["_id"] as? String {
+                                            print("User ID:\(userId)")
+                                            UserDefaults.standard.set(userId, forKey: "UserId")
+                                        }
+                                        
+                                        if let json = try JSONSerialization.jsonObject(with: jsonData, options:[]) as? [String: Any],
+                                        let userName = json["userName"] as? String {
+                                            print("User Name:\(userName)")
+                                            UserDefaults.standard.set(userName, forKey: "UserName")
+                                        }
+                                    } catch {
+                                        print("Error parsing JSON: \(error)")
+                                    }
+                                }
+                                }
+                                self.isAuthenticated = true;
+                            }
+                        }else if statusCode == 404 {
+                            self.alertMessage = "User not found. Please check your credentials."
+                            self.showingAlert = true
+                        }else{
+                            self.alertMessage = "Login failed: Server returned status code \(httpResponse.statusCode)"
+                            self.showingAlert = true
+                        }
+                    }else{
+                        // General error
+                        self.alertMessage = "Login failed: Unexpected error occurred"
+                        self.showingAlert = true
+                    }
+                }
+                
+            }.resume()
+            
+        }
+        
 }
-
 //// Preview Provider
 //struct LoginView_Previews: PreviewProvider {
 //    static var previews: some View {

@@ -92,10 +92,10 @@ struct Friends: View {
                 switch result {
                 case .success(let response):
                     print("Friends fetched successfully: \(response)")                    
-//                    self.friendsList = response // Assuming response is [String]
+                    self.friendsList = response // Assuming response is [String]
                     
                 case .failure(let error):
-                    print("Error getting messages: \(error.localizedDescription)")
+                    print("Error getting friends: \(error.localizedDescription)")
                     self.errorMessage = error.localizedDescription
                 }
             }
