@@ -46,7 +46,7 @@ Current Coverge:
 |---------|
 | 6.7%    |
 
-NOTE: As discussed with Professor Antonopoulos, we are currently encountering an error
+**NOTE**: As discussed with Professor Antonopoulos, we are currently encountering an error
 that prevents all of us from properly running the tests. Here is the encountered error:
 
 Failed to load the test bundle. Underlying Error: The bundle “newHereUITests” couldn’t be loaded. 
