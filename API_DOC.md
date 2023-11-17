@@ -1,6 +1,7 @@
 # API Documentation
 
-This document outlines the API endpoints for Here. Please contact the developer for the X-API-Key.
+This document outlines the API endpoints for Here. Please contact phuc.duong@yale.edu for the X-API-Key.
+Our backend is deployed on Vercel.
 
 ## Base URL
 
