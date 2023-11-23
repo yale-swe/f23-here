@@ -29,7 +29,7 @@ export const UserSchema = new Schema({
 		{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
-			default: [],
+			default: {},
 		},
 	],
 	notifyFriends: {
