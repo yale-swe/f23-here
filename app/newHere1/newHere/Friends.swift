@@ -83,7 +83,35 @@ struct Friends: View {
                 Text(errorMessage)
             } else {
                 List(friendsList, id: \.self) { friend in
-                    Text(friend)
+                    HStack {
+                        Text(friend)
+                        Spacer()
+                        Button(action: {
+//                            addFriendByName(userId: userId, friendName: searchText) {
+//                                result in
+//                                   switch result {
+//                                   case .success(let response):
+//                                       print("Friend added successfully: \(response)")
+//                                   case .failure(let error):
+//                                       print("Error adding friend: \(error.localizedDescription)")
+//                                       self.errorMessage = error.localizedDescription
+//                                   }
+//                            }
+//                            
+                            deleteFriendByName(userId: userId, friendName:friend) {
+                                result in
+                                   switch result {
+                                   case .success(let response):
+                                       print("Friend deleted successfully: \(response)")
+                                   case .failure(let error):
+                                       print("Error deleting friend: \(error.localizedDescription)")
+                                       self.errorMessage = error.localizedDescription
+                                   }
+                            }
+                        }){
+                            Image(systemName: "minus.circle")
+                        }
+                    }
                 }
             }
         }

@@ -28,9 +28,11 @@ struct AddFriendResponse: Codable {
 }
 
 
-struct AddFriendRequest: Codable {
+struct FriendRequest: Codable {
     let friendName: String
 }
+
+
 
 let apiKey2 = "qe5YT6jOgiA422_UcdbmVxxG1Z6G48aHV7fSV4TbAPs"
 
@@ -167,7 +169,7 @@ func getAllUserFriends(userId: String, completion: @escaping (Result<[String], E
             let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [String]
             
             if let friends = jsonArray {
-                completion(.success(friends))
+                completion(.success(friends))                
             } else {
                 completion(.failure(URLError(.cannotParseResponse)))
             }
@@ -193,7 +195,7 @@ func addFriendByName(userId: String, friendName: String, completion: @escaping (
     request.addValue("application/json", forHTTPHeaderField: "Accept")
     request.addValue(apiKey2, forHTTPHeaderField: "X-API-Key")
     
-    let requestBody = AddFriendRequest(friendName: friendName)
+    let requestBody = FriendRequest(friendName: friendName)
     do {
         request.httpBody = try JSONEncoder().encode(requestBody)
     } catch {
@@ -225,5 +227,48 @@ func addFriendByName(userId: String, friendName: String, completion: @escaping (
         }
     }
     
+    task.resume()
+}
+
+func deleteFriendByName(userId: String, friendName: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+    let urlString = "https://here-swe.vercel.app/user/\(userId)/friends_name"
+
+    guard let url = URL(string: urlString) else {
+        completion(.failure(URLError(.badURL)))
+        return
+    }
+
+    var request = URLRequest(url: url)
+    request.httpMethod = "DELETE"
+    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.addValue(apiKey2, forHTTPHeaderField: "X-API-Key")
+
+    let requestBody = FriendRequest(friendName: friendName)
+    do {
+        request.httpBody = try JSONEncoder().encode(requestBody)
+    } catch {
+        completion(.failure(error))
+        return
+    }
+
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        if let error = error {
+            completion(.failure(error))
+            return
+        }
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            completion(.failure(URLError(.badServerResponse)))
+            return
+        }
+
+        // Check for successful status code
+        if (200...299).contains(httpResponse.statusCode) {
+            completion(.success(true))
+        } else {
+            completion(.failure(NSError(domain: "", code: httpResponse.statusCode, userInfo: nil)))
+        }
+    }
+
     task.resume()
 }
