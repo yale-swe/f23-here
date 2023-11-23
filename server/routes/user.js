@@ -9,7 +9,8 @@ import {
 	deleteUser,
 	toggleNotifyFriends,
 	updateUserProfile,
-	addUserFriendByName
+	addUserFriendByName,
+	removeUserFriendByName
 } from "../controllers/user.js";
 
 const router = express.Router();
@@ -26,6 +27,7 @@ router.put("/:userId/toggle-notify-friends", toggleNotifyFriends);
 router.put("/:userId/update-profile", updateUserProfile);
 
 router.delete("/:userId/friends", removeUserFriend);
+router.delete("/:userId/friends_name", removeUserFriendByName);
 router.delete("/:userId", deleteUser);
 
 export default router;

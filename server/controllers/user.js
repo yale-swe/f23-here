@@ -154,6 +154,35 @@ export const removeUserFriend = async (req, res) => {
 	}
 };
 
+export const removeUserFriendByName = async (req, res) => {
+	const { userId } = req.params;
+	const { friendName } = req.body;
+
+	try {
+		const user = await UserModel.findById(userId);
+		const friend = await UserModel.findOne({ userName: friendName });
+
+		if (!user) {
+			return handleNotFound(res, "User not found");
+		} else if (!friend) {
+			return handleNotFound(res, "Friend not found");
+		}
+
+		if (!user.friends.includes(friend._id)) {
+			return handleBadRequest(res, "Friend is not in user's friend list");
+		}
+
+		user.friends.remove(friend._id);
+		friend.friends.remove(userId);
+		await user.save();
+		await friend.save();
+		handleSuccess(res, { message: "Friend removed successfully" });
+	} catch (err) {
+		handleServerError(res, err);
+	}
+};
+
+
 export const getUserMessages = async (req, res) => {
 	try {
 		const { userId } = req.params;
@@ -177,6 +206,8 @@ export const getUserMessages = async (req, res) => {
 	}
 };
 
+
+
 export const deleteUser = async (req, res) => {
 	try {
 		const { userId } = req.params;
@@ -197,6 +228,7 @@ export const deleteUser = async (req, res) => {
 		handleServerError(res, err);
 	}
 };
+
 export const toggleNotifyFriends = async (req, res) => {
 	try {
 		const { userId } = req.params;
