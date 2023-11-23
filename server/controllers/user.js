@@ -83,8 +83,8 @@ export const addUserFriendById = async (req, res) => {
 			);
 		}
 
-		user.friends[friendId] = friend.userName;
-		friend.friends[userId] = user.userName;
+		user.friends.set(friendId, friend.userName);
+		friend.friends.set(userId, user.userName);
 		
 		await user.save();
 		await friend.save();
@@ -117,10 +117,8 @@ export const addUserFriendByName = async (req, res) => {
 			);
 		}
 
-		user.friends[friend._id.toString()] = friend.userName;
-		friend.friends[userId] = user.userName;
-
-		console.log(user.friends[friend._id.toString()]);
+		user.friends.set(friend._id.toString(), friend.userName);
+		friend.friends.set(userId, user.userName);
 
 		await user.save();
 		await friend.save();
