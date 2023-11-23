@@ -85,6 +85,7 @@ export const addUserFriendById = async (req, res) => {
 
 		user.friends[friendId] = friend.userName;
 		friend.friends[userId] = user.userName;
+		
 		await user.save();
 		await friend.save();
 		handleSuccess(res, { message: "Friend added successfully" });
@@ -118,6 +119,8 @@ export const addUserFriendByName = async (req, res) => {
 
 		user.friends[friend._id.toString()] = friend.userName;
 		friend.friends[userId] = user.userName;
+
+		console.log(user.friends[friend._id.toString()]);
 
 		await user.save();
 		await friend.save();
