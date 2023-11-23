@@ -76,15 +76,15 @@ export const addUserFriendById = async (req, res) => {
 			return handleNotFound(res, "Friend not found");
 		}
 
-		if (user.friends.includes(friendId)) {
+		if (user.friends.has(friendId)) {
 			return handleBadRequest(
 				res,
 				"Friend is already in user's friend list"
 			);
 		}
 
-		user.friends.push(friendId);
-		friend.friends.push(userId);
+		user.friends[friendId] = friend.userName;
+		friend.friends[userId] = user.userName;
 		await user.save();
 		await friend.save();
 		handleSuccess(res, { message: "Friend added successfully" });
@@ -109,15 +109,16 @@ export const addUserFriendByName = async (req, res) => {
 			return handleBadRequest(res, "You can't friend yourself!");
 		}
 
-		if (user.friends.includes(friend._id)) {
+		if (user.friends.has(friend._id)) {
 			return handleBadRequest(
 				res,
 				"Friend is already in user's friend list"
 			);
 		}
 
-		user.friends.push(friend._id);
-		friend.friends.push(userId);
+		user.friends[friend._id] = friend.userName;
+		friend.friends[userId] = user.userName;
+
 		await user.save();
 		await friend.save();
 		handleSuccess(res, { message: "Friend added successfully" });
@@ -140,12 +141,12 @@ export const removeUserFriend = async (req, res) => {
 			return handleNotFound(res, "Friend not found");
 		}
 
-		if (!user.friends.includes(friendId)) {
+		if (!user.friends.has(friendId)) {
 			return handleBadRequest(res, "Friend is not in user's friend list");
 		}
 
-		user.friends.remove(friendId);
-		friend.friends.remove(userId);
+		user.friends.delete(friendId);
+		friend.friends.delete(userId);
 		await user.save();
 		await friend.save();
 		handleSuccess(res, { message: "Friend removed successfully" });
@@ -168,7 +169,7 @@ export const removeUserFriendByName = async (req, res) => {
 			return handleNotFound(res, "Friend not found");
 		}
 
-		if (!user.friends.includes(friend._id)) {
+		if (!user.friends.has(friend._id)) {
 			return handleBadRequest(res, "Friend is not in user's friend list");
 		}
 
