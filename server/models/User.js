@@ -25,13 +25,13 @@ export const UserSchema = new Schema({
 			default: [],
 		},
 	],
-	friends: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "User",
-			default: {},
-		},
-	],
+	friends: {
+
+		type: Map,
+		of: String,
+		ref: "User",
+		default: {},
+	},
 	notifyFriends: {
 		type: Boolean,
 		default: true,
