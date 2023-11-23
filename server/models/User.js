@@ -26,11 +26,8 @@ export const UserSchema = new Schema({
 		},
 	],
 	friends: {
-
 		type: Map,
-		of: {
-			type: String
-		},
+		of: String,
 		ref: "User",
 		default: {},
 	},
