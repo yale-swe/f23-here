@@ -109,14 +109,14 @@ export const addUserFriendByName = async (req, res) => {
 			return handleBadRequest(res, "You can't friend yourself!");
 		}
 
-		if (user.friends.has(friend._id)) {
+		if (user.friends.has(friend._id.toString())) {
 			return handleBadRequest(
 				res,
 				"Friend is already in user's friend list"
 			);
 		}
 
-		user.friends[friend._id] = friend.userName;
+		user.friends[friend._id.toString()] = friend.userName;
 		friend.friends[userId] = user.userName;
 
 		await user.save();
@@ -169,11 +169,11 @@ export const removeUserFriendByName = async (req, res) => {
 			return handleNotFound(res, "Friend not found");
 		}
 
-		if (!user.friends.has(friend._id)) {
+		if (!user.friends.has(friend._id.toString())) {
 			return handleBadRequest(res, "Friend is not in user's friend list");
 		}
 
-		user.friends.remove(friend._id);
+		user.friends.remove(friend._id.toString());
 		friend.friends.remove(userId);
 		await user.save();
 		await friend.save();
