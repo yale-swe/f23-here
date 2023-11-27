@@ -26,7 +26,6 @@ struct HomePageView: View {
     @State private var isShowingProfile = false
     @State private var isShowingMessages = false
     @State private var isShowingPosts = false
-    @State var userId = ""
     @StateObject var messageState = MessageState()
     @StateObject var fetchedMessagesState = FetchedMessagesState()
     
@@ -34,7 +33,7 @@ struct HomePageView: View {
     
     /// The body of the view, presenting the AR view along with overlay controls for navigation and interaction.
     var body: some View {
-        CustomARViewRepresentable(userId: $userId)
+        CustomARViewRepresentable()
             .environmentObject(messageState)
             .environmentObject(fetchedMessagesState)
             .overlay(alignment: .bottom){
@@ -86,7 +85,7 @@ struct HomePageView: View {
              }
             // Render popups upon state variables being true.
             .sheet(isPresented: $isShowingProfile) {
-                ProfilePopup(isPresented: $isShowingProfile, userId: $userId) // Pass the binding to control visibility
+                ProfilePopup(isPresented: $isShowingProfile) // Pass the binding to control visibility
             }
             .sheet(isPresented: $isShowingMessages) {
                 MessagesPopup(isPresented: $isShowingMessages)

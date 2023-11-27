@@ -11,13 +11,9 @@
 
 import SwiftUI
 
-let userId = UserDefaults.standard.string(forKey: "UserId") ?? ""
-let userName = UserDefaults.standard.string(forKey: "UserName") ?? ""
-
 struct ProfilePopup: View {
     @Binding var isPresented: Bool // Added binding to control visibility
     @State private var isShowingFriends: Bool = false
-    @Binding var userId: String
     
     var body: some View {
         ZStack {
@@ -55,7 +51,7 @@ struct ProfilePopup: View {
             }
             .sheet(isPresented: $isShowingFriends) {
                 // Friends.swift => Friends struct
-                Friends(isPresented: $isShowingFriends, userId: $userId) // Pass the binding to control visibility
+                Friends(isPresented: $isShowingFriends) // Pass the binding to control visibility
             }
         }
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .top) // Adjust size and alignment

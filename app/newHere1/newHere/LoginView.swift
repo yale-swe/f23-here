@@ -15,6 +15,9 @@ import SwiftUI
 let loginUrlString = "https://here-swe.vercel.app/auth/login"
 let logApiKey = "qe5YT6jOgiA422_UcdbmVxxG1Z6G48aHV7fSV4TbAPs"
 
+let userId = UserDefaults.standard.string(forKey: "UserId") ?? ""
+let userName = UserDefaults.standard.string(forKey: "UserName") ?? ""
+
 struct LoginView: View {
     // User input fields
     @State internal var username: String = ""
@@ -23,7 +26,6 @@ struct LoginView: View {
     // State variables
     @State internal var isRegistered = false
     @Binding var isAuthenticated: Bool
-    @Binding var user_id: String
     
     // Alert properties to display login status
     @State internal var showingAlert = false
@@ -64,7 +66,7 @@ struct LoginView: View {
                 .padding(.horizontal)
                 
                 // Navigation link to registration view
-                NavigationLink(destination: RegistrationView(isRegistered: $isRegistered, userId: $user_id)) {
+                NavigationLink(destination: RegistrationView(isRegistered: $isRegistered)) {
                     Text("Don't have an account? Signup")
                 }
                 .padding()
@@ -122,36 +124,29 @@ struct LoginView: View {
                         let statusCode = httpResponse.statusCode
                         if statusCode == 200 {
                             if let data = data {
-                                if let responseString = String(data: data, encoding: .utf8) {
-                                    print("Login Response: \(responseString)")
-
-                                    if let jsonData = responseString.data(using: .utf8) {
-                                    do {
-                                        if let json = try JSONSerialization.jsonObject(with: jsonData, options:[]) as? [String: Any],
-                                           let extractedUserId = json["_id"] as? String {
+                                do {
+                                    // Attempt to parse the response data as a JSON object.
+                                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                                        // Try to extract the user ID from the JSON object.
+                                        // The key "_id" should match the key provided in the JSON response.
+                                        if let extractedUserId = json["_id"] as? String {
                                             print("User id: \(extractedUserId)")
-                                            // Extract and store user ID
-                                            self.user_id = extractedUserId;
-                                            print("updated: \(self.user_id)")
-                                           UserDefaults.standard.set(extractedUserId, forKey: "UserId")
-//                                            self.isAuthenticated = true;
-                                       }
+                                            // Store the extracted user ID in UserDefaults.
+                                            UserDefaults.standard.set(extractedUserId, forKey: "UserId")
+                                        }
                                         
-                                        if let json = try JSONSerialization.jsonObject(with: jsonData, options:[]) as? [String: Any],
-                                        let userName = json["userName"] as? String {
+                                        // Similarly, try to extract the user's username from the JSON object.
+                                        if let userName = json["userName"] as? String {
                                             print("User Name:\(userName)")
-                                            // Store user's username
+                                            // Store the extracted username in UserDefaults.
                                             UserDefaults.standard.set(userName, forKey: "UserName")
                                         }
-                                    } catch {
-                                        print("Error parsing JSON: \(error)")
                                     }
+                                } catch {
+                                    // If JSON parsing fails, print an error message.
+                                    print("Error parsing JSON: \(error)")
                                 }
-                                }
-                                // Set the user as authenticated
-                                self.isAuthenticated = true;
-                                print("authenticated: \(self.isAuthenticated)")
-                                print("user_id: \(self.user_id)")
+                                self.isAuthenticated = true
                             }
                         }else if statusCode == 404 {
                             // Handle user not found

@@ -23,7 +23,7 @@ struct ContentView: View {
                 HomePageView()
                     .environmentObject(locationDataManager)
         } else {
-            LoginView(isAuthenticated: $isAuthenticated, user_id: $userId)
+            LoginView(isAuthenticated: $isAuthenticated)
         }
     }
 }

@@ -13,9 +13,6 @@ import SwiftUI
 import ARKit
 
 struct CustomARViewRepresentable: UIViewRepresentable {
-    // Binding for user ID
-    @Binding var userId: String
-    
     // Environment objects for message and fetched messages states
     @EnvironmentObject var messageState: MessageState
     @EnvironmentObject var fetchedMessagesState: FetchedMessagesState

@@ -2,7 +2,6 @@ import SwiftUI
 
 struct Friends: View {
     @Binding var isPresented: Bool
-    @Binding var userId: String
     
     // State to hold the friends list
     @State private var friendsList: [String] = []
