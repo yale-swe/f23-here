@@ -1,16 +1,19 @@
-//
-//  Profile.swift
-//  here
-//
-//  Created by Lindsay Chen on 10/13/23.
-//
-//  Description:
-//  This file defines the ProfilePopup view along with its subviews such as ProfileHeader, ProfileButtons,
-//  ProfileStats, and PostGrid for the 'here' application. It includes functionality for displaying user profiles
-//  with options to view and edit profile details.
-
 import SwiftUI
 
+/**
+ * ProfilePopup
+ *
+ * A SwiftUI view for displaying a user's profile in a popup format. It includes a header, profile statistics, and options to interact with the profile, such as viewing friends and posts.
+ *
+ * Properties:
+ * - isPresented: Binding to control the visibility of the popup.
+ * - isShowingFriends: State to manage the display of friends list.
+ *
+ * Subviews:
+ * - ProfileHeader: Displays the user's profile picture and basic information.
+ * - ProfileStats: Shows key statistics like the number of notes and friends.
+ * - PostGrid: A placeholder for displaying the user's posts in a grid layout.
+ */
 struct ProfilePopup: View {
     @Binding var isPresented: Bool // Added binding to control visibility
     @State private var isShowingFriends: Bool = false
@@ -58,7 +61,11 @@ struct ProfilePopup: View {
     }
 }
 
-/// View for displaying the user's profile header.
+/**
+ * ProfileHeader
+ *
+ * A subview within ProfilePopup that displays the user's profile picture, name, and a short bio.
+ */
 struct ProfileHeader: View {
     var body: some View {
         HStack {
@@ -87,7 +94,11 @@ struct ProfileHeader: View {
     }
 }
 
-/// View for displaying profile action buttons.
+/**
+ * ProfileButtons
+ *
+ * A subview within ProfilePopup that provides action buttons for editing the user's profile and adding friends.
+ */
 struct ProfileButtons: View {
     var body: some View {
         HStack {
@@ -117,7 +128,11 @@ struct ProfileButtons: View {
     }
 }
 
-/// View for displaying profile statistics.
+/**
+ * ProfileStats
+ *
+ * A subview within ProfilePopup for displaying key statistics about the user's profile, such as the number of notes and friends.
+ */
 struct ProfileStats: View {
     let stats: [(title: String, value: String)] = [
         ("Notes", "10"),
@@ -145,7 +160,11 @@ struct ProfileStats: View {
     }
 }
 
-/// View for displaying individual profile stat item.
+/**
+ * ProfileStatItem
+ *
+ * A component within ProfileStats that represents a single statistic item, displaying a title and a value.
+ */
 struct ProfileStatItem: View {
     let title: String
     let value: String
@@ -163,7 +182,11 @@ struct ProfileStatItem: View {
     }
 }
 
-/// View for displaying the posts grid.
+/**
+ * PostGrid
+ *
+ * A subview within ProfilePopup intended to display the user's posts in a grid format. Currently serves as a placeholder.
+ */
 struct PostGrid: View {
     var body: some View {
         // Placeholder for posts grid

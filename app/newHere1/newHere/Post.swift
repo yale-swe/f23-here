@@ -1,31 +1,22 @@
-//
-//  Message_View.swift
-//  here
-//
-//  Created by Liyang Wang on 10/10/23.
-//
-
-// Description:  SwiftUI View for displaying and posting messages.
-
-//This view includes a pop-up interface for composing and sharing messages. Users can input text, share content, and post messages to the server. The interface is designed with SwiftUI elements, allowing dynamic adjustments based on screen geometry.
-//
-//Properties:
-//- isPresented: Binding to control the visibility of the pop-up.
-//- noteMessage: State variable to hold the message text.
-//- messageState: EnvironmentObject for managing message-related state.
-//- senderName: Constant string representing the username.
-//- locationDataManager: EnvironmentObject for handling location data.
-//
-//Functionality:
-//- Users can compose messages using a TextEditor.
-//- Share and post buttons trigger respective actions.
-//- Messages are posted to the server with associated user and location data.
-
 import SwiftUI
 import CoreLocation
 import Foundation
 
-
+/**
+ * PostsPopup
+ *
+ * A SwiftUI view component for creating and posting messages. It offers an interactive interface for users to write and share posts.
+ * The view uses a binding variable to control its visibility and environment objects for state and location data management.
+ *
+ * Features:
+ * - TextEditor for message input.
+ * - Share and Post buttons for user interaction.
+ * - GeometryReader and ZStack for dynamic, layered UI layout.
+ * - Integration with location data and message state for post creation.
+ *
+ * Note:
+ * - It includes a close button to dismiss the view and leverages environment objects like `messageState` and `locationDataManager`.
+ */
 struct PostsPopup: View {
     @Binding var isPresented: Bool
     //    @Binding var storedMessages: [Message]

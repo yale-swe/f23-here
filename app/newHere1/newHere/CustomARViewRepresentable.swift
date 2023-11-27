@@ -1,17 +1,21 @@
-//
-//  CustomARViewRepresentable.swift
-//  new_here
-//
-//  Created by TRACY LI on 2023/10/28.
-//
-//  Description:
-//  This Swift file defines a SwiftUI UIViewRepresentable for integrating ARKit functionality.
-//  It allows for rendering AR content, such as 3D bubbles with messages, in the 'new_here' application.
-//
-
 import SwiftUI
 import ARKit
 
+/**
+ * CustomARViewRepresentable
+ *
+ * A SwiftUI view representable integrating ARKit's ARSCNView into a SwiftUI view context. 
+ * It facilitates augmented reality features, specifically focusing on rendering messages as 3D objects within an AR environment.
+ * The struct uses environment objects to manage state related to messages and interacts with ARKit for real-time AR functionalities.
+ *
+ * Key Functions:
+ * - makeUIView(context:): Configures and returns an ARSCNView for AR content rendering.
+ * - updateUIView(_:context:): Updates the AR view when new messages are available.
+ * - makeCoordinator(): Creates a coordinator for handling ARSCNViewDelegate methods.
+ * - plantBubbleNode(to:message:): Plants a bubble node with a message in the AR scene.
+ * - renderBubbleNodeHistory(to:messages:): Renders a history of messages as bubble nodes in random positions.
+ * - newBubbleNode(to:message:position:): Creates a new bubble node with a message at a specified position.
+ */
 struct CustomARViewRepresentable: UIViewRepresentable {
     // Environment objects for message and fetched messages states
     @EnvironmentObject var messageState: MessageState

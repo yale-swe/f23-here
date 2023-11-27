@@ -1,15 +1,18 @@
-//
-//  ContentView.swift
-//  newHere
-//
-//  Created by Eric  Wang on 10/28/23.
-//
-//  Description:
-//  This file defines the ContentView struct, which serves as the main view for the application.
-//  It handles user authentication and navigation between the HomePage and Login views.
-
 import SwiftUI
 
+/**
+  `ContentView`: The root view of the application.
+
+  Manages user authentication state to toggle between `HomePageView` and `LoginView`.
+  - `isAuthenticated`: State variable to track authentication status.
+  - `locationDataManager`: Observed object to manage location data.
+
+  View Logic:
+  - Displays `HomePageView` with `locationDataManager` if user is authenticated.
+  - Shows `LoginView` to handle user authentication otherwise.
+
+  `ContentView_Previews`: Provides a preview of `ContentView` in Xcode.
+*/
 struct ContentView: View {
     @State private var isAuthenticated = false
     @State private var isRegistered = false

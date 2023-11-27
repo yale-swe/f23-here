@@ -1,29 +1,37 @@
-// Description:  LocationDataManager Class: Manages location-related data and updates using Core Location. Converts location data to/from GeoJSON format.
-
-//GeoJSONPoint Struct: Represents a GeoJSON Point with latitude and longitude coordinates. Provides conversion to CLLocation.
-//
-//CLLocation Extension: Adds a method to convert CLLocation to GeoJSONPoint.
-
 import CoreLocation
 import Combine
 
+/**
+ * GeoJSONError
+ *
+ * Used to represent specific error conditions
+ * encountered when working with GeoJSON data, particularly during validation or conversion processes.
+ *
+ * Cases:
+ * - invalidType: Indicates an error due to an invalid or unexpected GeoJSON type.
+ * - invalidCoordinates: Signifies an error when GeoJSON coordinates are invalid, missing, or malformed.
+ */
 enum GeoJSONError: Error {
     case invalidType
     case invalidCoordinates
 }
 
-// This Codable struct represents a GeoJSON Point with latitude and longitude coordinates.
-
-//Properties:
-//- type: String representing the GeoJSON type (e.g., "Point").
-//- coordinates: Array of Doubles representing latitude and longitude.
-//
-//Initializer:
-//- Initializes a GeoJSONPoint with latitude and longitude, setting the type to "Point".
-//
-//Functions:
-//- toCLLocation(): Converts GeoJSONPoint to CLLocation.
-
+/**
+ * GeoJSONPoint
+ *
+ * Represents a GeoJSON Point with latitude and longitude coordinates. It provides a method to convert to CLLocation and is 
+ * Codable for easy serialization/deserialization.
+ *
+ * Properties:
+ * - type: A String representing the GeoJSON type, typically "Point".
+ * - coordinates: An array of Doubles representing latitude and longitude.
+ *
+ * Initializer:
+ * - Initializes a GeoJSONPoint with latitude and longitude, setting the type to "Point".
+ *
+ * Functions:
+ * - toCLLocation(): Converts a GeoJSONPoint to a CLLocation object, validating the type and coordinates format.
+ */
 struct GeoJSONPoint: Codable {
     let type: String
     let coordinates: [Double]
@@ -46,6 +54,15 @@ struct GeoJSONPoint: Codable {
     }
 }
 
+/**
+ * CLLocation Extension
+ *
+ * Adds functionality to the CLLocation class to support conversion to a GeoJSONPoint. This extension enriches CLLocation objects
+ * with the ability to be easily transformed into a GeoJSON compatible format.
+ *
+ * Functions:
+ * - toGeoJSONPoint(): Converts a CLLocation instance to a GeoJSONPoint, enabling CLLocation objects to be represented in the GeoJSON format.
+ */
 extension CLLocation {
     // Convert CLLocation to GeoJSONPoint
     func toGeoJSONPoint() -> GeoJSONPoint {
@@ -53,18 +70,22 @@ extension CLLocation {
     }
 }
 
-//  This class manages location-related data and interactions, including handling Core Location updates and converting location data to/from GeoJSON format.
-
-//Properties:
-//- location: Published property representing the current CLLocation.
-//- locationManager: CLLocationManager instance for managing location updates.
-//
-//Initializer:
-//- Initializes a new LocationDataManager object, setting up the CLLocationManager and starting location updates.
-//
-//Functions:
-//- locationManager(_:didUpdateLocations:): Delegate method called when location updates occur, updating the location property.
-
+/**
+ * LocationDataManager
+ *
+ * Manages location-related data and updates using Core Location. This class is responsible for handling Core Location updates
+ * and converting location data to/from GeoJSON format. It uses Combine's @Published property to provide observable location updates.
+ *
+ * Properties:
+ * - location: A published property representing the current CLLocation.
+ * - locationManager: An instance of CLLocationManager for managing location updates.
+ *
+ * Initializer:
+ * - Initializes a new LocationDataManager object, setting up the CLLocationManager and starting location updates.
+ *
+ * Functions:
+ * - locationManager(_:didUpdateLocations:): A delegate method called when location updates occur, updating the location property.
+ */
 class LocationDataManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published var location: CLLocation?
     private var locationManager = CLLocationManager()

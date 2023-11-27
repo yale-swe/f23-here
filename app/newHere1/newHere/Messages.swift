@@ -1,17 +1,15 @@
-//
-//  Messages.swift
-//  here
-//
-//  Created by Eric  Wang on 10/14/23.
-//
-//  Description:
-//  This file defines the MessagesPopup view, which is used to display a popup of messages
-//  within the 'here' application. It includes a background image, a list of messages, and
-//  a close button to dismiss the view.
-
 import SwiftUI
 
-/// View for displaying a popup with messages.
+/**
+ * MessagesPopup
+ *
+ * A SwiftUI view for displaying a popup containing message buttons. It uses a binding variable to control its visibility.
+ *
+ * Features:
+ * - Background image for aesthetic enhancement.
+ * - A close button to dismiss the popup.
+ * - A list of message buttons created in a loop, each with a profile picture and title.
+ */
 struct MessagesPopup: View {
     @Binding var isPresented: Bool // Binding to control the visibility of the popup
         
@@ -58,7 +56,12 @@ struct MessagesPopup: View {
     }
 }
 
-/// Subview for displaying a profile picture.
+/**
+ * ProfilePicture
+ *
+ * A subview within MessagesPopup for displaying a profile picture. 
+ * It presents an image in a circular shape, used alongside message titles in MessagesPopup.
+ */
 struct ProfilePicture: View {
     var body : some View {
         Image("profilePicture")

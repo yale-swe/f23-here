@@ -1,22 +1,26 @@
-// Description:  SwiftUI View for managing the user's friends.
-
-//This view presents a pop-up interface for users to search, add, and delete friends. It includes a top bar with a close button, a search bar with an add friend button, and a list displaying the user's friends with delete functionality.
-//
-//Properties:
-//- isPresented: Binding to control the visibility of the pop-up.
-//- userId: Binding to represent the current user's ID.
-//- friendsList: State variable to hold the list of user's friends.
-//- errorMessage: State variable to handle and display errors.
-//- searchText: State variable for input in the search bar.
-//
-//Functionality:
-//- Users can search for friends using the search bar.
-//- The "Add Friend" button triggers the addition of a friend.
-//- Friend entries include a delete button for removing friends.
-//- Errors, if any, are displayed at the top of the view.
 
 import SwiftUI
 
+/**
+ * Friends View
+ *
+ * A SwiftUI view for managing a user's friends list. It allows users to search, add, and delete friends.
+ * The view is presented modally and includes a dynamic list of friends with individual delete options.
+ * It utilizes @Binding to control the presentation state, and @State for managing the friends list, error messages, and search text.
+ *
+ * Features:
+ * - Top bar with a close button to dismiss the view.
+ * - Search bar for filtering friends or adding new ones.
+ * - Dynamic list of friends with an option to delete individual friends.
+ * - Error handling with user feedback.
+ *
+ * Lifecycle:
+ * - The friends list is fetched and updated when the view appears.
+ *
+ * External Dependencies:
+ * - The view expects functions for adding and deleting friends, and for fetching the full friends list.
+ * - Ensure functions like `getAllUserFriends`, `addFriendByName`, and `deleteFriendByName` are defined with appropriate signatures.
+ */
 struct Friends: View {
     @Binding var isPresented: Bool
     
