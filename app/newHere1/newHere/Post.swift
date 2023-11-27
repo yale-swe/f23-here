@@ -72,7 +72,7 @@ struct PostsPopup: View {
                                 Spacer()
                                 
                                 Button(action: {
-                                    postMessage(user_id: "653d51478ff5b3c9ace45c26", text: noteMessage, visibility: "friends", locationDataManager: locationDataManager) {
+                                    postMessage(user_id: userId, text: noteMessage, visibility: "friends", locationDataManager: locationDataManager) {
                                         result in
                                         switch result {
                                         case .success(let response):
@@ -82,6 +82,7 @@ struct PostsPopup: View {
                                             do {
                                                 let newMessage = try Message(
                                                     id: response._id,
+                                                    user_id: userId,
                                                     location: response.location.toCLLocation(),
                                                     messageStr: response.text)
                                                 // Use newMessage here
