@@ -8,6 +8,8 @@ on:
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
+    env:
+      MONGO_URL: ${{ secrets.MONGO_URL }} # Repo secret
     steps:
       # must use this step to ensure that repository properly checked out
       - name: Checkout repository
@@ -24,4 +26,3 @@ jobs:
       - name: Run tests
         run: npm test
         working-directory: server
-
