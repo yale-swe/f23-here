@@ -4,13 +4,13 @@ import {
 	getUserById,
 	getUserByEmailOrUsername,
 	addUserFriendById,
-	removeUserFriend,
+	removeUserFriendById,
 	getUserMessages,
 	deleteUser,
 	toggleNotifyFriends,
 	updateUserProfile,
 	addUserFriendByName,
-	removeUserFriendByName
+	removeUserFriendByName,
 } from "../controllers/user.js";
 
 const router = express.Router();
@@ -26,7 +26,7 @@ router.put("/:userId/friends_name", addUserFriendByName);
 router.put("/:userId/toggle-notify-friends", toggleNotifyFriends);
 router.put("/:userId/update-profile", updateUserProfile);
 
-router.delete("/:userId/friends", removeUserFriend);
+router.delete("/:userId/friends", removeUserFriendById);
 router.delete("/:userId/friends_name", removeUserFriendByName);
 router.delete("/:userId", deleteUser);
 

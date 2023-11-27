@@ -128,7 +128,7 @@ export const addUserFriendByName = async (req, res) => {
 	}
 };
 
-export const removeUserFriend = async (req, res) => {
+export const removeUserFriendById = async (req, res) => {
 	const { userId } = req.params;
 	const { friendId } = req.body;
 
