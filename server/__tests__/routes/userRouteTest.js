@@ -1,3 +1,10 @@
+/**
+ * User Routes Tests
+ *
+ * A suite of Jest tests for testing User routes.
+ *
+ */
+
 import { jest } from "@jest/globals";
 import {
 	getUserFriends,
@@ -18,7 +25,6 @@ describe("User Router", () => {
 	afterEach(() => {
 		jest.restoreAllMocks();
 	});
-
 	test("GET /users/:userId - should get user by ID", async () => {
 		const mockUser = { _id: "507f191e810c19729de860ea", name: "John Doe" };
 		const findByIdSpy = jest
@@ -31,7 +37,6 @@ describe("User Router", () => {
 		expect(res.statusCode).toBe(200);
 		expect(res.body).toEqual(mockUser);
 	});
-
 	test("GET /users/:userId/friends - should get user friends", async () => {
 		const mockUser = {
 			_id: "507f191e810c19729de860ea",
@@ -49,7 +54,6 @@ describe("User Router", () => {
 		expect(res.statusCode).toBe(200);
 		expect(res.body).toEqual(mockUser.friends);
 	});
-
 	test("PUT /users/:userId/friends - should add user friend by ID", async () => {
 		const mockUser = {
 			_id: "507f191e810c19729de860ea",
@@ -104,7 +108,6 @@ describe("User Router", () => {
 		expect(res.status).toHaveBeenCalledWith(500);
 		expect(res.json).toHaveBeenCalledWith(expect.anything());
 	});
-
 	test("getUserById return 505 error", () => {
 		const req = null;
 		const res = {
@@ -117,7 +120,6 @@ describe("User Router", () => {
 		expect(res.status).toHaveBeenCalledWith(500);
 		expect(res.json).toHaveBeenCalledWith(expect.anything());
 	});
-
 	test("getUserByEmailOrUsername return 505 error", () => {
 		const req = null;
 		const res = {
@@ -130,7 +132,6 @@ describe("User Router", () => {
 		expect(res.status).toHaveBeenCalledWith(500);
 		expect(res.json).toHaveBeenCalledWith(expect.anything());
 	});
-
 	test("getUserMessages return 505 error", () => {
 		const req = null;
 		const res = {

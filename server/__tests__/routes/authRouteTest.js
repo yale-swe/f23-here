@@ -1,3 +1,10 @@
+/**
+ * Authentication Routes Tests
+ *
+ * A suite of Jest tests for testing Authentication routes.
+ *
+ */
+
 import { jest } from "@jest/globals";
 import { register, login } from "../../controllers/auth";
 import express from "express";

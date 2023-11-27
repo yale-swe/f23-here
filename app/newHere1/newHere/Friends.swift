@@ -1,3 +1,20 @@
+// Description:  SwiftUI View for managing the user's friends.
+
+//This view presents a pop-up interface for users to search, add, and delete friends. It includes a top bar with a close button, a search bar with an add friend button, and a list displaying the user's friends with delete functionality.
+//
+//Properties:
+//- isPresented: Binding to control the visibility of the pop-up.
+//- userId: Binding to represent the current user's ID.
+//- friendsList: State variable to hold the list of user's friends.
+//- errorMessage: State variable to handle and display errors.
+//- searchText: State variable for input in the search bar.
+//
+//Functionality:
+//- Users can search for friends using the search bar.
+//- The "Add Friend" button triggers the addition of a friend.
+//- Friend entries include a delete button for removing friends.
+//- Errors, if any, are displayed at the top of the view.
+
 import SwiftUI
 
 struct Friends: View {
@@ -11,7 +28,7 @@ struct Friends: View {
     var body: some View {
         VStack {
             
-            // top bar
+            // top bar with close button
             HStack {
                 Spacer()
                 Button(action: {
@@ -27,7 +44,7 @@ struct Friends: View {
                 .padding(.trailing, 20) // Adjust the position of the close button
             }
             
-            // search bar
+            // search bar and add friend button
             HStack {
                        TextField("Search...", text: $searchText)
                            .padding(7)
@@ -56,6 +73,7 @@ struct Friends: View {
                            .keyboardType(.webSearch)
 
                        Button(action: {
+                           // Add friend when the "Add Friend" button is tapped
                            addFriendByName(userId: userId, friendName: searchText) {
                                result in
                                   switch result {
@@ -78,10 +96,13 @@ struct Friends: View {
                    }
                    .padding()
             
+            // Add friend when the "Add Friend" button is tapped
             if let errorMessage = errorMessage {
                 Text(errorMessage)
             } else {
+                // Friends List
                 List(friendsList, id: \.self) { friend in
+                    // Each friend in the list with delete button
                     HStack {
                         Text(friend)
                         Spacer()
@@ -96,7 +117,7 @@ struct Friends: View {
 //                                       self.errorMessage = error.localizedDescription
 //                                   }
 //                            }
-//                            
+//                            // Delete friend when the minus button is tapped
                             deleteFriendByName(userId: userId, friendName:friend) {
                                 result in
                                    switch result {
@@ -115,6 +136,7 @@ struct Friends: View {
             }
         }
         .onAppear {
+            // Fetch Friends List on Appear
             getAllUserFriends(userId: userId) { result in
                 switch result {
                 case .success(let response):

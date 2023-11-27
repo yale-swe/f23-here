@@ -1,3 +1,11 @@
+/**
+ * User Controller Tests
+ *
+ * A suite of Jest tests for testing various functionalities of the user controller.
+ * These tests cover user data retrieval, friend management, messaging, and profile updates.
+ *
+ */
+
 import { jest } from "@jest/globals";
 import {
 	getUserById,
@@ -5,16 +13,15 @@ import {
 	getUserFriends,
 	addUserFriendById,
 	addUserFriendByName,
-	removeUserFriend,
 	removeUserFriendByName,
 	getUserMessages,
 	deleteUser,
 	toggleNotifyFriends,
 	updateUserProfile,
+	removeUserFriendById,
 } from "../../controllers/user.js";
 
 import UserModel from "../../models/User.js";
-import ReplyModel from "../../models/Reply.js";
 import MessageModel from "../../models/Message.js";
 import httpMocks from "node-mocks-http";
 import bcrypt from "bcrypt";
@@ -33,27 +40,9 @@ const mockUser = {
 	avatar: "avatar.jpg",
 };
 
-const mockMessages = [
-	{
-		user_id: userId,
-		text: "Hello this is message 1",
-		likes: 10,
-		location: {
-			type: "Point",
-			coordinates: [45.1234, -75.5678],
-		},
-		visibility: "public",
-		replies: ["reply1", "reply2"],
-	},
-];
-
 describe("getUserMessages", () => {
 	it("should successfully find user messages and return them", async () => {
 		const mockUserId = "validUserId";
-		const mockUser = {
-			_id: mockUserId,
-			messages: ["message1", "message2"],
-		};
 		const mockMessages = [
 			{
 				_id: "message1",
@@ -568,7 +557,7 @@ describe("addUserFriendByName", () => {
 	});
 });
 
-describe("removeUserFriend", () => {
+describe("removeUserFriendById", () => {
 	let mockUser;
 	let mockFriend;
 
@@ -606,7 +595,7 @@ describe("removeUserFriend", () => {
 		});
 		const res = httpMocks.createResponse();
 
-		await removeUserFriend(req, res);
+		await removeUserFriendById(req, res);
 
 		expect(UserModel.findById).toHaveBeenCalledWith(mockUser._id);
 		expect(UserModel.findById).toHaveBeenCalledWith(mockFriend._id);
@@ -634,7 +623,7 @@ describe("removeUserFriend", () => {
 		});
 		const res = httpMocks.createResponse();
 
-		await removeUserFriend(req, res);
+		await removeUserFriendById(req, res);
 
 		expect(res.statusCode).toBe(400);
 		expect(res._getData()).toContain("Friend is not in user's friend list");
@@ -650,7 +639,7 @@ describe("removeUserFriend", () => {
 		});
 		const res = httpMocks.createResponse();
 
-		await removeUserFriend(req, res);
+		await removeUserFriendById(req, res);
 
 		expect(UserModel.findById).toHaveBeenCalledWith("nonexistentUserId");
 		expect(UserModel.findById).toHaveBeenCalledWith(mockFriend._id);
@@ -668,7 +657,7 @@ describe("removeUserFriend", () => {
 		});
 		const res = httpMocks.createResponse();
 
-		await removeUserFriend(req, res);
+		await removeUserFriendById(req, res);
 
 		expect(UserModel.findById).toHaveBeenCalledWith(mockUser._id);
 		expect(UserModel.findById).toHaveBeenCalledWith("nonexistentFriendId");
@@ -686,7 +675,7 @@ describe("removeUserFriend", () => {
 		});
 		const res = httpMocks.createResponse();
 
-		await removeUserFriend(req, res);
+		await removeUserFriendById(req, res);
 
 		expect(res.statusCode).toBe(500);
 		expect(res._getData()).toContain("Internal Server Error");
@@ -766,7 +755,6 @@ describe("removeUserFriendByName", () => {
 		expect(res.statusCode).toBe(400);
 		expect(res._getData()).toContain("Friend is not in user's friend list");
 	});
-
 	it("should return 404 if the user is not found", async () => {
 		UserModel.findById.mockResolvedValue(null);
 
@@ -782,7 +770,6 @@ describe("removeUserFriendByName", () => {
 		expect(res.statusCode).toBe(404);
 		expect(res._getData()).toContain("User not found");
 	});
-
 	it("should return 404 if the friend is not found", async () => {
 		UserModel.findById.mockResolvedValue(mockUser);
 		UserModel.findOne.mockResolvedValue(null);
@@ -825,7 +812,6 @@ describe("deleteUser", () => {
 		_id: "userId",
 		messages: ["message1Id", "message2Id"],
 	};
-
 	it("should delete the user and their messages successfully", async () => {
 		UserModel.findById = jest.fn().mockResolvedValue(mockUser);
 		UserModel.findByIdAndDelete = jest.fn().mockResolvedValue({});

@@ -1,3 +1,11 @@
+/**
+ * Message Controller Tests
+ *
+ * A suite of Jest tests for testing functionalities related to messages.
+ * These tests cover message retrieval, creation, liking, visibility changes, and message deletion.
+ *
+ */
+
 import { jest } from "@jest/globals";
 import {
 	getAllMessages,
@@ -33,6 +41,7 @@ describe("postMessage", () => {
 			...mockMessageData,
 			_id: "newMessageId",
 		};
+
 		MessageModel.prototype.save = jest
 			.fn()
 			.mockResolvedValue(mockSavedMessage);

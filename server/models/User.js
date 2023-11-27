@@ -1,6 +1,11 @@
-// Data model schema for User
+/**
+ * User Model Schema
+ *
+ * Defines the Mongoose schema for users in the application. It includes fields for personal details (username, first name,
+ * last name), contact information (email), authentication (password), and references to related data like messages and friends.
+ * Enforces uniqueness on usernames and emails, and maintains a list of message IDs and a map of friends for each user.
+ */
 import mongoose from "mongoose";
-import { MessageSchema } from "./Message.js";
 
 const { Schema } = mongoose;
 
