@@ -106,9 +106,9 @@ struct CustomARViewRepresentable: UIViewRepresentable {
         var randomNumberGenerator = SystemRandomNumberGenerator()
 
         // Define the range of random positions for x, y, and z coordinates
-        let xRange: ClosedRange<Float> = -3.0...3.0  // Represents a 10-meter width (-5m to +5m)
-        let yRange: ClosedRange<Float> = -1.0...2.0   // Represents a height range above the ground (0m to +2m)
-        let zRange: ClosedRange<Float> = -3.0...3.0  // Represents a 10-meter depth (-5m to +5m)
+        let xRange: ClosedRange<Float> = -2.0...2.0  // Represents a 4-meter width (-2m to +2m)
+        let yRange: ClosedRange<Float> = -1.0...2.0   // Represents a height range above the ground (-1m to +2m)
+        let zRange: ClosedRange<Float> = -2.0...2.0  // Represents a 4-meter depth (-2m to +2m)
 
         for message in messages {
             // Generate random positions

@@ -34,6 +34,7 @@ struct HomePageView: View {
     /// The body of the view, presenting the AR view along with overlay controls for navigation and interaction.
     var body: some View {
         CustomARViewRepresentable()
+            .edgesIgnoringSafeArea(.all)
             .environmentObject(messageState)
             .environmentObject(fetchedMessagesState)
             .overlay(alignment: .bottom){
