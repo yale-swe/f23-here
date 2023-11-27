@@ -1,20 +1,26 @@
-//
-//  Registration.swift
-//  newHere
-//
-//  Created by TRACY LI on 2023/11/4.
-//
-//  Description:
-//  This file defines the RegistrationView, which is used for user registration in the 'newHere' application.
-//  It includes form inputs for user details and a registration logic to communicate with a remote server.
-
 import SwiftUI
 
 // URL and API Key for registration API
 let registerUrlString = "https://here-swe.vercel.app/auth/register"
 let regApiKey = "qe5YT6jOgiA422_UcdbmVxxG1Z6G48aHV7fSV4TbAPs"
 
-/// View for user registration.
+/**
+ * RegistrationView
+ *
+ * A SwiftUI view for user registration. It provides text fields for entering personal details and credentials, 
+ * and includes a submission button to register the user. This view also handles the registration logic, 
+ * including data validation and network requests to the registration API.
+ *
+ * Properties:
+ * - firstName, lastName, userName, email, password, confirmPassword: State variables for user input.
+ * - isRegistered: Binding to track the registration status.
+ * - isAuthenticated: State to manage authentication status.
+ * - showingAlert, alertMessage: State variables for alert presentation and messages.
+ *
+ * Functions:
+ * - registerUser(): Handles the registration process, including validating input, creating a request body, 
+ *   and making a network request to the registration API.
+ */
 struct RegistrationView: View {
     @State private var firstName: String = ""
     @State private var lastName: String = ""

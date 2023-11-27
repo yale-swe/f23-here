@@ -1,14 +1,3 @@
-//
-//  LoginView.swift
-//  newHere
-//
-//  Created by TRACY LI on 2023/11/7.
-//
-//  Description:
-//  This Swift file defines the LoginView, which is responsible for user login in the 'newHere' application.
-//  It includes input fields for username and password, and login logic to communicate with a remote server.
-//
-
 import SwiftUI
 
 // Define the URL and API Key for the login API
@@ -18,6 +7,29 @@ let logApiKey = "qe5YT6jOgiA422_UcdbmVxxG1Z6G48aHV7fSV4TbAPs"
 let userId = UserDefaults.standard.string(forKey: "UserId") ?? ""
 let userName = UserDefaults.standard.string(forKey: "UserName") ?? ""
 
+
+/**
+ * LoginView
+ *
+ * Handles user authentication in the application. 
+ * It allows users to input their username and password, and to log in to the application. 
+ * The view also provides a navigation link to the registration view for new users.
+ *
+ * Properties:
+ * - username, password: State variables to hold user input for authentication.
+ * - isRegistered: State variable indicating the registration status of the user.
+ * - isAuthenticated: Binding variable to manage authentication status.
+ * - showingAlert, alertMessage: State variables for handling alert presentations and messages.
+ *
+ * Functions:
+ * - LogInUser(): Handles the login logic, including validation of user input, preparing the request,
+ *   and handling the response from the login API.
+ *
+ * Note:
+ * - Constants like 'loginUrlString' and 'logApiKey' are defined outside the struct for API interaction.
+ * - UserDefaults is used for storing user information such as 'UserId' and 'UserName'.
+ */
+ 
 struct LoginView: View {
     // User input fields
     @State internal var username: String = ""

@@ -1,26 +1,21 @@
-//
-//  Message.swift
-//  newHere
-//
-//  Created by Eric Wang on 10/28/23.
-//
-
-// Description:  This class represents a message object, including its unique identifier, associated user ID, geographic location, and message content.
-
-//Properties:
-//- id: A unique identifier for the message.
-//- user_id: The user ID of the sender associated with the message.
-//- location: A CLLocation object representing the geographic location associated with the message.
-//- messageStr: The string content of the message.
-//
-//Initializer:
-//- Initializes a new Message object with the provided parameters.
-//
-//Note: This class is utilized for managing messages within the application and may be used in conjunction with location-based features.
-
 import Foundation
 import CoreLocation
 
+
+/**
+ * Message Class
+ *
+ * A class representing a message with identifiers, location, and content.
+ *
+ * Properties:
+ * - id: String for message ID.
+ * - user_id: String for user ID.
+ * - location: CLLocation for geographical location.
+ * - messageStr: String for message content.
+ *
+ * Initialization:
+ * - Initializes with id, user_id, location, and messageStr.
+ */
 class Message {
     var id: String
     var user_id: String

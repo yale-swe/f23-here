@@ -1,18 +1,18 @@
-//
-//  CustomARView.swift
-//  new_here
-//
-//  Created by TRACY LI on 2023/10/28.
-//
-//  Description:
-//  This file defines a CustomARView class, which is a subclass of ARView from RealityKit.
-//  It's designed to be used for augmented reality experiences within the 'new_here' application.
-
 import ARKit
 import RealityKit
 import SwiftUI
 
-/// CustomARView is a subclass of ARView for creating custom AR experiences.
+/**
+ * CustomARView Class
+ *
+ * This class extends ARView to provide custom Augmented Reality (AR) experiences.
+ * It includes initializers for setting up the view with a specific frame or using the device's main screen bounds.
+ *
+ * Methods:
+ * 1. init(frame: CGRect): Initializes the view with a specified frame.
+ * 2. init(coder: NSCoder): Required initializer for decoding, not implemented.
+ * 3. init(): Convenience initializer that sets up the view using the main screen bounds.
+ */
 class CustomARView: ARView {
     /// Initializes and returns a newly allocated view object with the specified frame rectangle.
     required init (frame frameRect: CGRect){

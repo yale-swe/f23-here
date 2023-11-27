@@ -1,27 +1,36 @@
-//
-//  Home.swift
-//  here
-//
-//  Created by Lindsay Chen on 10/14/23.
-//
-//  Description:
-//  This file defines the HomePageView and associated state management classes for the application.
-//  It integrates ARKit and manages UI components for messages, posts, and user profile.
-
 import SwiftUI
 import ARKit
 
-/// Manages the state of the current message in the application.
+/**
+ * MessageState
+ *
+ * A class that manages the state of the current message in the application.
+ * It is an observable object that can be used in SwiftUI views to react to changes in the current message state.
+ */
 class MessageState: ObservableObject {
     @Published var currentMessage: Message?
 }
 
-/// Manages the fetched messages state in the application.
+/**
+ * FetchedMessagesState
+ *
+ * A class that manages the state of messages fetched from a data source in the application.
+ * It is an observable object that tracks an array of 'Message' objects.
+ */
 class FetchedMessagesState: ObservableObject {
     var fetchedMessages: [Message]?
 }
 
-/// The main view for the home page of the application.
+/**
+ * HomePageView
+ *
+ * The main view for the home page of the AR application. This view integrates an AR experience using CustomARViewRepresentable
+ * and provides a user interface for navigating to different features such as profiles, messages, and posts.
+ * It manages various UI states using @State and @StateObject properties and provides sheets for displaying popups.
+ *
+ * The view overlays control buttons over the AR view and presents modals for profiles, messages, and posts based on user interaction.
+ * It utilizes @EnvironmentObject to inject and use LocationDataManager within the view hierarchy.
+ */
 struct HomePageView: View {
     @State private var isShowingProfile = false
     @State private var isShowingMessages = false
@@ -99,7 +108,11 @@ struct HomePageView: View {
         }
     }
 
-/// A preview provider for HomePageView, used for rendering the view in Xcode's canvas.
+/**
+ * HomePageView_Previews
+ *
+ * A preview provider for HomePageView, facilitating the rendering of the HomePageView in Xcode's canvas.
+ */
 struct HomePageView_Previews: PreviewProvider {
     static var previews: some View {
         HomePageView()
