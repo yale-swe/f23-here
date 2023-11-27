@@ -6,6 +6,7 @@ import {
 	addUserFriendById,
 	addUserFriendByName,
 	removeUserFriend,
+	removeUserFriendByName,
 	getUserMessages,
 	deleteUser,
 	toggleNotifyFriends,
@@ -234,7 +235,6 @@ describe("getUserByEmailOrUsername", () => {
 
 		await getUserByEmailOrUsername(req, res);
 
-		// Check if the response is a server error (status code 500)
 		expect(res.statusCode).toBe(500);
 		expect(res._getData()).toContain("Internal Server Error");
 	});
@@ -295,14 +295,17 @@ describe("getUserFriends", () => {
 describe("addUserFriendById", () => {
 	const mockUser = {
 		_id: "userId",
-		friends: [],
+		userName: "user",
+		friends: new Map(),
 		save: jest.fn(),
 	};
 	const mockFriend = {
 		_id: "friendId",
-		friends: [],
+		userName: "friend",
+		friends: new Map(),
 		save: jest.fn(),
 	};
+
 	it("should successfully add a friend", async () => {
 		UserModel.findById = jest
 			.fn()
@@ -320,8 +323,10 @@ describe("addUserFriendById", () => {
 		expect(UserModel.findById).toHaveBeenCalledWith(mockUser._id);
 		expect(UserModel.findById).toHaveBeenCalledWith(mockFriend._id);
 
-		expect(mockUser.friends).toContain(mockFriend._id);
-		expect(mockFriend.friends).toContain(mockUser._id);
+		expect(mockUser.friends.get(mockFriend._id)).toEqual(
+			mockFriend.userName
+		);
+		expect(mockFriend.friends.get(mockUser._id)).toEqual(mockUser.userName);
 
 		expect(mockUser.save).toHaveBeenCalled();
 		expect(mockFriend.save).toHaveBeenCalled();
@@ -331,20 +336,9 @@ describe("addUserFriendById", () => {
 			message: "Friend added successfully",
 		});
 	});
-	it("should not allow a user to friend themselves", async () => {
-		const req = httpMocks.createRequest({
-			params: { userId: mockUser._id },
-			body: { friendId: mockUser._id },
-		});
-		const res = httpMocks.createResponse();
 
-		await addUserFriendById(req, res);
-
-		expect(res.statusCode).toBe(400);
-		expect(res._getData()).toContain("You can't friend yourself!");
-	});
 	it("should not add a friend who is already in the friend list", async () => {
-		mockUser.friends = [mockFriend._id];
+		mockUser.friends.set(mockFriend._id, mockFriend.userName);
 
 		UserModel.findById = jest
 			.fn()
@@ -364,6 +358,20 @@ describe("addUserFriendById", () => {
 			"Friend is already in user's friend list"
 		);
 	});
+
+	it("should not allow a user to friend themselves", async () => {
+		const req = httpMocks.createRequest({
+			params: { userId: mockUser._id },
+			body: { friendId: mockUser._id },
+		});
+		const res = httpMocks.createResponse();
+
+		await addUserFriendById(req, res);
+
+		expect(res.statusCode).toBe(400);
+		expect(res._getData()).toContain("You can't friend yourself!");
+	});
+
 	it("should return 404 if the user is not found", async () => {
 		UserModel.findById = jest.fn().mockResolvedValueOnce(null);
 
@@ -379,6 +387,7 @@ describe("addUserFriendById", () => {
 		expect(res.statusCode).toBe(404);
 		expect(res._getData()).toContain("User not found");
 	});
+
 	it("should return 404 if the friend is not found", async () => {
 		const invalidFriendId = "nonexistentFriendId";
 		UserModel.findById = jest
@@ -394,11 +403,13 @@ describe("addUserFriendById", () => {
 
 		await addUserFriendById(req, res);
 
+		expect(UserModel.findById).toHaveBeenCalledWith(mockUser._id);
 		expect(UserModel.findById).toHaveBeenCalledWith(invalidFriendId);
 		expect(res.statusCode).toBe(404);
 		expect(res._getData()).toContain("Friend not found");
 	});
-	it("should returns 500 if server errors occur", async () => {
+
+	it("should return 500 if server errors occur", async () => {
 		const errorMessage = "Internal Server Error";
 		UserModel.findById = jest.fn().mockImplementation(() => {
 			throw new Error(errorMessage);
@@ -421,16 +432,16 @@ describe("addUserFriendByName", () => {
 	const mockUser = {
 		_id: "userId",
 		userName: "JohnD",
-		friends: [],
+		friends: new Map(),
 		save: jest.fn(),
 	};
-
 	const mockFriend = {
 		_id: "friendId",
 		userName: "JaneD",
-		friends: [],
+		friends: new Map(),
 		save: jest.fn(),
 	};
+
 	it("should successfully add a friend by name", async () => {
 		UserModel.findById = jest.fn().mockResolvedValue(mockUser);
 		UserModel.findOne = jest.fn().mockResolvedValue(mockFriend);
@@ -448,8 +459,10 @@ describe("addUserFriendByName", () => {
 			userName: mockFriend.userName,
 		});
 
-		expect(mockUser.friends).toContain(mockFriend._id);
-		expect(mockFriend.friends).toContain(mockUser._id);
+		expect(mockUser.friends.get(mockFriend._id)).toEqual(
+			mockFriend.userName
+		);
+		expect(mockFriend.friends.get(mockUser._id)).toEqual(mockUser.userName);
 
 		expect(mockUser.save).toHaveBeenCalled();
 		expect(mockFriend.save).toHaveBeenCalled();
@@ -459,12 +472,13 @@ describe("addUserFriendByName", () => {
 			message: "Friend added successfully",
 		});
 	});
+
 	it("should not allow a user to friend themselves", async () => {
 		UserModel.findById = jest.fn().mockResolvedValue(mockUser);
 		UserModel.findOne = jest.fn().mockResolvedValue(mockUser);
 
 		const req = httpMocks.createRequest({
-			params: { userId: mockUser.userName },
+			params: { userId: mockUser._id },
 			body: { friendName: mockUser.userName },
 		});
 		const res = httpMocks.createResponse();
@@ -474,8 +488,9 @@ describe("addUserFriendByName", () => {
 		expect(res.statusCode).toBe(400);
 		expect(res._getData()).toContain("You can't friend yourself!");
 	});
+
 	it("should not add a friend who is already in the friend list", async () => {
-		mockUser.friends = [mockFriend._id];
+		mockUser.friends.set(mockFriend._id, mockFriend.userName);
 
 		UserModel.findById = jest.fn().mockResolvedValueOnce(mockUser);
 		UserModel.findOne = jest.fn().mockResolvedValueOnce(mockFriend);
@@ -497,30 +512,30 @@ describe("addUserFriendByName", () => {
 			"Friend is already in user's friend list"
 		);
 	});
+
 	it("should return 404 if the user is not found", async () => {
-		const invalidId = "nonexistentUserId";
 		UserModel.findById = jest.fn().mockResolvedValueOnce(null);
 
 		const req = httpMocks.createRequest({
-			params: { userId: invalidId },
+			params: { userId: "nonexistentUserId" },
 			body: { friendName: mockFriend.userName },
 		});
 		const res = httpMocks.createResponse();
 
 		await addUserFriendByName(req, res);
 
-		expect(UserModel.findById).toHaveBeenCalledWith(invalidId);
+		expect(UserModel.findById).toHaveBeenCalledWith("nonexistentUserId");
 		expect(res.statusCode).toBe(404);
 		expect(res._getData()).toContain("User not found");
 	});
+
 	it("should return 404 if the friend is not found", async () => {
-		const invalidFriendName = "nonexistentFriendName";
-		UserModel.findById = jest.fn().mockResolvedValueOnce(mockUser); // User is found
-		UserModel.findOne = jest.fn().mockResolvedValueOnce(null); // Friend not found
+		UserModel.findById = jest.fn().mockResolvedValueOnce(mockUser);
+		UserModel.findOne = jest.fn().mockResolvedValueOnce(null);
 
 		const req = httpMocks.createRequest({
 			params: { userId: mockUser._id },
-			body: { friendName: invalidFriendName },
+			body: { friendName: "nonexistentFriendName" },
 		});
 		const res = httpMocks.createResponse();
 
@@ -528,13 +543,13 @@ describe("addUserFriendByName", () => {
 
 		expect(UserModel.findById).toHaveBeenCalledWith(mockUser._id);
 		expect(UserModel.findOne).toHaveBeenCalledWith({
-			userName: invalidFriendName,
+			userName: "nonexistentFriendName",
 		});
 		expect(res.statusCode).toBe(404);
 		expect(res._getData()).toContain("Friend not found");
 	});
 
-	it("should handle server errors", async () => {
+	it("should return 505 on server errors", async () => {
 		const errorMessage = "Internal Server Error";
 		UserModel.findById = jest.fn().mockImplementation(() => {
 			throw new Error(errorMessage);
@@ -554,23 +569,32 @@ describe("addUserFriendByName", () => {
 });
 
 describe("removeUserFriend", () => {
-	const mockUser = {
-		_id: "userId",
-		userName: "JohnD",
-		friends: ["friendId"],
-		save: jest.fn(),
-	};
+	let mockUser;
+	let mockFriend;
 
-	const mockFriend = {
-		_id: "friendId",
-		userName: "JaneD",
-		friends: ["userId"],
-		save: jest.fn(),
-	};
+	beforeEach(() => {
+		mockUser = {
+			_id: "userId",
+			userName: "JohnD",
+			friends: {
+				delete: jest.fn(),
+				has: jest.fn().mockReturnValue(true),
+			},
+			save: jest.fn(),
+		};
 
-	mockUser.friends.remove = jest.fn();
-	mockFriend.friends.remove = jest.fn();
+		mockFriend = {
+			_id: "friendId",
+			userName: "JaneD",
+			friends: {
+				delete: jest.fn(),
+				has: jest.fn().mockReturnValue(true),
+			},
+			save: jest.fn(),
+		};
 
+		jest.clearAllMocks();
+	});
 	it("should successfully remove a friend", async () => {
 		UserModel.findById
 			.mockResolvedValueOnce(mockUser)
@@ -587,8 +611,8 @@ describe("removeUserFriend", () => {
 		expect(UserModel.findById).toHaveBeenCalledWith(mockUser._id);
 		expect(UserModel.findById).toHaveBeenCalledWith(mockFriend._id);
 
-		expect(mockUser.friends.remove).toHaveBeenCalledWith(mockFriend._id);
-		expect(mockFriend.friends.remove).toHaveBeenCalledWith(mockUser._id);
+		expect(mockUser.friends.delete).toHaveBeenCalledWith(mockFriend._id);
+		expect(mockFriend.friends.delete).toHaveBeenCalledWith(mockUser._id);
 
 		expect(mockUser.save).toHaveBeenCalled();
 		expect(mockFriend.save).toHaveBeenCalled();
@@ -598,10 +622,9 @@ describe("removeUserFriend", () => {
 		});
 	});
 	it("should return 400 if the friend is not in the user's friend list", async () => {
-		mockUser.friends = [];
+		mockUser.friends = new Map();
 
-		UserModel.findById = jest
-			.fn()
+		UserModel.findById
 			.mockResolvedValueOnce(mockUser)
 			.mockResolvedValueOnce(mockFriend);
 
@@ -617,44 +640,44 @@ describe("removeUserFriend", () => {
 		expect(res._getData()).toContain("Friend is not in user's friend list");
 	});
 	it("should return 404 if the user is not found", async () => {
-		const invalidId = "nonexistentUserId";
-		UserModel.findById = jest.fn().mockResolvedValueOnce(null);
+		UserModel.findById
+			.mockResolvedValueOnce(null)
+			.mockResolvedValueOnce(null);
 
 		const req = httpMocks.createRequest({
-			params: { userId: invalidId },
+			params: { userId: "nonexistentUserId" },
 			body: { friendId: mockFriend._id },
 		});
 		const res = httpMocks.createResponse();
 
 		await removeUserFriend(req, res);
 
-		expect(UserModel.findById).toHaveBeenCalledWith(invalidId);
+		expect(UserModel.findById).toHaveBeenCalledWith("nonexistentUserId");
+		expect(UserModel.findById).toHaveBeenCalledWith(mockFriend._id);
 		expect(res.statusCode).toBe(404);
 		expect(res._getData()).toContain("User not found");
 	});
 	it("should return 404 if the friend is not found", async () => {
-		const invalidFriendName = "nonexistentFriendName";
-		UserModel.findById = jest
-			.fn()
+		UserModel.findById
 			.mockResolvedValueOnce(mockUser)
 			.mockResolvedValueOnce(null);
 
 		const req = httpMocks.createRequest({
 			params: { userId: mockUser._id },
-			body: { friendId: invalidFriendName },
+			body: { friendId: "nonexistentFriendId" },
 		});
 		const res = httpMocks.createResponse();
 
 		await removeUserFriend(req, res);
 
-		expect(UserModel.findById).toHaveBeenCalledWith(invalidFriendName);
+		expect(UserModel.findById).toHaveBeenCalledWith(mockUser._id);
+		expect(UserModel.findById).toHaveBeenCalledWith("nonexistentFriendId");
 		expect(res.statusCode).toBe(404);
 		expect(res._getData()).toContain("Friend not found");
 	});
-	it("should returns 500 if server errors occur", async () => {
-		const errorMessage = "Internal Server Error";
-		UserModel.findById = jest.fn().mockImplementation(() => {
-			throw new Error(errorMessage);
+	it("should return 500 if server errors occur", async () => {
+		UserModel.findById.mockImplementation(() => {
+			throw new Error("Internal Server Error");
 		});
 
 		const req = httpMocks.createRequest({
@@ -666,7 +689,134 @@ describe("removeUserFriend", () => {
 		await removeUserFriend(req, res);
 
 		expect(res.statusCode).toBe(500);
-		expect(res._getData()).toContain(errorMessage);
+		expect(res._getData()).toContain("Internal Server Error");
+	});
+});
+
+describe("removeUserFriendByName", () => {
+	let mockUser;
+	let mockFriend;
+
+	beforeEach(() => {
+		mockUser = {
+			_id: "userId",
+			userName: "JohnD",
+			friends: {
+				delete: jest.fn(),
+				has: jest.fn().mockReturnValue(true),
+			},
+			save: jest.fn(),
+		};
+
+		mockFriend = {
+			_id: "friendId",
+			userName: "JaneD",
+			friends: {
+				delete: jest.fn(),
+				has: jest.fn().mockReturnValue(true),
+			},
+			save: jest.fn(),
+		};
+
+		jest.clearAllMocks();
+	});
+
+	it("should successfully remove a friend by name", async () => {
+		UserModel.findById.mockResolvedValue(mockUser);
+		UserModel.findOne.mockResolvedValue(mockFriend);
+
+		const req = httpMocks.createRequest({
+			params: { userId: mockUser._id },
+			body: { friendName: mockFriend.userName },
+		});
+		const res = httpMocks.createResponse();
+
+		await removeUserFriendByName(req, res);
+
+		expect(UserModel.findById).toHaveBeenCalledWith(mockUser._id);
+		expect(UserModel.findOne).toHaveBeenCalledWith({
+			userName: mockFriend.userName,
+		});
+
+		expect(mockUser.friends.delete).toHaveBeenCalledWith(mockFriend._id);
+		expect(mockFriend.friends.delete).toHaveBeenCalledWith(mockUser._id);
+
+		expect(mockUser.save).toHaveBeenCalled();
+		expect(mockFriend.save).toHaveBeenCalled();
+		expect(res.statusCode).toBe(200);
+		expect(JSON.parse(res._getData())).toEqual({
+			message: "Friend removed successfully",
+		});
+	});
+
+	it("should return 400 if the friend is not in the user's friend list", async () => {
+		mockUser.friends.has.mockReturnValue(false);
+
+		UserModel.findById.mockResolvedValue(mockUser);
+		UserModel.findOne.mockResolvedValue(mockFriend);
+
+		const req = httpMocks.createRequest({
+			params: { userId: mockUser._id },
+			body: { friendName: mockFriend.userName },
+		});
+		const res = httpMocks.createResponse();
+
+		await removeUserFriendByName(req, res);
+
+		expect(res.statusCode).toBe(400);
+		expect(res._getData()).toContain("Friend is not in user's friend list");
+	});
+
+	it("should return 404 if the user is not found", async () => {
+		UserModel.findById.mockResolvedValue(null);
+
+		const req = httpMocks.createRequest({
+			params: { userId: "nonexistentUserId" },
+			body: { friendName: mockFriend.userName },
+		});
+		const res = httpMocks.createResponse();
+
+		await removeUserFriendByName(req, res);
+
+		expect(UserModel.findById).toHaveBeenCalledWith("nonexistentUserId");
+		expect(res.statusCode).toBe(404);
+		expect(res._getData()).toContain("User not found");
+	});
+
+	it("should return 404 if the friend is not found", async () => {
+		UserModel.findById.mockResolvedValue(mockUser);
+		UserModel.findOne.mockResolvedValue(null);
+
+		const req = httpMocks.createRequest({
+			params: { userId: mockUser._id },
+			body: { friendName: "nonexistentFriendName" },
+		});
+		const res = httpMocks.createResponse();
+
+		await removeUserFriendByName(req, res);
+
+		expect(UserModel.findOne).toHaveBeenCalledWith({
+			userName: "nonexistentFriendName",
+		});
+		expect(res.statusCode).toBe(404);
+		expect(res._getData()).toContain("Friend not found");
+	});
+
+	it("should return 500 if server errors occur", async () => {
+		UserModel.findById.mockImplementation(() => {
+			throw new Error("Internal Server Error");
+		});
+
+		const req = httpMocks.createRequest({
+			params: { userId: mockUser._id },
+			body: { friendName: mockFriend.userName },
+		});
+		const res = httpMocks.createResponse();
+
+		await removeUserFriendByName(req, res);
+
+		expect(res.statusCode).toBe(500);
+		expect(res._getData()).toContain("Internal Server Error");
 	});
 });
 
@@ -675,6 +825,7 @@ describe("deleteUser", () => {
 		_id: "userId",
 		messages: ["message1Id", "message2Id"],
 	};
+
 	it("should delete the user and their messages successfully", async () => {
 		UserModel.findById = jest.fn().mockResolvedValue(mockUser);
 		UserModel.findByIdAndDelete = jest.fn().mockResolvedValue({});

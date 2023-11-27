@@ -192,7 +192,7 @@ describe("changeVisibility", () => {
 		const mockMessageData = {
 			_id: "messageId",
 			visibility: "public",
-			save: jest.fn().mockResolvedValue(this), // Save returns the instance itself
+			save: jest.fn().mockResolvedValue(this),
 		};
 		MessageModel.findById = jest.fn().mockResolvedValue(mockMessageData);
 

@@ -85,7 +85,7 @@ export const addUserFriendById = async (req, res) => {
 
 		user.friends.set(friendId, friend.userName);
 		friend.friends.set(userId, user.userName);
-		
+
 		await user.save();
 		await friend.save();
 		handleSuccess(res, { message: "Friend added successfully" });
@@ -184,7 +184,6 @@ export const removeUserFriendByName = async (req, res) => {
 	}
 };
 
-
 export const getUserMessages = async (req, res) => {
 	try {
 		const { userId } = req.params;
@@ -207,8 +206,6 @@ export const getUserMessages = async (req, res) => {
 		handleServerError(res, err);
 	}
 };
-
-
 
 export const deleteUser = async (req, res) => {
 	try {
