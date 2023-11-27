@@ -17,6 +17,7 @@ import ARKit
 //}
 
 struct CustomARViewRepresentable: UIViewRepresentable {
+    @Binding var userId: String
     @EnvironmentObject var messageState: MessageState
     @EnvironmentObject var fetchedMessagesState: FetchedMessagesState
     
@@ -27,8 +28,8 @@ struct CustomARViewRepresentable: UIViewRepresentable {
         
         let configuration = ARWorldTrackingConfiguration()
         sceneView.session.run(configuration)
-        
-        getUserMessages(userId: "653d51478ff5b3c9ace45c26") {
+        print("user id: \(userId)")
+        getUserMessages(userId: userId) {
             result in
             switch result {
             case .success(let response):
@@ -37,6 +38,7 @@ struct CustomARViewRepresentable: UIViewRepresentable {
                 for m in response {
                     do {
                         let convertedMessage = try Message(id: m._id,
+                                                           user_id: userId,
                                                            location: m.location.toCLLocation(),
                                                            messageStr: m.text)
                         convertedMessages.append(convertedMessage)

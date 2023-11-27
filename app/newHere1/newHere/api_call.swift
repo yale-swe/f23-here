@@ -166,10 +166,14 @@ func getAllUserFriends(userId: String, completion: @escaping (Result<[String], E
         
         do {
             // Deserialize the JSON response into an array of strings
-            let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [String]
+//            let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [String]
+            print("Friends")
+            print(data)
+            let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String]
+            let valuesList = jsonArray?.values.map { $0 }
             
-            if let friends = jsonArray {
-                completion(.success(friends))                
+            if let friends = valuesList {
+                completion(.success(friends))
             } else {
                 completion(.failure(URLError(.cannotParseResponse)))
             }

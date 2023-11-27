@@ -15,10 +15,9 @@ class Message {
     var location: CLLocation
     var messageStr: String
     
-    init(id:String, location:CLLocation, messageStr: String) {
+    init(id:String, user_id: String, location:CLLocation, messageStr: String) {
         self.id = id
-//        self.username = username
-        self.user_id = "653d51478ff5b3c9ace45c26"
+        self.user_id = user_id
         self.location = location
         self.messageStr = messageStr
     }

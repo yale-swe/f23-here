@@ -15,6 +15,7 @@ struct LoginView: View {
     @State internal var password: String = ""
     @State internal var isRegistered = false
     @Binding var isAuthenticated: Bool
+    @Binding var user_id: String
     
     @State internal var showingAlert = false
     @State internal var alertMessage = ""
@@ -50,7 +51,7 @@ struct LoginView: View {
                 }
                 .padding(.horizontal)
                 
-                NavigationLink(destination: RegistrationView(isRegistered: $isRegistered)) {
+                NavigationLink(destination: RegistrationView(isRegistered: $isRegistered, userId: $user_id)) {
                     Text("Don't have an account? Signup")
                 }
                 .padding()
@@ -90,7 +91,7 @@ struct LoginView: View {
             request.httpBody = jsonData
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.setValue(logApiKey, forHTTPHeaderField: "x-api-key")
-            
+                        
             URLSession.shared.dataTask(with: request) { data, response, error in
                 DispatchQueue.main.async {
                     if let error = error{
@@ -106,10 +107,13 @@ struct LoginView: View {
                                     if let jsonData = responseString.data(using: .utf8) {
                                     do {
                                         if let json = try JSONSerialization.jsonObject(with: jsonData, options:[]) as? [String: Any],
-                                        let userId = json["_id"] as? String {
-                                            print("User ID:\(userId)")
-                                            UserDefaults.standard.set(userId, forKey: "UserId")
-                                        }
+                                           let extractedUserId = json["_id"] as? String {
+                                            print("User id: \(extractedUserId)")
+                                            self.user_id = extractedUserId;
+                                            print("updated: \(self.user_id)")
+                                           UserDefaults.standard.set(extractedUserId, forKey: "UserId")
+//                                            self.isAuthenticated = true;
+                                       }
                                         
                                         if let json = try JSONSerialization.jsonObject(with: jsonData, options:[]) as? [String: Any],
                                         let userName = json["userName"] as? String {
@@ -122,6 +126,8 @@ struct LoginView: View {
                                 }
                                 }
                                 self.isAuthenticated = true;
+                                print("authenticated: \(self.isAuthenticated)")
+                                print("user_id: \(self.user_id)")
                             }
                         }else if statusCode == 404 {
                             self.alertMessage = "User not found. Please check your credentials."
