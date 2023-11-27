@@ -74,31 +74,51 @@ Retrieve messages for a user.
 
 - **Endpoint:** `GET /user/:userId/messages`
 
-### Add User's Friend
+### Add User's Friend by ID
 
-Add a friend to a user's friend list. Will also add that user to the other user's friend list.
+Add a friend to a user's friend list by their user ID. This will also add the user to the friend's friend list.
 
 - **Endpoint:** `PUT /user/:userId/friends`
 - **Body:**
+  ```json
+  {
+    "friendId": "friendUserId"
+  }
 
-```json
-{
-  "friendId": "friendUserId"
-}
-```
 
-### Remove User's Friend
+### Add User's Friend by Name
 
-Remove a friend from a user's friend list.
+Add a friend to a user's friend list by their username. This endpoint functions similarly to adding by ID, but uses the friend's username instead.
+
+- **Endpoint:** `PUT /user/:userId/friends_name`
+- **Body:**
+  ```json
+  {
+    "friendName": "friendUserName"
+  }
+
+### Remove User's Friend by ID
+
+Remove a friend from a user's friend list using the friend's user ID. This also removes the user from the friend's friend list.
 
 - **Endpoint:** `DELETE /user/:userId/friends`
 - **Body:**
+  ```json
+  {
+    "friendId": "friendUserId"
+  }
 
-```json
-{
-  "friendId": "friendUserId"
-}
-```
+### Remove User's Friend by Name
+
+Remove a friend from a user's friend list using the friend's username. Functions similarly to removing by ID, but targets the friend by their username.
+
+- **Endpoint:** `DELETE /user/:userId/friends_name`
+- **Body:**
+  ```json
+  {
+    "friendName": "friendUserName"
+  }
+
 
 ### Toggle Notify Friends
 
