@@ -29,6 +29,11 @@ Current Coverge:
 |---------|----------|---------|---------|-------------------|
 | 89.72   | 91.89    | 85.18   | 89.86   |                   |
 
+### Adding Backend Tests
+To add a backend unit test, navigate to the `__test__` folder under `server`. You can choose to add a unit test to either one of the routes or the controllers using the `jest` framework.
+
+### Adding Backend Routes
+To add a new backend route, navigate to the `server` folder. In the `controllers` folder. Add a controller method corresponding to one of authentication (`auth.js`), message (`message.js`), reply (`reply.js`), and user (`user.js`). Then, navigate to the `routes` folder. Import the controller method and define/add the corresponding route.
 
 ## Frontend
 To run our testing script in the frontend, execute the following command in XCode:
