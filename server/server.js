@@ -1,3 +1,12 @@
+/**
+ * Express.js Application
+ *
+ * A Node.js application built with Express.js for handling various API routes and middleware.
+ * It includes routes for user authentication, messaging, replies, and user profiles.
+ *
+ * @module app
+ */
+
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -9,12 +18,12 @@ import messageRoutes from "./routes/message.js";
 import replyRoutes from "./routes/reply.js";
 import userRoutes from "./routes/user.js";
 
-// run and set env variables
+// Load environment variables from .env file
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 6001;
 
-// API Key Middleware
+// API Key middleware
 const apiKeyAuth = (req, res, next) => {
 	const userApiKey = req.get("X-API-Key");
 	if (!userApiKey) {
@@ -42,7 +51,7 @@ app.use(
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
-// Add backend routes
+// Base Routes
 app.use("/auth", authRoutes);
 app.use("/message", messageRoutes);
 app.use("/reply", replyRoutes);
