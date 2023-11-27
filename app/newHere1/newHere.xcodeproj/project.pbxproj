@@ -30,6 +30,8 @@
 		FE69C3002B152F3C000483D4 /* messagesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE69C2FF2B152F3C000483D4 /* messagesTest.swift */; };
 		FE69C3082B15474D000483D4 /* profileTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE69C3062B15473D000483D4 /* profileTest.swift */; };
 		FE69C30B2B1549D0000483D4 /* postTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE69C3092B1549D0000483D4 /* postTest.swift */; };
+		FE69C30D2B154F0D000483D4 /* friendsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE69C30C2B154F0D000483D4 /* friendsTest.swift */; };
+		FE69C3102B154F82000483D4 /* mockNetworkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE69C30E2B154F7F000483D4 /* mockNetworkHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +88,8 @@
 		FE69C2FF2B152F3C000483D4 /* messagesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = messagesTest.swift; sourceTree = "<group>"; };
 		FE69C3062B15473D000483D4 /* profileTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profileTest.swift; sourceTree = "<group>"; };
 		FE69C3092B1549D0000483D4 /* postTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postTest.swift; sourceTree = "<group>"; };
+		FE69C30C2B154F0D000483D4 /* friendsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = friendsTest.swift; sourceTree = "<group>"; };
+		FE69C30E2B154F7F000483D4 /* mockNetworkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mockNetworkHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +203,8 @@
 				FE69C3092B1549D0000483D4 /* postTest.swift */,
 				FE69C3062B15473D000483D4 /* profileTest.swift */,
 				FE69C2FF2B152F3C000483D4 /* messagesTest.swift */,
+				FE69C30C2B154F0D000483D4 /* friendsTest.swift */,
+				FE69C30E2B154F7F000483D4 /* mockNetworkHandler.swift */,
 			);
 			path = newHereTests_v2;
 			sourceTree = "<group>";
@@ -404,7 +410,9 @@
 			files = (
 				FE69C3002B152F3C000483D4 /* messagesTest.swift in Sources */,
 				FE69C30B2B1549D0000483D4 /* postTest.swift in Sources */,
+				FE69C3102B154F82000483D4 /* mockNetworkHandler.swift in Sources */,
 				FE69C3082B15474D000483D4 /* profileTest.swift in Sources */,
+				FE69C30D2B154F0D000483D4 /* friendsTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
