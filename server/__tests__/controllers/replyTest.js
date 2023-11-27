@@ -1,3 +1,10 @@
+/**
+ * Reply Controller Tests
+ *
+ * A suite of Jest tests for testing functionalities related to replies to messages.
+ * These tests cover reply creation and liking of replies.
+ */
+
 import { jest } from "@jest/globals";
 
 import { replyToMessage, likeReply } from "../../controllers/reply.js";

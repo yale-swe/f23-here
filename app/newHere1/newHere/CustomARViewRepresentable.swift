@@ -4,31 +4,32 @@
 //
 //  Created by TRACY LI on 2023/10/28.
 //
+//  Description:
+//  This Swift file defines a SwiftUI UIViewRepresentable for integrating ARKit functionality.
+//  It allows for rendering AR content, such as 3D bubbles with messages, in the 'new_here' application.
+//
 
 import SwiftUI
 import ARKit
 
-//class ARViewModel: ObservableObject {
-//    var messageToPlant: Message?
-//    
-//    func plantMessage(_ message: Message) {
-//        messageToPlant = message
-//    }
-//}
-
 struct CustomARViewRepresentable: UIViewRepresentable {
+    // Binding for user ID
     @Binding var userId: String
+    
+    // Environment objects for message and fetched messages states
     @EnvironmentObject var messageState: MessageState
     @EnvironmentObject var fetchedMessagesState: FetchedMessagesState
     
+    // Create the ARSCNView and configure it
     func makeUIView(context: Context) -> ARSCNView {
-//        return CustomARView()
         let sceneView = ARSCNView()
         sceneView.delegate = context.coordinator
         
         let configuration = ARWorldTrackingConfiguration()
         sceneView.session.run(configuration)
         print("user id: \(userId)")
+        
+        // Fetch and render user's messages
         getUserMessages(userId: userId) {
             result in
             switch result {
@@ -60,6 +61,7 @@ struct CustomARViewRepresentable: UIViewRepresentable {
         return sceneView
     }
     
+    // Update the AR view when a new message is available
     func updateUIView (_ uiView: ARSCNView, context: Context) {
         if let messageToPlant = messageState.currentMessage {
             plantBubbleNode(to: uiView, message: messageToPlant)
@@ -68,6 +70,7 @@ struct CustomARViewRepresentable: UIViewRepresentable {
         
     }
     
+    // Create a coordinator for handling ARSCNViewDelegate methods
     func makeCoordinator() -> Coordinator {
             Coordinator(self)
     }
@@ -80,6 +83,7 @@ struct CustomARViewRepresentable: UIViewRepresentable {
         }
     }
     
+    // Plant a bubble node with a message at a specific position
     func plantBubbleNode(to sceneView: ARSCNView, message: Message) {
         // Set the position based on the provided position
         if let frame = sceneView.session.currentFrame {
@@ -99,6 +103,7 @@ struct CustomARViewRepresentable: UIViewRepresentable {
         }
     }
     
+    // Render a history of bubble nodes with messages at random positions
     func renderBubbleNodeHistory(to sceneView: ARSCNView, messages: [Message]) {
         // Create a random number generator
         var randomNumberGenerator = SystemRandomNumberGenerator()
@@ -121,6 +126,7 @@ struct CustomARViewRepresentable: UIViewRepresentable {
         }
     }
     
+    // Create a new bubble node with a message at a specified position
     func newBubbleNode(to sceneView: ARSCNView, message:Message, position:SCNVector3) {
         let bubble = SCNSphere(radius: 0.05)
         bubble.firstMaterial?.diffuse.contents = UIColor(red: 135.0/255.0, green: 206.0/255.0, blue: 235.0/255.0, alpha: 1.0)
@@ -131,9 +137,6 @@ struct CustomARViewRepresentable: UIViewRepresentable {
         let textGeometry1 = SCNText(string: message.id, extrusionDepth: 0.001)
         textGeometry1.firstMaterial?.diffuse.contents = UIColor.black
         let textNode1 = SCNNode(geometry: textGeometry1)
-        
-        
-        // TEXT POSITIONING RELATIVE TO BUBBLE - WILL HAVE TO ADJUST LATER
         
         // Position the first textNode inside the bubble
         textNode1.position = SCNVector3(-0.05, 0, -0.05) // Adjust the position inside the bubble

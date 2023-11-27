@@ -1,3 +1,10 @@
+/**
+ * Reply Routes Tests
+ *
+ * A suite of Jest tests for testing Reply routes.
+ *
+ */
+
 import { jest } from "@jest/globals";
 import express from "express";
 import router from "../../routes/reply";

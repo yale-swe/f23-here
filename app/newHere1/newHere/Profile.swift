@@ -1,15 +1,16 @@
-
 //
 //  Profile.swift
 //  here
 //
 //  Created by Lindsay Chen on 10/13/23.
 //
+//  Description:
+//  This file defines the ProfilePopup view along with its subviews such as ProfileHeader, ProfileButtons,
+//  ProfileStats, and PostGrid for the 'here' application. It includes functionality for displaying user profiles
+//  with options to view and edit profile details.
 
 import SwiftUI
 
-let apiString = "https://here-swe.vercel.app/auth/user"
-let apiKey = "qe5YT6jOgiA422_UcdbmVxxG1Z6G48aHV7fSV4TbAPs"
 let userId = UserDefaults.standard.string(forKey: "UserId") ?? ""
 let userName = UserDefaults.standard.string(forKey: "UserName") ?? ""
 
@@ -22,6 +23,7 @@ struct ProfilePopup: View {
         ZStack {
             Color.white
             VStack {
+                // Header with close button
                 HStack {
                     Spacer()
                     Button(action: {
@@ -36,9 +38,9 @@ struct ProfilePopup: View {
                     }
                     .padding(.trailing, 20) // Adjust the position of the close button
                 }
-                ProfileHeader()
+                ProfileHeader() // User profile header
                 Divider()
-                ProfileStats()
+                ProfileStats() // User profile statistics
                 Divider()
                 Button(action: {
                     isShowingFriends.toggle()
@@ -49,7 +51,7 @@ struct ProfilePopup: View {
                         .border(Color.gray, width: 1)
                         .cornerRadius(5)
                 }
-                PostGrid()
+                PostGrid() // Grid to show posts
             }
             .sheet(isPresented: $isShowingFriends) {
                 // Friends.swift => Friends struct
@@ -60,16 +62,18 @@ struct ProfilePopup: View {
     }
 }
 
+/// View for displaying the user's profile header.
 struct ProfileHeader: View {
     var body: some View {
         HStack {
+            // Profile picture
             Image("profilePicture")
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 80, height: 80)
                 .clipShape(Circle())
                 .padding()
-
+            // User name and bio
             VStack(alignment: .leading, spacing: 8) {
                 
                 Text(userName)
@@ -87,10 +91,11 @@ struct ProfileHeader: View {
     }
 }
 
+/// View for displaying profile action buttons.
 struct ProfileButtons: View {
     var body: some View {
         HStack {
-                           
+            // Edit profile button
             Button(action: {
                 // Action for Edit Profile
             }) {
@@ -101,7 +106,7 @@ struct ProfileButtons: View {
                     .cornerRadius(5)
             }
 
-
+            // Add friend button
             Button(action: {
                 // Action for Add Friend
             }) {
@@ -116,6 +121,7 @@ struct ProfileButtons: View {
     }
 }
 
+/// View for displaying profile statistics.
 struct ProfileStats: View {
     let stats: [(title: String, value: String)] = [
         ("Notes", "10"),
@@ -143,6 +149,7 @@ struct ProfileStats: View {
     }
 }
 
+/// View for displaying individual profile stat item.
 struct ProfileStatItem: View {
     let title: String
     let value: String
@@ -160,9 +167,10 @@ struct ProfileStatItem: View {
     }
 }
 
+/// View for displaying the posts grid.
 struct PostGrid: View {
     var body: some View {
-        // Replace with a grid or list of posts
+        // Placeholder for posts grid
         Text("Posts Grid")
             .font(.title)
             .padding()

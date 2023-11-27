@@ -1,3 +1,10 @@
+/**
+ * Message Routes Tests
+ *
+ * A suite of Jest tests for testing Message routes.
+ *
+ */
+
 import { jest } from "@jest/globals";
 import {
 	postMessage,
