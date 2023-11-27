@@ -4,19 +4,26 @@
 //
 //  Created by Eric  Wang on 10/14/23.
 //
+//  Description:
+//  This file defines the MessagesPopup view, which is used to display a popup of messages
+//  within the 'here' application. It includes a background image, a list of messages, and
+//  a close button to dismiss the view.
 
 import SwiftUI
 
+/// View for displaying a popup with messages.
 struct MessagesPopup: View {
-    @Binding var isPresented: Bool
-    
+    @Binding var isPresented: Bool // Binding to control the visibility of the popup
+        
     var body: some View {
         ZStack{
+            // Background image for the popup
             Image("cross_campus")
                 .font(.system(size: 50))
             LazyVStack {
                 HStack {
                     Spacer()
+                    // Close button for the popup
                     Button(action: {
                         isPresented.toggle() // Close the popup
                     }) {
@@ -27,8 +34,9 @@ struct MessagesPopup: View {
                             .foregroundColor(.white)
                             .cornerRadius(10)
                     }
-                    .padding(.trailing, 20) // Adjust the position of the close button
+                    .padding(.trailing, 20)
                 }
+                // Loop to create message buttons
                 ForEach(1...5, id: \.self) { count in
                     Button(action: {}) {
                         HStack {
@@ -50,6 +58,7 @@ struct MessagesPopup: View {
     }
 }
 
+/// Subview for displaying a profile picture.
 struct ProfilePicture: View {
     var body : some View {
         Image("profilePicture")
