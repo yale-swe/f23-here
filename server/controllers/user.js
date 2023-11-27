@@ -174,8 +174,8 @@ export const removeUserFriendByName = async (req, res) => {
 			return handleBadRequest(res, "Friend is not in user's friend list");
 		}
 
-		user.friends.remove(friend._id.toString());
-		friend.friends.remove(userId);
+		user.friends.delete(friend._id.toString());
+		friend.friends.delete(userId);
 		await user.save();
 		await friend.save();
 		handleSuccess(res, { message: "Friend removed successfully" });
