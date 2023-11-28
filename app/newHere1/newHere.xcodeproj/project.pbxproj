@@ -27,11 +27,7 @@
 		158392332AFC72F3007A53C7 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158392322AFC72F3007A53C7 /* LoginView.swift */; };
 		158392352AFC730B007A53C7 /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 158392342AFC730B007A53C7 /* Registration.swift */; };
 		15F1CC9C2B05C36A00A34A19 /* LoginViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F1CC9B2B05C36A00A34A19 /* LoginViewTests.swift */; };
-		FE69C3002B152F3C000483D4 /* messagesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE69C2FF2B152F3C000483D4 /* messagesTest.swift */; };
-		FE69C3082B15474D000483D4 /* profileTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE69C3062B15473D000483D4 /* profileTest.swift */; };
-		FE69C30B2B1549D0000483D4 /* postTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE69C3092B1549D0000483D4 /* postTest.swift */; };
-		FE69C30D2B154F0D000483D4 /* friendsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE69C30C2B154F0D000483D4 /* friendsTest.swift */; };
-		FE69C3102B154F82000483D4 /* mockNetworkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE69C30E2B154F7F000483D4 /* mockNetworkHandler.swift */; };
+		71D79DA22B1570E4009A054C /* BubbleAnimation.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 71D79DA12B1570E4009A054C /* BubbleAnimation.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,12 +80,8 @@
 		158392322AFC72F3007A53C7 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		158392342AFC730B007A53C7 /* Registration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
 		15F1CC9B2B05C36A00A34A19 /* LoginViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewTests.swift; sourceTree = "<group>"; };
+		71D79DA12B1570E4009A054C /* BubbleAnimation.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = BubbleAnimation.atlas; sourceTree = "<group>"; };
 		FE69C2FD2B152F3C000483D4 /* newHereTests_v2.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = newHereTests_v2.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FE69C2FF2B152F3C000483D4 /* messagesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = messagesTest.swift; sourceTree = "<group>"; };
-		FE69C3062B15473D000483D4 /* profileTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profileTest.swift; sourceTree = "<group>"; };
-		FE69C3092B1549D0000483D4 /* postTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = postTest.swift; sourceTree = "<group>"; };
-		FE69C30C2B154F0D000483D4 /* friendsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = friendsTest.swift; sourceTree = "<group>"; };
-		FE69C30E2B154F7F000483D4 /* mockNetworkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mockNetworkHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,7 +122,6 @@
 				1531A8DC2AED95FD009F644E /* newHere */,
 				1531A8EE2AED9600009F644E /* newHereTests */,
 				1531A8F82AED9600009F644E /* newHereUITests */,
-				FE69C2FE2B152F3C000483D4 /* newHereTests_v2 */,
 				1531A8DB2AED95FD009F644E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -149,21 +140,12 @@
 		1531A8DC2AED95FD009F644E /* newHere */ = {
 			isa = PBXGroup;
 			children = (
+				71D79DAD2B1578F5009A054C /* Models */,
+				71D79DAB2B1576DA009A054C /* Utils */,
+				71D79DA82B15767C009A054C /* Views */,
 				151645172B0EF81B00AA2FC0 /* Info.plist */,
 				1531A8DD2AED95FD009F644E /* newHereApp.swift */,
-				1531A8DF2AED95FD009F644E /* ContentView.swift */,
-				1531A9082AED9618009F644E /* Home.swift */,
-				1531A90C2AED9663009F644E /* Messages.swift */,
-				1531A90A2AED964A009F644E /* Profile.swift */,
-				1583922C2AFC72CF007A53C7 /* api_call.swift */,
-				158392342AFC730B007A53C7 /* Registration.swift */,
-				1583922F2AFC72D3007A53C7 /* CustomARView.swift */,
-				158392322AFC72F3007A53C7 /* LoginView.swift */,
-				1583922E2AFC72D3007A53C7 /* CustomARViewRepresentable.swift */,
-				15582E382AFB2659003910A2 /* Friends.swift */,
-				1531A90E2AED9917009F644E /* Post.swift */,
-				1531A9142AEDCADB009F644E /* Message.swift */,
-				1531A9122AEDAE2A009F644E /* LocationDataManager.swift */,
+				71D79DA12B1570E4009A054C /* BubbleAnimation.atlas */,
 				1531A8E12AED95FF009F644E /* Assets.xcassets */,
 				1531A8E32AED95FF009F644E /* newHere.entitlements */,
 				1531A8E42AED95FF009F644E /* Preview Content */,
@@ -197,16 +179,102 @@
 			path = newHereUITests;
 			sourceTree = "<group>";
 		};
-		FE69C2FE2B152F3C000483D4 /* newHereTests_v2 */ = {
+		71D79DA42B15757E009A054C /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				FE69C3092B1549D0000483D4 /* postTest.swift */,
-				FE69C3062B15473D000483D4 /* profileTest.swift */,
-				FE69C2FF2B152F3C000483D4 /* messagesTest.swift */,
-				FE69C30C2B154F0D000483D4 /* friendsTest.swift */,
-				FE69C30E2B154F7F000483D4 /* mockNetworkHandler.swift */,
+				1531A9082AED9618009F644E /* Home.swift */,
 			);
-			path = newHereTests_v2;
+			path = Home;
+			sourceTree = "<group>";
+		};
+		71D79DA52B15758E009A054C /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				1531A90A2AED964A009F644E /* Profile.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		71D79DA62B157636009A054C /* Registration */ = {
+			isa = PBXGroup;
+			children = (
+				158392342AFC730B007A53C7 /* Registration.swift */,
+			);
+			path = Registration;
+			sourceTree = "<group>";
+		};
+		71D79DA72B157640009A054C /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				158392322AFC72F3007A53C7 /* LoginView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		71D79DA82B15767C009A054C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				71D79DAE2B15793E009A054C /* FriendsView */,
+				71D79DAC2B157721009A054C /* ARView */,
+				1531A8DF2AED95FD009F644E /* ContentView.swift */,
+				71D79DAA2B1576A8009A054C /* MessageList */,
+				71D79DA92B15769B009A054C /* Post */,
+				71D79DA42B15757E009A054C /* Home */,
+				71D79DA52B15758E009A054C /* Profile */,
+				71D79DA62B157636009A054C /* Registration */,
+				71D79DA72B157640009A054C /* Login */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		71D79DA92B15769B009A054C /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				1531A90E2AED9917009F644E /* Post.swift */,
+			);
+			path = Post;
+			sourceTree = "<group>";
+		};
+		71D79DAA2B1576A8009A054C /* MessageList */ = {
+			isa = PBXGroup;
+			children = (
+				1531A90C2AED9663009F644E /* Messages.swift */,
+			);
+			path = MessageList;
+			sourceTree = "<group>";
+		};
+		71D79DAB2B1576DA009A054C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				1583922C2AFC72CF007A53C7 /* api_call.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		71D79DAC2B157721009A054C /* ARView */ = {
+			isa = PBXGroup;
+			children = (
+				1583922E2AFC72D3007A53C7 /* CustomARViewRepresentable.swift */,
+				1583922F2AFC72D3007A53C7 /* CustomARView.swift */,
+			);
+			path = ARView;
+			sourceTree = "<group>";
+		};
+		71D79DAD2B1578F5009A054C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1531A9142AEDCADB009F644E /* Message.swift */,
+				1531A9122AEDAE2A009F644E /* LocationDataManager.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		71D79DAE2B15793E009A054C /* FriendsView */ = {
+			isa = PBXGroup;
+			children = (
+				15582E382AFB2659003910A2 /* Friends.swift */,
+			);
+			path = FriendsView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -337,6 +405,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1531A8E62AED95FF009F644E /* Preview Assets.xcassets in Resources */,
+				71D79DA22B1570E4009A054C /* BubbleAnimation.atlas in Resources */,
 				1531A8E22AED95FF009F644E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -408,11 +477,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE69C3002B152F3C000483D4 /* messagesTest.swift in Sources */,
-				FE69C30B2B1549D0000483D4 /* postTest.swift in Sources */,
-				FE69C3102B154F82000483D4 /* mockNetworkHandler.swift in Sources */,
-				FE69C3082B15474D000483D4 /* profileTest.swift in Sources */,
-				FE69C30D2B154F0D000483D4 /* friendsTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -568,7 +632,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"newHere/Preview Content\"";
-				DEVELOPMENT_TEAM = A7X36A78B2;
+				DEVELOPMENT_TEAM = W23Y365YR7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -596,7 +660,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -640,7 +705,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -706,7 +772,7 @@
 				"BUNDLE_LOADER[arch=*]" = "$(BUILT_PRODUCTS_DIR)/newHere.app/newHere";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = A7X36A78B2;
+				DEVELOPMENT_TEAM = W23Y365YR7;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
