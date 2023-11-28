@@ -6,6 +6,22 @@ Users can explore their surroundings and stumble upon messages from both old and
 Beyond personal connections, our platform encourages participation in large-scale public discussions, allowing users to engage in meaningful discourse about the world around them. 
 Join us in redefining social interaction in the digital age with a fresh perspective on location-based AR communication.
 
+## Table of Contents
+1. [MVP Requirement Fullfillment](#mvp-requirement-fullfillment)
+2. [Deployment](#deployment)
+3. [Adding to the Codebase](#adding-to-the-codebase)
+   - [Frontend](#frontend)
+     - [Adding a New Feature](#adding-a-new-feature)
+     - [Example: Adding a 'Reaction' Feature](#example-adding-a-reaction-feature)
+     - [Adding Frontend Tests](#adding-frontend-tests)
+   - [Backend](#backend)
+     - [Adding Backend Routes](#adding-backend-routes)
+     - [Example Route and Controller Implementation](#example-route-and-controller-implementation)
+     - [Adding Backend Tests](#adding-backend-tests)
+4. [Testing](#testing)
+   - [Backend](#backend-1)
+   - [Frontend](#frontend-1)
+
 # MVP Requirement Fullfillment
 - [✔] Message Viewing Capability: Users can view all messages
 - [✔] Message Visitng Capability at Specific Locations: Users can view all messages when they are within a predefined geographical area covered by the app.
@@ -29,13 +45,64 @@ We are using TestFlight Internal to deploy Here Beta Version. To use this app:
 3. Download TestFlight on you iPhone and accept the invitation in TestFlight, enter the redeem code, then TestFlight will automatically download the app for you.
 4. Try our app!
 
-Refer to API_DOC.md for API Deployment.
+Refer to [API Documentation](API-Documentation.md) for details on API deployment.
 
-# Additonal Changes Instructions
+# Adding to the Codebase
 
 ### Important Note
 
 When introducing changes, always create a new branch from the main branch. After implementing your changes, initiate a pull request and request a code review from a teammate. Following approval, merge your changes into the main branch. Ensure that your merge passes all checks in GitHub Actions to maintain build integrity. Make sure there is at least 85% statement coverage across all files for the backend when implementing new changes.
+
+## Frontend
+
+### Adding a new Feature
+
+The project is structured into various directories:
+
+- `Models`: Contains the data models such as `Message`.
+- `Utils`: Includes utility classes such as `api_call`.
+- `Views`: UI components of the app, including `HomePageView`, `MessageList`, etc.
+
+### Steps to Add a New Feature
+
+
+1. **Update the Model**
+   - If the feature requires new data structures, update the `Models` directory.
+   - For example, to add reactions to messages, you might need a `Reaction` model.
+
+2. **Create a New View**
+   - In the `Views` directory, create a new SwiftUI View for your feature.
+   - Use the existing naming convention, e.g., `ReactionView.swift`.
+
+3. **Integrate ARKit**
+   - If the feature is AR-related, modify `CustomARViewRepresentable` or create a new AR view.
+
+4. **Update State Management**
+   - Add necessary `@Published` properties in `MessageState` or `FetchedMessagesState` to react to data changes.
+
+5. **Modify Existing Views**
+   - Update `HomePageView` to incorporate the new feature.
+   - Add buttons or controls as needed to interact with the new feature.
+
+6. **Documentation:**
+   - Comment your code to explain the functionality of your new feature and depdencies. 
+
+6. **Testing**
+   - Use `newHereTests` and `newHereUITests` for testing appropriate changes, depending on if the feature has UI integration or not.
+
+### Example: Adding a 'Reaction' Feature
+
+1. Create `Reaction.swift` in the `Models` directory.
+2. Create `ReactionView.swift` in the `Views` directory.
+3. Update `MessageState` with `@Published var reactions: [Reaction]?`.
+4. In `HomePageView`, add a button for reactions.
+5. Write unit tests for the feature in Xcode.
+
+### Adding Frontend Tests
+
+TBD
+
+## Backend
 
 ### Adding Backend Routes
 To add a new backend route, navigate to the `server` folder. In the `controllers` folder. Add a controller method corresponding to one of authentication (`auth.js`), message (`message.js`), reply (`reply.js`), and user (`user.js`). Then, navigate to the `routes` folder. Import the controller method and define/add the corresponding route.
@@ -135,17 +202,23 @@ describe("Function", () => {
 ```
 
 # Testing
+
+## Threshold: 85% Statment Coverage
+
 ## Backend
 To run our testing script in the backend, execute the following:
 
 ```bash
+cd server
 npm test
 ```
 
 Current Coverge: 
-| % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s |
-|---------|----------|---------|---------|-------------------|
-| 89.72   | 91.89    | 85.18   | 89.86   |                   |
+
+| % Stmts | % Branch | % Funcs | % Lines |
+|---------|----------|---------|---------|
+| 90.35   | 92.5     | 85.71   | 90.49   |
+
 
 ## Frontend
 To run our testing script in the frontend, execute the following command in XCode:

@@ -1,7 +1,42 @@
 # API Documentation
 
-This document outlines the API endpoints for Here. Please contact phuc.duong@yale.edu for the X-API-Key.
-Our backend is deployed on Vercel.
+This document outlines the API endpoints for the Here app, a location-based AR social app. The API is designed to facilitate the app's core functionalities including authentication message mangement, replies mangement, and user mangemenet.
+
+For access to the API, please reach out to phuc.duong@yale.edu to request the `X-API-Key`, which is required for authentication and access control.
+
+Our backend services are deployed on Vercel. The data is stored and managed with MongoDB Atlas.
+
+Below you will find detailed descriptions of each endpoint, including the HTTP methods, request URLs, necessary parameters, expected request  and examples of use.
+
+## Table of Contents
+
+- [Base URL](#base-url)
+- [Authentication Endpoints](#authentication-endpoints)
+  - [Register](#register)
+  - [Login](#login)
+- [User Endpoints](#user-endpoints)
+  - [Search User by Email or Username](#search-user-by-email-or-username)
+  - [Get User by ID](#get-user-by-id)
+  - [Get User Friends](#get-user-friends)
+  - [Get User's Messages](#get-users-messages)
+  - [Add User's Friend by ID](#add-users-friend-by-id)
+  - [Add User's Friend by Name](#add-users-friend-by-name)
+  - [Remove User's Friend by ID](#remove-users-friend-by-id)
+  - [Remove User's Friend by Name](#remove-users-friend-by-name)
+  - [Toggle Notify Friends](#toggle-notify-friends)
+  - [Update User's Profile](#update-users-profile)
+  - [Delete User](#delete-user)
+- [Message Endpoints](#message-endpoints)
+  - [Get All Messages](#get-all-messages)
+  - [Post Message](#post-message)
+  - [Delete Message](#delete-message)
+  - [Increment Likes](#increment-likes)
+  - [Change Visibility](#change-visibility)
+- [Reply Endpoints](#reply-endpoints)
+  - [Like Reply](#like-reply)
+  - [Add Reply](#add-reply)
+
+
 
 ## Base URL
 
