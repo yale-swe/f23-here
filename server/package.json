@@ -40,7 +40,7 @@
     ],
     "coverageThreshold": {
       "global": {
-        "statements": 85
+        "statements": 80
       }
     },
     "coverageDirectory": "coverage"

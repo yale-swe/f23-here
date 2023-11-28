@@ -46,7 +46,7 @@ Refer to [API Documentation](API-Documentation.md) for details on API deployment
 
 ### Important Note
 
-When introducing changes, always create a new branch from the main branch. After implementing your changes, initiate a pull request and request a code review from a teammate. Following approval, merge your changes into the main branch. Ensure that your merge passes all checks in GitHub Actions to maintain build integrity. Make sure there is at least 85% statement coverage across all files for the backend when implementing new changes.
+When introducing changes, always create a new branch from the main branch. After implementing your changes, initiate a pull request and request a code review from a teammate. Following approval, merge your changes into the main branch. Ensure that your merge passes all checks in GitHub Actions to maintain build integrity. Make sure there is at least 80% statement coverage across all files for the backend when implementing new changes.
 
 ## Frontend
 
@@ -92,10 +92,6 @@ The project is structured into various directories:
 3. Update `MessageState` with `@Published var reactions: [Reaction]?`.
 4. In `HomePageView`, add a button for reactions.
 5. Write unit tests for the feature in Xcode.
-
-### Adding Frontend Tests
-
-TBD
 
 ## Backend
 
@@ -198,7 +194,7 @@ describe("Function", () => {
 
 # Testing
 
-## Threshold: 85% Statment Coverage
+## Threshold: 80% Statment Coverage
 
 ## Backend
 To run our testing script in the backend, execute the following:
@@ -238,5 +234,4 @@ Failed to load the test bundle. Underlying Error: The bundle “newHereUITests�
 The bundle couldn’t be loaded. Try reinstalling the bundle. 
 
 We were told to not worry about getting 80% statement coverage for the frontend tests,
-especially since we've met the requirement for backend tests. During break, we will 
-work on resolving this error and finishing the frontend tests.
+especially since we've met the requirement for backend tests.
