@@ -103,8 +103,7 @@ struct HomePageView: View {
         // Render popups upon state variables being true.
         
         if isShowingPosts {
-            PostsPopup(isPresented: $isShowingPosts)
-                .environmentObject(messageState)
+            PostsPopup(isPresented: $isShowingPosts, messageState: messageState, locationDataManager: locationDataManager)
                 .frame(width: 300, height: 300)
                 .background(Color.white.opacity(0.5))
                 .cornerRadius(12)

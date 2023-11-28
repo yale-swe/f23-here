@@ -9,7 +9,10 @@ Join us in redefining social interaction in the digital age with a fresh perspec
 ## Table of Contents
 1. [MVP Requirement Fullfillment](#mvp-requirement-fullfillment)
 2. [Deployment](#deployment)
-3. [Adding to the Codebase](#adding-to-the-codebase)
+3. [Running Instructions](#running-instructions)
+   - [Running Frontend](#running-frontend)
+   - [Running Backend](#running-backend)
+4. [Adding to the Codebase](#adding-to-the-codebase)
    - [Frontend](#frontend)
      - [Adding a New Feature](#adding-a-new-feature)
      - [Example: Adding a 'Reaction' Feature](#example-adding-a-reaction-feature)
@@ -18,9 +21,53 @@ Join us in redefining social interaction in the digital age with a fresh perspec
      - [Adding Backend Routes](#adding-backend-routes)
      - [Example Route and Controller Implementation](#example-route-and-controller-implementation)
      - [Adding Backend Tests](#adding-backend-tests)
-4. [Testing](#testing)
+5. [Testing](#testing)
    - [Backend](#backend-1)
    - [Frontend](#frontend-1)
+
+# Running Instructions
+
+## Running Frontend
+
+1. **Clone the Repository:**
+   - If you haven't already, clone the repository to your local machine using `git clone https://github.com/yale-swe/f23-here`.
+
+2. **Open the Project in Xcode:**
+   - Navigate to the `app` directory within the cloned repository.
+   - Open this folder with Xcode.
+
+3. **Select a Simulator or Device:**
+   - In Xcode, choose a simulator or connect a physical iOS device to run the application on.
+
+4. **Build and Run the Project:**
+   - Click on the "Play" button or use the shortcut `Cmd + R` to build and run the application.
+
+
+## Running Backend
+1. **Clone the Repository:**
+   - If you haven't already, clone the repository to your local machine using `git clone https://github.com/yale-swe/f23-here`.
+
+2. **Navigate to the Server Directory:**
+   - Open a terminal and navigate to the `server` directory within the cloned repository.
+
+3. **Install Dependencies:**
+   - Run the command `npm install` to install all the necessary dependencies for the backend server.
+
+4. **Environment Variables:**
+   - Set up the required environment variables. Refer to the example below for the necessary variables.
+
+5. **Start the Server:**
+   - Run the command `node server.js` to start the backend server.
+   - The server should now be running and accessible on the specified port.
+
+```env
+# .env file example
+
+PORT=6000
+MONGO_URL=mongodb+srv://heredemo:swe439here@clusterdemo.mnbogqc.mongodb.net/
+API_KEY=qe5YT6jOgiA422_UcdbmVxxG1Z6G48aHV7fSV4TbAPs
+```
+
 
 # MVP Requirement Fullfillment
 - [✔] Message Viewing Capability: Users can view all messages
@@ -167,7 +214,7 @@ export const getUserById = async (req, res) => {
     - Use `jest.mock()` to replace actual implementations with mock functions that return testable results.
 
 6. **Running Tests:**
-    - To run your tests, use the command `npm test`.
+    - To run your tests, use the command `npm test --coverage`.
     - Ensure that your new tests pass without interfering with existing tests.
 
 7. **Review and Refactor:**
@@ -201,7 +248,7 @@ To run our testing script in the backend, execute the following:
 
 ```bash
 cd server
-npm test
+npm test --coverage
 ```
 
 Current Coverge: 

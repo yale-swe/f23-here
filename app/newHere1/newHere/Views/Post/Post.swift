@@ -24,7 +24,7 @@ struct PostsPopup: View {
     @State var noteMessage: String = ""
     @State var isEditing = false
     
-   var messageState: MessageState
+    var messageState: MessageState
     
     let senderName: String = "Username"
     
