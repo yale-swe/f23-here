@@ -10,7 +10,6 @@
  *  - bcrypt: A library for hashing and comparing passwords, used to securely manage user passwords.
  *   - Handlers (handleServerError, handleSuccess, handleNotFound): These utility functions
  * 		are used for consistent handling of HTTP responses across different scenarios such as success, server errors, or resource not found errors.
- *
  */
 
 import UserModel from "../models/User.js";
