@@ -21,14 +21,14 @@ struct PostsPopup: View {
     @Binding var isPresented: Bool
     //    @Binding var storedMessages: [Message]
     
-    @State private var noteMessage: String = ""
-    @State private var isEditing = false
+    @State var noteMessage: String = ""
+    @State var isEditing = false
     
-    @EnvironmentObject var messageState: MessageState
+   var messageState: MessageState
     
     let senderName: String = "Username"
     
-    @EnvironmentObject var locationDataManager: LocationDataManager
+    var locationDataManager: LocationDataManager
     
     
 
