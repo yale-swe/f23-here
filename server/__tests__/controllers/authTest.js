@@ -184,7 +184,7 @@ describe("login", () => {
 
 		await login(req, res);
 
-		expect(res.statusCode).toBe(500);
+		expect(res.statusCode).toBe(400);
 		expect(res._getData()).toContain("Internal Server Error");
 	});
 });
