@@ -20,7 +20,7 @@ Refer to API_DOC.md for API Deployment.
 
 ### Important Note
 
-When introducing changes, always create a new branch from the main branch. After implementing your changes, initiate a pull request and request a code review from a teammate. Following approval, merge your changes into the main branch. Ensure that your merge passes all checks in GitHub Actions to maintain build integrity.
+When introducing changes, always create a new branch from the main branch. After implementing your changes, initiate a pull request and request a code review from a teammate. Following approval, merge your changes into the main branch. Ensure that your merge passes all checks in GitHub Actions to maintain build integrity. Make sure there is at least 85% statement coverage across all files for the backend when implementing new changes.
 
 ### Adding Backend Routes
 To add a new backend route, navigate to the `server` folder. In the `controllers` folder. Add a controller method corresponding to one of authentication (`auth.js`), message (`message.js`), reply (`reply.js`), and user (`user.js`). Then, navigate to the `routes` folder. Import the controller method and define/add the corresponding route.
@@ -78,6 +78,7 @@ export const getUserById = async (req, res) => {
 ```
 
 ### Adding Backend Tests
+
 1. **Locate the Test File:** Navigate to the `__tests__` directory under `server`. Here, you'll find organized subdirectories for different aspects of the API, such as `controllers`, `models`, and `routes`.
 
 2. **Create a Test File:** If a test file does not already exist in the section you edit, create one within the appropriate subdirectory. The file should be named after the feature with the suffix `Test.js`.
