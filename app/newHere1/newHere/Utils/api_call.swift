@@ -189,8 +189,6 @@ func postMessage(user_id: String, text: String, visibility: String, locationData
 
 // Function to get all friends of a user
 func getAllUserFriends(userId: String, completion: @escaping (Result<[String: String], Error>) -> Void) {
-/// Function to get all friends of a user
-func getAllUserFriends(userId: String, completion: @escaping (Result<[String], Error>) -> Void) {
     // API URL
     let urlString = "https://here-swe.vercel.app/user/\(userId)/friends"
     

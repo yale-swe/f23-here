@@ -22,12 +22,14 @@ class Message {
 //    var username: String
     var location: CLLocation
     var messageStr: String
+    var visibility: String
     
     /// Initialize Message object with provided parameters
-    init(id:String, user_id: String, location:CLLocation, messageStr: String) {
+    init(id:String, user_id: String, location:CLLocation, messageStr: String, visibility: String) {
         self.id = id
         self.user_id = user_id
         self.location = location
         self.messageStr = messageStr
+        self.visibility = visibility
     }
 }
