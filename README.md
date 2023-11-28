@@ -274,11 +274,27 @@ Current Coverge:
 |---------|
 | 6.7%    |
 
-**NOTE**: As discussed with Professor Antonopoulos, we are currently encountering an error
-that prevents all of us from properly running the tests. Here is the encountered error:
+**NOTE**: As discussed with Professor Antonopoulos, we are currently facing difficulty implementing unit tests using XCTests. 
 
-Failed to load the test bundle. Underlying Error: The bundle “newHereUITests” couldn’t be loaded. 
-The bundle couldn’t be loaded. Try reinstalling the bundle. 
+We are unable to mock functions in our codebase because we are using dependencies such as ARKit. Since ARKit relies on interactions with devices such as an iPhone, it's hard to mock this environment effectively. Our app uses real-time environmental data and spatial processing, so creating scenarios to run our unit tests effectively is not feasiable for the scope of this project and our first-time knowledge in unit-testing in Swift.
 
-We were told to not worry about getting 80% statement coverage for the frontend tests,
-especially since we've met the requirement for backend tests.
+In addition, XCode itself makes running the test bundle inconsistent. Depending on our device, a test might compile on one laptop but not on another. This is especially prevalent when we are trying to write and run UI unit tests that simulates certain UI interactions. 
+
+We get errors like these:
+
+
+```
+Failed to load the test bundle. 
+The bundle "newHereUITests" couldn't be loaded. 
+The bundle couldn't be loaded. Try reinstalling the bundle.
+```
+
+Overall, due to the inherent complexity of unit testing in Xcode in Swift with XCTest, we are unable to write meaningful or functional unit tests; even after dedicating significant time. Despite not successfully writing unit tests in the frontend, we have learned the following:
+
+- How to effectively perform manual testing
+   - Since we are unable to write unit tests, we had to make sure to precisely manually test different interactions to ensure there were no issues.
+   - We were able to come up with various user interaction scenarios and manually perform these actions to ensure that our application works as intended.
+- Document and report on issues like these for future reference and communicate these issues to others.
+- Challenges of mocking environments that rely on hardware interactions.
+
+ Thus, we were told not to worry about getting 80% statement coverage for the frontend tests, especially since we've met the requirement for back-end tests. We were told to document this issue in detail, which we did above.
