@@ -23,7 +23,7 @@
     "jest": "^29.7.0"
   },
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest ",
     "build": "echo 'No build step required'",
     "start": "node server.js"
   },
@@ -38,6 +38,11 @@
       "!**/__tests__/**",
       "!**/coverage/lcov-report/**"
     ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 90.50
+      }
+    },
     "coverageDirectory": "coverage"
   },
   "keywords": [],
