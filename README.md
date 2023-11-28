@@ -157,5 +157,3 @@ The bundle couldn’t be loaded. Try reinstalling the bundle.
 We were told to not worry about getting 80% statement coverage for the frontend tests,
 especially since we've met the requirement for backend tests. During break, we will 
 work on resolving this error and finishing the frontend tests.
-
-
