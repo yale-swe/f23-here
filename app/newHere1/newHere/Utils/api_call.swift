@@ -31,7 +31,7 @@ extension Double {
     }
 }
 
-// Structure for request body of posting a message
+/// Structure for request body of posting a message
 struct PostMessageRequest: Codable {
     let user_id: String
     let text: String
@@ -39,7 +39,7 @@ struct PostMessageRequest: Codable {
     let location: GeoJSONPoint
 }
 
-/// Structure for response of a message
+//// Structure for response of a message
 struct MessageResponse: Codable {
     let _id: String
     let user_id: String
@@ -48,17 +48,17 @@ struct MessageResponse: Codable {
     let location: GeoJSONPoint
 }
 
-/// Structure for response of adding a friend
+//// Structure for response of adding a friend
 struct AddFriendResponse: Codable {
     let message: String
 }
 
-/// Structure for request body of adding a friend
+//// Structure for request body of adding a friend
 struct FriendRequest: Codable {
     let friendName: String
 }
 
-/// Structure for user message data
+//// Structure for user message data
 struct UserMessage: Codable {
     struct Location: Codable {
         let type: String
@@ -74,7 +74,7 @@ struct UserMessage: Codable {
     let replies: [String]
 }
 
-/// Function to fetch user messages
+//// Function to fetch user messages
 func getUserMessages(userId: String, completion: @escaping (Result<[MessageResponse], Error>) -> Void) {
     // API URL
     let urlString = "https://here-swe.vercel.app/user/\(userId)/messages"
@@ -134,6 +134,13 @@ func getUserMessages(userId: String, completion: @escaping (Result<[MessageRespo
 ///   - visibility: The visibility status of the message.
 ///   - locationDataManager: A `LocationDataManager` to provide the current location.
 ///   - completion: A completion handler that returns either `MessageResponse` or `Error`.
+/// Posts a message to a remote server.
+/// - Parameters:
+///   - user_id: A `String` representing the user's ID.
+///   - text: The text content of the message.
+///   - visibility: The visibility status of the message.
+///   - locationDataManager: A `LocationDataManager` to provide the current location.
+///   - completion: A completion handler that returns either `MessageResponse` or `Error`.
 func postMessage(user_id: String, text: String, visibility: String, locationDataManager: LocationDataManager, completion: @escaping (Result<MessageResponse, Error>) -> Void) {
     // make sure you can get the current location
     if let currentLocation = locationDataManager.location {
@@ -182,6 +189,8 @@ func postMessage(user_id: String, text: String, visibility: String, locationData
 
 // Function to get all friends of a user
 func getAllUserFriends(userId: String, completion: @escaping (Result<[String: String], Error>) -> Void) {
+/// Function to get all friends of a user
+func getAllUserFriends(userId: String, completion: @escaping (Result<[String], Error>) -> Void) {
     // API URL
     let urlString = "https://here-swe.vercel.app/user/\(userId)/friends"
     
