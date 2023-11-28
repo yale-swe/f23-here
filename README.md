@@ -55,7 +55,7 @@ When introducing changes, always create a new branch from the main branch. After
 The project is structured into various directories:
 
 - `Models`: Contains the data models such as `Message`.
-- `Utils`: Includes utility classes such as `api_call`.
+- `Utils`: Includes utility functions and api calls in `api_call`.
 - `Views`: UI components of the app, including `HomePageView`, `MessageList`, etc.
 
 ### Steps to Add a New Feature
