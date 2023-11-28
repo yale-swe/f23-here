@@ -145,7 +145,7 @@ struct Friends: View {
                 switch result {
                 case .success(let response):
                     print("Friends fetched successfully: \(response)")                    
-                    self.friendsList = response // Assuming response is [String]
+                    self.friendsList = response.values.map { $0 }
                     
                 case .failure(let error):
                     print("Error getting friends: \(error.localizedDescription)")

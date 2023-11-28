@@ -9,10 +9,27 @@
 //  It includes functionalities for posting messages, fetching user messages, managing friends, etc.
 
 import Foundation
+import CoreLocation
 
 // Constants for API interaction and user defaults
 let apiString = "https://here-swe.vercel.app/auth/user"
 let apiKey = "qe5YT6jOgiA422_UcdbmVxxG1Z6G48aHV7fSV4TbAPs"
+
+// Geo constants
+let earthRadiusKm: Double = 6371.0
+let distanceThreshold: Double = 0.2 // kilometers
+
+extension Double {
+    // Degrees to radians
+    var degreesToRadians: Double {
+        return self * .pi / 180
+    }
+    
+    // Radians to degrees
+    var radiansToDegrees: Double {
+        return self * 180 / .pi
+    }
+}
 
 // Structure for request body of posting a message
 struct PostMessageRequest: Codable {
@@ -157,7 +174,7 @@ func postMessage(user_id: String, text: String, visibility: String, locationData
 }
 
 // Function to get all friends of a user
-func getAllUserFriends(userId: String, completion: @escaping (Result<[String], Error>) -> Void) {
+func getAllUserFriends(userId: String, completion: @escaping (Result<[String: String], Error>) -> Void) {
     // API URL
     let urlString = "https://here-swe.vercel.app/user/\(userId)/friends"
     
@@ -197,10 +214,10 @@ func getAllUserFriends(userId: String, completion: @escaping (Result<[String], E
         do {
             print("Friends")
             print(data)
-            let jsonArray = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String]
-            let valuesList = jsonArray?.values.map { $0 }
+            let jsonMap = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String]
             
-            if let friends = valuesList {
+            
+            if let friends = jsonMap {
                 completion(.success(friends))
             } else {
                 completion(.failure(URLError(.cannotParseResponse)))
@@ -321,3 +338,99 @@ func deleteFriendByName(userId: String, friendName: String, completion: @escapin
 
     task.resume()
 }
+
+func filterMessages(id: String, messages: [Message], location: (latitude: Double, longitude: Double), maxDistance: Double, friendsList: [String]) -> [Message] {
+    return messages.filter { (message: Message) -> Bool in
+        let messageLocation = (latitude: message.location.coordinate.latitude, longitude: message.location.coordinate.longitude)
+        let distance = haversineDistance(la1: location.latitude, lo1: location.longitude, la2: messageLocation.latitude, lo2: messageLocation.longitude) * earthRadiusKm
+
+        let isWithinDistance = distance <= maxDistance
+        let isPublic = message.visibility == "public"
+        let isFriend = message.visibility == "friends" && friendsList.contains(message.user_id)
+        let byMe = message.user_id == id
+
+        return isWithinDistance && (isPublic || isFriend || byMe)
+    }
+}
+
+func haversineDistance(la1: Double, lo1: Double, la2: Double, lo2: Double) -> Double {
+    let haversin = { (angle: Double) -> Double in
+        return (1 - cos(angle))/2
+    }
+
+    let ahaversin = { (angle: Double) -> Double in
+        return 2*asin(sqrt(angle))
+    }
+
+    // convert from degrees to radians
+    let lat1 = la1.degreesToRadians
+    let lon1 = lo1.degreesToRadians
+    let lat2 = la2.degreesToRadians
+    let lon2 = lo2.degreesToRadians
+
+    return ahaversin(haversin(lat2 - lat1) + cos(lat1) * cos(lat2) * haversin(lon2 - lon1))
+}
+
+func getFilteredMessages(userId: String, location: CLLocation, friendList: [String], completion: @escaping (Result<[Message], Error>) -> Void) {
+    getUserMessages(userId: userId) {result in
+        switch result {
+        case .success(let response):
+            print("Messages fetched successfully: \(response)")
+            var convertedMessages:[Message] = []
+            for m in response {
+                do {
+                    let convertedMessage = try Message(id: m._id,
+                                                       user_id: userId,
+                                                       location: m.location.toCLLocation(),
+                                                       messageStr: m.text,
+                                                       visibility: m.visibility)
+                    convertedMessages.append(convertedMessage)
+                }
+                catch {
+                    // Handle the error
+                    print("Error: \(error)")
+                }
+            }
+            
+            let filteredMessages = filterMessages(
+                id: userId,
+                messages: convertedMessages,
+                location: (location.coordinate.latitude, location.coordinate.longitude),
+                maxDistance: distanceThreshold,
+                friendsList: friendList)
+            
+            // JSON decoding
+            completion(.success(filteredMessages))
+            
+            
+        case .failure(let error):
+            print("Error getting messages: \(error.localizedDescription)")
+            completion(.failure(error))
+        }
+    }
+ }
+
+
+//getAllUserFriends(userId: <#T##String#>, completion: <#T##(Result<[String : String], Error>) -> Void#>) { friendsList in
+//    guard let friendsList = friendsList else {
+//        print("Failed to fetch friends list.")
+//        return
+//    }
+//
+//    fetchAllMessages(apiKey: apiKey) { messages in
+//        if let messages = messages {
+//            let filteredMessages = filterMessages(
+//                messages: messages,
+//                location: myLocation,
+//                maxDistance: distanceThreshold,
+//                friendsList: friendsList
+//            )
+//            print(messages.count)
+//            print(filteredMessages.count)
+//        } else {
+//            print("Failed to fetch messages or decode them.")
+//        }
+//        semaphore.signal()
+//    }
+//    
+//}

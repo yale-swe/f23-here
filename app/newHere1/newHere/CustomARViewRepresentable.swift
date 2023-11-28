@@ -20,6 +20,7 @@ struct CustomARViewRepresentable: UIViewRepresentable {
     // Environment objects for message and fetched messages states
     @EnvironmentObject var messageState: MessageState
     @EnvironmentObject var fetchedMessagesState: FetchedMessagesState
+    @EnvironmentObject var locationDataManager: LocationDataManager
     
     // Create the ARSCNView and configure it
     func makeUIView(context: Context) -> ARSCNView {
@@ -30,34 +31,36 @@ struct CustomARViewRepresentable: UIViewRepresentable {
         sceneView.session.run(configuration)
         print("user id: \(userId)")
         
+        var friendIdList: [String] = []
         // Fetch and render user's messages
-        getUserMessages(userId: userId) {
-            result in
+        getAllUserFriends(userId: userId) { result in
             switch result {
             case .success(let response):
-                print("Messages fetched successfully: \(response)")
-                var convertedMessages:[Message] = []
-                for m in response {
-                    do {
-                        let convertedMessage = try Message(id: m._id,
-                                                           user_id: userId,
-                                                           location: m.location.toCLLocation(),
-                                                           messageStr: m.text)
-                        convertedMessages.append(convertedMessage)
-                    }
-                    catch {
-                        // Handle the error
-                        print("Error: \(error)")
-                    }
-                }
-                
-                fetchedMessagesState.fetchedMessages = convertedMessages
-                renderBubbleNodeHistory(to: sceneView, messages: convertedMessages)
+                print("Friends fetched successfully: \(response)")
+                friendIdList = response.keys.map { $0 }
                 
             case .failure(let error):
-                print("Error getting messages: \(error.localizedDescription)")
+                print("Error getting friends: \(error.localizedDescription)")
             }
         }
+        
+        if let currentLocation = locationDataManager.location {
+            getFilteredMessages(userId: userId, location: currentLocation, friendList: friendIdList) {
+                result in
+                switch result {
+                case .success(let response):
+                    print("Messages filtered successfully: \(response)")
+                    var convertedMessages:[Message] = response
+                    fetchedMessagesState.fetchedMessages = convertedMessages
+                    print("fetched messages: \(fetchedMessagesState.fetchedMessages)")
+                    renderBubbleNodeHistory(to: sceneView, messages: convertedMessages)
+                    
+                case .failure(let error):
+                    print("Error getting messages: \(error.localizedDescription)")
+                }
+            }
+        }
+        
         
         return sceneView
     }

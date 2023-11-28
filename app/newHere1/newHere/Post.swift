@@ -99,7 +99,8 @@ struct PostsPopup: View {
                                                     id: response._id,
                                                     user_id: userId,
                                                     location: response.location.toCLLocation(),
-                                                    messageStr: response.text)
+                                                    messageStr: response.text,
+                                                    visibility: "Public")
                                                 // Use newMessage here
                                                 //                                                    self.storedMessages.append(newMessage)
                                                 

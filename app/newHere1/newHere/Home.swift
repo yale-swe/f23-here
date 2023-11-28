@@ -46,6 +46,7 @@ struct HomePageView: View {
             .edgesIgnoringSafeArea(.all)
             .environmentObject(messageState)
             .environmentObject(fetchedMessagesState)
+            .environmentObject(locationDataManager)
             .overlay(alignment: .bottom){
                 // Overlay containing buttons for various features like map, messages, posts, etc.
                 // Each button toggles the state to show respective views or popups.
