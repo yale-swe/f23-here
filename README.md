@@ -5,6 +5,7 @@ These planted messages become digital markers in the physical world, creating a 
 Users can explore their surroundings and stumble upon messages from both old and new friends within a certain distance range, which initially starts at 10 meters but expands as messages gain more likes, views, and replies. 
 Beyond personal connections, our platform encourages participation in large-scale public discussions, allowing users to engage in meaningful discourse about the world around them. 
 Join us in redefining social interaction in the digital age with a fresh perspective on location-based AR communication.
+[Demo](https://www.youtube.com/watch?v=4D7088dEMl4)
 
 ## Table of Contents
 1. [MVP Requirement Fullfillment](#mvp-requirement-fullfillment)
