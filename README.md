@@ -73,10 +73,10 @@ API_KEY=qe5YT6jOgiA422_UcdbmVxxG1Z6G48aHV7fSV4TbAPs
 - [✔] Message Viewing Capability: Users can view all messages
 - [✔] Message Visitng Capability at Specific Locations: Users can view all messages when they are within a predefined geographical area covered by the app.
 - [✔] Range Specification for Reading Messages: Implemented a feature that allows users to read messages within a specified starting range. This range is essential for accessing both friends' and public messages.
-- [✔] Location-Based Accessibility of Friends' Messages: Users can access messages from friends when they are within the designated range of the message's origin.
-- [✔] Location-Based Accessibility of Public Messages: Public messages are available to users within the specified range, ensuring location-relevant content.
+- [✔] Location-Based Accessibility of Friends' and Public Messages: Users can access messages from friends when they are within the designated range of the message's origin and public messages are available to users within the specified range, ensuring location-relevant content.
 - [✔] Friend Addition Functionality: The app includes a feature to add friends by searching for their account IDs, facilitating user connections within the platform.
 - [✔] Range Limitations for Message Accessibility: Enforced range limitations for reading messages to enhance user experience and data relevance based on location.
+- [✔] Adding and Deleting Friends: Users can add and delete friends.
 
 
 # Deployment
