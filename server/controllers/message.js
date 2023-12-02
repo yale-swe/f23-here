@@ -14,6 +14,7 @@
 
 import MessageModel from "../models/Message.js";
 import UserModel from "../models/User.js";
+import NotificationModel from "../models/Notification.js";
 import {
 	handleNotFound,
 	handleServerError,
@@ -75,7 +76,56 @@ export const postMessage = async (req, res) => {
 		user.messages.push(saved_message._id);
 		await user.save();
 
+		// Add to the user's friends' notification log
+		if (user.notifyFriends) {
+			const notification = new NotificationModel({
+				user_id: user._id,
+				message_text: req.body.text,
+				location: req.body.location,
+				notification_text: `${user.userName} has posted "${req.body.text}"`
+			});
+			const saved_log = await notification.save();
+			for (let [key, value] of  user.friends.entries()) {
+				const internalReq = {
+					user_id: key,
+					notif: saved_log
+				};
+				const notifRes = await addNotification(internalReq);
+			}
+		}
+
 		handleSuccess(res, saved_message);
+	} catch (err) {
+		handleServerError(res, err);
+	}
+};
+
+/**
+ * Add a notification log to a user
+ *
+ * Creates and stores a new message in the database.
+ * Adds the new message as a notification log to the user's array of friends' notification
+ * @param {Object} req - The request object containing the message and user details.
+ * @param {Object} res - The response object used to reply to the client.
+ */
+export const addNotification = async (internalReq, res) => {
+	try {
+		// Check if the user exists
+		const user = await UserModel.findById(internalReq.body.user_id);
+		if (!user) {
+			return handleNotFound(
+				res,
+				"User not found"
+			);
+		}
+		// Notification log
+		const notification = internalReq.notif;
+
+		// Save the notif log to the user log array
+		user.notificationLog.push(notification._id);
+		await user.save();
+
+		handleSuccess(res, notification);
 	} catch (err) {
 		handleServerError(res, err);
 	}

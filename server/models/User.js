@@ -30,6 +30,15 @@ export const UserSchema = new Schema({
 			default: [],
 		},
 	],
+	// Notification Log for Message Notification,
+	// which is an array of notifications that serve as notification logs
+	notificationLog: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Notification",
+			default: [],
+		},
+	],
 	friends: {
 		type: Map,
 		of: String,
