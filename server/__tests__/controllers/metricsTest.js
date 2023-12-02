@@ -3,6 +3,7 @@ import {
 	createMetrics,
 	incrementClicks,
 	getMetricsByName,
+	updateTotalDistribution,
 } from "../../controllers/metrics.js";
 import MetricsModel from "../../models/Metrics.js";
 import httpMocks from "node-mocks-http";
@@ -21,7 +22,7 @@ describe("createMetrics", () => {
 		});
 
 		const req = httpMocks.createRequest({
-			body: { total_distribution: 50, metrics_name: "TestMetric" },
+			body: { total_distribution: 50, metricsName: "TestMetric" },
 		});
 		const res = httpMocks.createResponse();
 
@@ -41,7 +42,7 @@ describe("createMetrics", () => {
 		});
 
 		const req = httpMocks.createRequest({
-			body: { total_distribution: 50, metrics_name: "TestMetric" },
+			body: { total_distribution: 50, metricsName: "TestMetric" },
 		});
 		const res = httpMocks.createResponse();
 
@@ -167,6 +168,95 @@ describe("getMetricsByName", () => {
 		const res = httpMocks.createResponse();
 
 		await getMetricsByName(req, res);
+
+		expect(res.statusCode).toBe(500);
+		expect(res._getData()).toContain("Internal Server Error");
+	});
+});
+
+describe("updateTotalDistribution", () => {
+	it("should successfully update the total distribution of a metrics record", async () => {
+		let newTotalDistribution = 500;
+
+		const mockMetricsData = {
+			_id: "someMetricsId",
+			metrics_name: "TestMetric",
+			total_distribution: 100,
+		};
+
+		MetricsModel.findOneAndUpdate = jest
+			.fn()
+			.mockResolvedValue(mockMetricsData);
+
+		const req = httpMocks.createRequest({
+			body: {
+				metricsName: "TestMetric",
+				newTotalDistribution: newTotalDistribution,
+			},
+		});
+		const res = httpMocks.createResponse();
+
+		await updateTotalDistribution(req, res);
+
+		expect(MetricsModel.findOneAndUpdate).toHaveBeenCalledWith(
+			{ metrics_name: "TestMetric" },
+			{ $set: { total_distribution: 500 } },
+			{ new: true }
+		);
+		expect(res.statusCode).toBe(200);
+		expect(JSON.parse(res._getData())).toEqual({
+			message: `Metrics total distribution updated successfully to ${newTotalDistribution}`,
+		});
+	});
+
+	it("should return 400 bad request when invalid total distribution value is provided", async () => {
+		const req = httpMocks.createRequest({
+			body: {
+				metricsName: "TestMetric",
+				newTotalDistribution: "invalid",
+			},
+		});
+
+		const res = httpMocks.createResponse();
+
+		await updateTotalDistribution(req, res);
+		expect(res.statusCode).toBe(400);
+		expect(res._getData()).toContain("Invalid total distribution value");
+	});
+
+	it("should return 404 not found when metrics record is not found", async () => {
+		MetricsModel.findOneAndUpdate = jest.fn().mockResolvedValue(null);
+
+		const req = httpMocks.createRequest({
+			body: {
+				metricsName: "NonexistentMetric",
+				newTotalDistribution: 100,
+			},
+		});
+		const res = httpMocks.createResponse();
+
+		await updateTotalDistribution(req, res);
+
+		expect(MetricsModel.findOneAndUpdate).toHaveBeenCalledWith(
+			{ metrics_name: "NonexistentMetric" },
+			{ $set: { total_distribution: 100 } },
+			{ new: true }
+		);
+		expect(res.statusCode).toBe(404);
+		expect(res._getData()).toContain("Metrics record not found");
+	});
+
+	it("should handle server errors", async () => {
+		MetricsModel.findOneAndUpdate.mockImplementationOnce(() => {
+			throw new Error("Internal Server Error");
+		});
+
+		const req = httpMocks.createRequest({
+			body: { metricsName: "TestMetric", newTotalDistribution: 100 },
+		});
+		const res = httpMocks.createResponse();
+
+		await updateTotalDistribution(req, res);
 
 		expect(res.statusCode).toBe(500);
 		expect(res._getData()).toContain("Internal Server Error");

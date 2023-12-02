@@ -16,14 +16,15 @@ import {
 	createMetrics,
 	incrementClicks,
 	getMetricsByName,
+	updateTotalDistribution,
 } from "../controllers/metrics.js";
 
 const router = express.Router();
 
+router.get("/get-metrics", getMetricsByName);
+
 router.post("/create-metrics", createMetrics);
-
 router.post("/increment-clicks", incrementClicks);
-
-router.post("/get-metrics", getMetricsByName);
+router.post("/update-total-distribution", updateTotalDistribution);
 
 export default router;

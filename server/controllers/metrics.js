@@ -16,6 +16,7 @@ import {
 	handleServerError,
 	handleSuccess,
 	handleNotFound,
+	handleBadRequest,
 } from "../utils/handlers.js";
 
 /**
@@ -28,12 +29,12 @@ import {
  */
 export const createMetrics = async (req, res) => {
 	try {
-		const { total_distribution = 50, metrics_name } = req.body;
+		const { total_distribution = 50, metricsName } = req.body;
 
 		const metrics = new MetricsModel({
 			clicks: 0,
 			total_distribution,
-			metrics_name,
+			metrics_name: metricsName,
 		});
 
 		await metrics.save();
@@ -53,10 +54,9 @@ export const createMetrics = async (req, res) => {
  */
 export const incrementClicks = async (req, res) => {
 	try {
-		const { metrics_name } = req.body;
-		console.log(metrics_name);
+		const { metricsName } = req.body;
 		const metrics = await MetricsModel.findOneAndUpdate(
-			{ metrics_name: metrics_name },
+			{ metrics_name: metricsName },
 			{ $inc: { clicks: 1 } },
 			{ new: true }
 		);
@@ -81,9 +81,9 @@ export const incrementClicks = async (req, res) => {
  */
 export const getMetricsByName = async (req, res) => {
 	try {
-		const { metrics_name } = req.body;
+		const { metricsName } = req.body;
 		const metrics = await MetricsModel.findOne({
-			metrics_name: metrics_name,
+			metrics_name: metricsName,
 		});
 
 		if (!metrics) {
@@ -91,6 +91,42 @@ export const getMetricsByName = async (req, res) => {
 		}
 
 		handleSuccess(res, metrics);
+	} catch (err) {
+		handleServerError(res, err);
+	}
+};
+
+/**
+ * Updates the total distribution of a specified metrics record.
+ *
+ * Accepts a metrics name and a new total distribution value from the request body
+ * and updates the corresponding metrics record in the database.
+ *
+ * @param {Object} req - Request object containing the metricsName and newTotalDistribution in the body.
+ * @param {Object} res - Response object to send back a confirmation message or an error message.
+ */
+export const updateTotalDistribution = async (req, res) => {
+	try {
+		const { metricsName, newTotalDistribution } = req.body;
+
+		// Checking if newTotalDistribution is a valid number
+		if (typeof newTotalDistribution !== "number") {
+			handleBadRequest(res, "Invalid total distribution value");
+			return;
+		}
+		const updatedMetrics = await MetricsModel.findOneAndUpdate(
+			{ metrics_name: metricsName },
+			{ $set: { total_distribution: newTotalDistribution } },
+			{ new: true }
+		);
+
+		if (!updatedMetrics) {
+			return handleNotFound(res, "Metrics record not found");
+		}
+
+		handleSuccess(res, {
+			message: `Metrics total distribution updated successfully to ${newTotalDistribution}`,
+		});
 	} catch (err) {
 		handleServerError(res, err);
 	}

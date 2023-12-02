@@ -293,7 +293,21 @@ Creates a new metrics record.
 
 ```json
 {
-  "total_distribution": 50
+  "toalDistribution": 50
+}
+```
+
+
+### Get Metrics by Name
+
+Retrieves a metrics record by its name.
+
+- **Endpoint:** `POST /metrics/get-metrics`
+- **Body:**
+
+```json
+{
+  "metricsName": "DailyUserVisits"
 }
 ```
 
@@ -310,15 +324,16 @@ Increments the click count of a specified metrics record by 1.
 }
 ```
 
-### Get Metrics by Name
+### Update Total Distribution
 
-Retrieves a metrics record by its name.
+Update total distribution for a metric.
 
-- **Endpoint:** `POST /metrics/get-metrics`
+- **Endpoint:** `POST /metrics/update-total-distribution`
 - **Body:**
 
 ```json
 {
-  "metricsName": "DailyUserVisits"
+  "metricsName": "DailyUserVisits",
+  "newTotalDistribution": "1000"
 }
 ```
