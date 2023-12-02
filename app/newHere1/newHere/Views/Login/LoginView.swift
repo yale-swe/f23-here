@@ -89,7 +89,7 @@ struct LoginView: View {
             .alert(isPresented: $showingAlert) {
                 Alert(title: Text("Login Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
             }
-        }
+        }.navigationBarBackButtonHidden(true)
     }
     
         /// Function to handle user login
