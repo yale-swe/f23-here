@@ -25,6 +25,11 @@ Join us in redefining social interaction in the digital age with a fresh perspec
 5. [Testing](#testing)
    - [Backend](#backend-1)
    - [Frontend](#frontend-1)
+6. [Metrics Milestone](#metrics-milestone)
+   - [Version and Deployment](#version-and-deployment)
+   - [Tracking](#tracking)
+   - [Evaluation](#evaluation)
+   - [Coresponding Code](#coresponding-code)
 
 # Running Instructions
 
@@ -312,11 +317,14 @@ Unfortunately, as of right now, Swift has no API tools that help us automaticall
 We have 3 TestFlight builds, each representing a different icon for the screenshot feature. We will distribute these builds evenly across our user pools using special links generated from the TestFlight website.
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="docs/test.png" alt="Image 1" style="flex: 1; max-width: 30%;">
-  <img src="docs/test.png" alt="Image 2" style="flex: 1; max-width: 30%;">
-  <img src="docs/test.png" alt="Image 3" style="flex: 1; max-width: 30%;">
+  <img src="docs/icon1.jpeg" alt="Icon 1" style="flex: 1; max-width: 30%; max-height: 60%;">
+  <img src="docs/icon2.jpeg" alt="Icon 2" style="flex: 1; max-width: 30%; max-height: 60%;">
+  <img src="docs/icon3.jpeg" alt="Icon 3" style="flex: 1; max-width: 30%; max-height: 60%;">
 </div>
 
+</br>
+
+<img src="docs/builds.jpeg" alt="builds" width="500px">
 
 
 ## Tracking
