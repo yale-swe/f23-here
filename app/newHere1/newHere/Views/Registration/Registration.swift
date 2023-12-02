@@ -36,44 +36,46 @@ struct RegistrationView: View {
     
     var body: some View {
         NavigationView {
-            Form {
-                // User name input section
-                Section(header: Text("Name")) {
-                    TextField("First Name", text: $firstName)
-                        .disableAutocorrection(true)
-                    TextField("Last Name", text: $lastName)
-                        .disableAutocorrection(true)
-                }
-                
-                // User credentials input section
-                Section(header: Text("Credentials")) {
-                    TextField("Username", text: $userName)
-                        .disableAutocorrection(true)
-                    TextField("Email", text: $email)
-                        .keyboardType(.emailAddress)
-                        .disableAutocorrection(true)
-                    SecureField("Password", text: $password)
-                        .disableAutocorrection(true)
-                    SecureField("Confirm Password", text: $confirmPassword)
-                        .disableAutocorrection(true)
-                }
-                
-                // Submit button and navigation to login view
-                Section {
-                    Button(action: registerUser) {
-                        Text("Submit")
+            VStack{
+                Form {
+                    // User name input section
+                    Section(header: Text("Name")) {
+                        TextField("First Name", text: $firstName)
+                            .disableAutocorrection(true)
+                        TextField("Last Name", text: $lastName)
+                            .disableAutocorrection(true)
                     }
-              
-                    NavigationLink(destination: LoginView(isAuthenticated: $isAuthenticated)) {
-                        Text("Already have an account? Login")
+                    
+                    // User credentials input section
+                    Section(header: Text("Credentials")) {
+                        TextField("Username", text: $userName)
+                            .disableAutocorrection(true)
+                        TextField("Email", text: $email)
+                            .keyboardType(.emailAddress)
+                            .disableAutocorrection(true)
+                        SecureField("Password", text: $password)
+                            .disableAutocorrection(true)
+                        SecureField("Confirm Password", text: $confirmPassword)
+                            .disableAutocorrection(true)
                     }
+                    
+                    // Submit button and navigation to login view
+                    Section {
+                        Button(action: registerUser) {
+                            Text("Submit")
+                        }
+                        
+                        NavigationLink(destination: LoginView(isAuthenticated: $isAuthenticated)) {
+                            Text("Already have an account? Login")
+                        }
+                    }
+                }
+                //.navigationBarTitle("Registration")
+                .alert(isPresented: $showingAlert){
+                    Alert(title: Text("Registration Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                 }
             }
-            .navigationBarTitle("Registration")
-            .alert(isPresented: $showingAlert){
-                Alert(title: Text("Registration Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
-            }
-        }
+        }.navigationBarBackButtonHidden(true)
     }
     
     /// Function to handle user registration
