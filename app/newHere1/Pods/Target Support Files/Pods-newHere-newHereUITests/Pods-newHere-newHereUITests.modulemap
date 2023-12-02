@@ -1,6 +1,0 @@
-framework module Pods_newHere_newHereUITests {
-  umbrella header "Pods-newHere-newHereUITests-umbrella.h"
-
-  export *
-  module * { export * }
-}
