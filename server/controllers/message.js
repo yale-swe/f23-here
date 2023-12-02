@@ -111,7 +111,7 @@ export const postMessage = async (req, res) => {
 export const addNotification = async (internalReq, res) => {
 	try {
 		// Check if the user exists
-		const user = await UserModel.findById(internalReq.body.user_id);
+		const user = await UserModel.findById(internalReq.user_id);
 		if (!user) {
 			return handleNotFound(
 				res,
