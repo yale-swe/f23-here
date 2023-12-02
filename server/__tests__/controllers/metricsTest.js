@@ -14,14 +14,14 @@ describe("createMetrics", () => {
 		const mockMetricsData = {
 			clicks: 0,
 			total_distribution: 50,
+			metrics_name: "TestMetric",
 		};
-		// Mock the save function to return an object with the input data
 		MetricsModel.prototype.save = jest.fn().mockImplementation(function () {
 			return { ...mockMetricsData, _id: this._id };
 		});
 
 		const req = httpMocks.createRequest({
-			body: { total_distribution: 50 },
+			body: { total_distribution: 50, metrics_name: "TestMetric" },
 		});
 		const res = httpMocks.createResponse();
 
@@ -31,19 +31,17 @@ describe("createMetrics", () => {
 
 		expect(MetricsModel.prototype.save).toHaveBeenCalled();
 		expect(res.statusCode).toBe(200);
-		expect(responseData.clicks).toBe(mockMetricsData.clicks);
-		expect(responseData.total_distribution).toBe(
-			mockMetricsData.total_distribution
-		);
+		expect(responseData).toMatchObject(mockMetricsData);
 		expect(responseData).toHaveProperty("_id");
 	});
+
 	it("should return 500 on server errors", async () => {
 		MetricsModel.prototype.save = jest.fn().mockImplementation(() => {
 			throw new Error("Internal Server Error");
 		});
 
 		const req = httpMocks.createRequest({
-			body: { total_distribution: 50 },
+			body: { total_distribution: 50, metrics_name: "TestMetric" },
 		});
 		const res = httpMocks.createResponse();
 
@@ -78,7 +76,9 @@ describe("incrementClicks", () => {
 			{ new: true }
 		);
 		expect(res.statusCode).toBe(200);
-		expect(JSON.parse(res._getData())).toEqual(mockMetricsData);
+		expect(JSON.parse(res._getData())).toEqual({
+			message: "Metrics incremented sucessfully",
+		});
 	});
 	it("should return 404 if the metrics record is not found", async () => {
 		MetricsModel.findOneAndUpdate = jest.fn().mockResolvedValue(null);

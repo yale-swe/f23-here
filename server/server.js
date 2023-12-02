@@ -17,6 +17,7 @@ import authRoutes from "./routes/auth.js";
 import messageRoutes from "./routes/message.js";
 import replyRoutes from "./routes/reply.js";
 import userRoutes from "./routes/user.js";
+import metricRoutes from "./routes/metrics.js";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -56,6 +57,7 @@ app.use("/auth", authRoutes);
 app.use("/message", messageRoutes);
 app.use("/reply", replyRoutes);
 app.use("/user", userRoutes);
+app.use("/metrics", metricRoutes);
 
 const server = app.listen(PORT, console.log(`Server running on port ${PORT}`));
 

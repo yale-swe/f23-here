@@ -1,3 +1,16 @@
+/**
+ * Metrics Controller
+ *
+ * This file serves as the controller for metrics-related operations in the API.
+ * It includes functionalities for managing metrics records such as creating new records,
+ * incrementing click counts, and retrieving metrics data by name.
+ *
+ * Dependencies:
+ *  - MetricsModel: The Mongoose model used for metrics data interactions with the MongoDB database.
+ *  - Handlers: Utility functions for handling various HTTP response scenarios, such as server errors,
+ *    successful responses, and resource not found errors.
+ */
+
 import MetricsModel from "../models/Metrics.js";
 import {
 	handleServerError,
@@ -15,11 +28,14 @@ import {
  */
 export const createMetrics = async (req, res) => {
 	try {
-		const totalDistribution = req.body.total_distribution || 50; // Default to 50 if not provided
+		const { total_distribution = 50, metrics_name } = req.body;
+
 		const metrics = new MetricsModel({
 			clicks: 0,
-			total_distribution: totalDistribution,
+			total_distribution,
+			metrics_name,
 		});
+
 		await metrics.save();
 		handleSuccess(res, metrics);
 	} catch (err) {
@@ -37,9 +53,10 @@ export const createMetrics = async (req, res) => {
  */
 export const incrementClicks = async (req, res) => {
 	try {
-		const { metricsName } = req.body;
+		const { metrics_name } = req.body;
+		console.log(metrics_name);
 		const metrics = await MetricsModel.findOneAndUpdate(
-			{ metrics_name: metricsName },
+			{ metrics_name: metrics_name },
 			{ $inc: { clicks: 1 } },
 			{ new: true }
 		);
@@ -48,7 +65,7 @@ export const incrementClicks = async (req, res) => {
 			return handleNotFound(res, "Metrics record not found");
 		}
 
-		handleSuccess(res, metrics);
+		handleSuccess(res, { message: "Metrics incremented sucessfully" });
 	} catch (err) {
 		handleServerError(res, err);
 	}
@@ -64,9 +81,9 @@ export const incrementClicks = async (req, res) => {
  */
 export const getMetricsByName = async (req, res) => {
 	try {
-		const { metricsName } = req.body;
+		const { metrics_name } = req.body;
 		const metrics = await MetricsModel.findOne({
-			metrics_name: metricsName,
+			metrics_name: metrics_name,
 		});
 
 		if (!metrics) {
