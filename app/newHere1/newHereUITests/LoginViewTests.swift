@@ -7,7 +7,7 @@ class LoginViewTests: XCTestCase {
     override func setUpWithError() throws {
         super.setUp()
         // Initialize LoginView with necessary bindings or mock data
-        loginView = LoginView(isAuthenticated: .constant(false))
+        loginView = LoginView(viewModel: <#T##AuthViewModel#>)
     }
 
     override func tearDownWithError() throws {
@@ -29,6 +29,12 @@ class LoginViewTests: XCTestCase {
         // Assert the state changes
         XCTAssertEqual(loginView.username, "testuser", "Username should be updated")
         XCTAssertEqual(loginView.password, "password123", "Password should be updated")
+    }
+    
+    func testLoginFlow() {
+
+        XCTAssertEqual(loginView.username, "testuser", "Username should be updated")
+
     }
 
     // Add more test methods to cover form validation, button actions, network requests, etc.
