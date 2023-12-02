@@ -299,3 +299,49 @@ Overall, due to the inherent complexity of unit testing in Xcode in Swift with X
 - Challenges of mocking environments that rely on hardware interactions.
 
  Thus, we were told not to worry about getting 80% statement coverage for the frontend tests, especially since we've met the requirement for back-end tests. We were told to document this issue in detail, which we did above.
+
+
+# Metrics Milestone
+
+For the metrics milestone, we are implementing 3 different versions of the "screenshot" button in our app.
+
+Unfortunately, as of right now, Swift has no API tools that help us automatically display the most optimal version of your app to your users. This is because with iOS applications, the user needs to update the app to get the most optimal version of the app. However, this does not prevent us from measuring user behavior and adapting the app for future versions with the implementation that people prefer the most.
+
+## Version and Deployment
+
+We have 3 TestFlight builds, each representing a different icon for the screenshot feature. We will distribute these builds evenly across our user pools using special links generated from the TestFlight website.
+
+<div style="display: flex; justify-content: space-between;">
+  <img src="docs/test.png" alt="Image 1" style="flex: 1; max-width: 30%;">
+  <img src="docs/test.png" alt="Image 2" style="flex: 1; max-width: 30%;">
+  <img src="docs/test.png" alt="Image 3" style="flex: 1; max-width: 30%;">
+</div>
+
+
+
+## Tracking
+
+To implement tracking of how many users tap on each icon, we have implemented a backend model called "Metrics" with the following schema fields:
+
+- `metrics_name`: Unique name identifier for the metrics record.
+- `clicks`: Count of clicks, used for tracking user interactions.
+- `total_distribution`: Represents the distribution value, defaulting to 50.
+
+When a user clicks on the icon, the respective API call will be made to increment the metric for that API.
+
+## Evaluation
+
+After our user testing, we will go into the backend and calculate the percentage of users that tap on the screenshot feature for each icon. To do that, we will use this formula:
+
+```javascript
+percent_interaction = clicks / total_distribution
+```
+
+The icon with the highest percent_interaction will be selected as the final icon to be deployed to everyone in the app.
+
+## Coresponding Code
+
+- server/controllers/metrics.js
+- server/model/Metrics.js
+- server/routes/metrics.js
+- app/newHere/Views/Home/Home.swift

@@ -35,6 +35,12 @@ Below you will find detailed descriptions of each endpoint, including the HTTP m
 - [Reply Endpoints](#reply-endpoints)
   - [Like Reply](#like-reply)
   - [Add Reply](#add-reply)
+- [Metrics Endpoints](#metrics-endpoints)
+  - [Create Metrics](#create-metrics)
+  - [Get Metrics by Name](#get-metrics-by-name)
+  - [Increment Likes](#increment-likes)
+  - [Update Total Distribution](#update-total-distribution)
+
 
 
 
@@ -296,7 +302,6 @@ Creates a new metrics record.
   "toalDistribution": 50
 }
 ```
-
 
 ### Get Metrics by Name
 
