@@ -281,3 +281,44 @@ Add a reply to a message.
   "content": "this is a test reply to a test message"
 }
 ```
+
+## Metrics Endpoints
+
+### Create Metrics
+
+Creates a new metrics record.
+
+- **Endpoint:** `POST /metrics/create-metrics`
+- **Body:**
+
+```json
+{
+  "total_distribution": 50
+}
+```
+
+### Increment Clicks
+
+Increments the click count of a specified metrics record by 1.
+
+- **Endpoint:** `POST /metrics/increment-clicks`
+- **Body:**
+
+```json
+{
+  "metricsName": "DailyUserVisits"
+}
+```
+
+### Get Metrics by Name
+
+Retrieves a metrics record by its name.
+
+- **Endpoint:** `POST /metrics/get-metrics`
+- **Body:**
+
+```json
+{
+  "metricsName": "DailyUserVisits"
+}
+```
