@@ -86,11 +86,16 @@ export const postMessage = async (req, res) => {
 			});
 			const saved_log = await notification.save();
 			for (let [key, value] of  user.friends.entries()) {
-				const internalReq = {
-					user_id: key,
-					notif: saved_log
-				};
-				const notifRes = await addNotification(internalReq);
+				try {
+					const internalReq = {
+						user_id: key,
+						notif: saved_log
+					};
+					const notifRes = await addNotification(internalReq);
+				}
+				catch (notifErr) {
+					handleServerError(res, notifErr);
+				}
 			}
 		}
 
@@ -108,7 +113,7 @@ export const postMessage = async (req, res) => {
  * @param {Object} req - The request object containing the message and user details.
  * @param {Object} res - The response object used to reply to the client.
  */
-export const addNotification = async (internalReq, res) => {
+export const addNotification = async (internalReq) => {
 	try {
 		// Check if the user exists
 		const user = await UserModel.findById(internalReq.user_id);
@@ -120,14 +125,14 @@ export const addNotification = async (internalReq, res) => {
 		}
 		// Notification log
 		const notification = internalReq.notif;
+		
 
 		// Save the notif log to the user log array
 		user.notificationLog.push(notification._id);
 		await user.save();
-
-		handleSuccess(res, notification);
+		return notification;
 	} catch (err) {
-		handleServerError(res, err);
+		throw new Error('An error occurred while adding the notification: ' + err.message);
 	}
 };
 
