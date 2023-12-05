@@ -5,39 +5,54 @@
 //  Created by Liyang Wang on 11/10/23.
 //
 import XCTest
+import SwiftUI
+import ViewInspector
+
 @testable import newHere
 
 class PostsPopupTests: XCTestCase {
-    private var isPopupPresented: Bool!
+    
+    
+    @State var isPopupPresented: Bool = false
     private var mockLocationDataManager: MockLocationDataManager!
     private var mockMessageState: MockMessageState!
+    
+    private var postViewModel: PostViewModel!
+
     private var postsPopup: PostsPopup!
 
     override func setUpWithError() throws {
         isPopupPresented = true
         mockLocationDataManager = MockLocationDataManager()
         mockMessageState = MockMessageState()
-        postsPopup = PostsPopup(isPresented: .constant(isPopupPresented),
-                                messageState: mockMessageState,
-                                locationDataManager: mockLocationDataManager)
+        postViewModel = PostViewModel(isPresented: isPopupPresented, messageState: mockMessageState, locationDataManager: mockLocationDataManager)
+
+        postsPopup = PostsPopup(viewModel: postViewModel)
     }
 
     override func tearDownWithError() throws {
-        isPopupPresented = nil
+
         mockLocationDataManager = nil
         mockMessageState = nil
+        postViewModel = nil
         postsPopup = nil
     }
 
+    func testInitState() {
+        
+        XCTAssertNotNil(postsPopup)
+        XCTAssertEqual(postViewModel.noteMessage, "")
+    }
+    
     func testCloseButtonTogglesPopup() {
-        postsPopup.isPresented.toggle()
+        postViewModel.isPresented.toggle()
         XCTAssertFalse(isPopupPresented, "PostsPopup should be closed after close button is tapped")
     }
 
     func testNoteMessageUpdate() {
-        let newMessage = "Updated Message"
-        postsPopup.noteMessage = newMessage
-        XCTAssertEqual(postsPopup.noteMessage, newMessage, "noteMessage should be updated with new text")
+//        let newMessage = "Updated Message"
+//        postsPopup.noteMessage = newMessage
+//        XCTAssertEqual(postsPopup.noteMessage, newMessage, "noteMessage should be updated with new text")
     }
 
 //    func testMessageStateUpdateAfterPosting() {

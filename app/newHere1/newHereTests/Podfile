@@ -1,0 +1,26 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '16.0'
+
+target 'newHere' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for newHere
+
+  target 'newHereTests' do
+    inherit! :search_paths
+    # Pods for testing
+    pod 'ViewInspector'
+
+  end
+
+  target 'newHereTests_v2' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'newHereUITests' do
+    # Pods for testing
+  end
+
+end
