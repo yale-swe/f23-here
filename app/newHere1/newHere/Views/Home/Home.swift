@@ -1,5 +1,6 @@
 import SwiftUI
 import ARKit
+import UIKit
 
 /**
  * MessageState
@@ -37,6 +38,9 @@ struct HomePageView: View {
     @State private var isShowingPosts = false
     @StateObject var messageState = MessageState()
     @StateObject var fetchedMessagesState = FetchedMessagesState()
+    @State private var shareSheetPresented = false
+    @State private var screenshot: UIImage?
+    @State private var showCaptureAlert = false
     
     @EnvironmentObject var locationDataManager: LocationDataManager
     
@@ -79,13 +83,44 @@ struct HomePageView: View {
                                 .foregroundColor(.white)
                         }
                         
-                        Button{
-                            
-                        }label:
-                        {
-                            Image(systemName: "square.and.arrow.up")
+                        Button(action: {
+                            updateMetrics { result in
+                                switch result {
+                                case .success(_):
+                                    print("Metrics incremented successfully")
+                                case .failure(let error):
+                                    print("Error incrementing metrics: \(error.localizedDescription)")
+//                                    self.errorMessage = error.localizedDescription
+                                }
+                            }
+
+                            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                               let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
+                                screenshot = captureScreenshot(of: window)
+                                showCaptureAlert = true
+                            }
+                        }) {
+                            Image(systemName: "photo.on.rectangle.angled")
                                 .foregroundColor(.white)
                         }
+                        .sheet(isPresented: $shareSheetPresented, onDismiss: {
+                            screenshot = nil
+                        }) {
+                            if let screenshot = screenshot {
+                                ShareSheet(items: [screenshot])
+                            }
+                        }
+                        .alert(isPresented: $showCaptureAlert) {
+                            Alert(
+                                title: Text("Screen captured!"),
+                                message: Text("Wanna share it?"),
+                                primaryButton: .default(Text("Share")) {
+                                    shareSheetPresented = true
+                                },
+                                secondaryButton: .cancel()
+                            )
+                        }
+
                         
                         Button{isShowingProfile.toggle()
                             

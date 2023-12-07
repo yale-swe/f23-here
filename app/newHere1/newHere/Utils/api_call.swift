@@ -424,7 +424,56 @@ func getFilteredMessages(userId: String, location: CLLocation, friendList: [Stri
     }
  }
 
+func updateMetrics(completion: @escaping (Result<Bool, Error>) -> Void) {
+    let urlString = "https://here-swe.vercel.app/metrics/increment-clicks"
+    
+    // URL validation
+    guard let url = URL(string: urlString) else {
+        completion(.failure(URLError(.badURL)))
+        return
+    }
+    
+    // Setup request
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.addValue(apiKey, forHTTPHeaderField: "X-API-Key")
+    
+    // Prepare request body
+    let requestBody = ["metricsName": "metric-screenshot-icon3"]
+    do {
+        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+    } catch {
+        completion(.failure(error))
+        return
+    }
+    
+    // Send request
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        // Check for errors
+        if let error = error {
+            completion(.failure(error))
+            return
+        }
 
+        // Check for valid HTTP response
+        guard let httpResponse = response as? HTTPURLResponse else {
+            completion(.failure(URLError(.badServerResponse)))
+            return
+        }
+
+        // Check for successful status code
+        guard (200...299).contains(httpResponse.statusCode) else {
+            completion(.failure(URLError(.badServerResponse)))
+            return
+        }
+
+        // Success
+        completion(.success(true))
+    }
+    
+    task.resume()
+}
 //getAllUserFriends(userId: <#T##String#>, completion: <#T##(Result<[String : String], Error>) -> Void#>) { friendsList in
 //    guard let friendsList = friendsList else {
 //        print("Failed to fetch friends list.")
