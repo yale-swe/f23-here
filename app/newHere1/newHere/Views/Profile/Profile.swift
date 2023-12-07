@@ -37,26 +37,56 @@ struct ProfilePopup: View {
                     }
                     ProfileHeader() // User profile header
                     Divider()
-                    ProfileStats() // User profile statistics
-                    Divider()
-                    Button(action: {
-                        isShowingFriends.toggle()
-                    }) {
-                        Text("Show Friends")
-                            .font(.headline)
-                            .padding(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
-                            .border(Color.gray, width: 1)
-                            .foregroundColor(Color.gray)
-                            .cornerRadius(5)
+                    
+                    HStack {
+                        VStack {
+                            Text("Notes")
+                                .font(.caption)
+                                .foregroundColor(.gray.opacity(0.8))
+
+                            Text("10")
+                                .font(.headline)
+                        }
+                        .padding()
+                        .background(Color.white.opacity(0.8))
+                        .cornerRadius(8)
+                        .shadow(radius: 3)
+                        
+                        VStack {
+                            Text("Friends")
+                                .font(.caption)
+                                .foregroundColor(.gray.opacity(0.8))
+
+                            Text("100")
+                                .font(.headline)
+                        }
+                        .padding()
+                        .background(Color.white.opacity(0.8))
+                        .cornerRadius(8)
+                        .shadow(radius: 3)
+                        .onTapGesture {
+                            isShowingFriends.toggle() // Toggle the state to show friends
+                        }
                     }
+                    .padding()
+                    
+                    Divider()
                     PostGrid() // Grid to show posts
                 }
                 .padding(.top, 10)
                 .padding(.bottom, 10)
-                .sheet(isPresented: $isShowingFriends) {
-                    // Friends.swift => Friends struct
-                    Friends(isPresented: $isShowingFriends) // Pass the binding to control visibility
-                }
+//                .sheet(isPresented: $isShowingFriends) {
+//                    // Friends.swift => Friends struct
+//                    Friends(isPresented: $isShowingFriends) // Pass the binding to control visibility
+//                }
+            }
+            
+            if isShowingFriends {
+                Friends(isPresented: $isShowingFriends)
+                    .background(Color.gray)
+                    .cornerRadius(12)
+                    .shadow(radius: 10)
+                    .padding()
             }
         }
             .frame(width: 350, height: 600)
@@ -147,20 +177,31 @@ struct ProfileStats: View {
 
     var body: some View {
         HStack {
-            ForEach(stats, id: \.title) { stat in
-                VStack {
-                    Text(stat.title)
-                        .font(.caption)
-                        .foregroundColor(.gray.opacity(0.8))
+            VStack {
+                Text("Notes")
+                    .font(.caption)
+                    .foregroundColor(.gray.opacity(0.8))
 
-                    Text(stat.value)
-                        .font(.headline)
-                }
-                .padding()
-                .background(Color.white.opacity(0.8))
-                .cornerRadius(8)
-                .shadow(radius: 3)
+                Text("10")
+                    .font(.headline)
             }
+            .padding()
+            .background(Color.white.opacity(0.8))
+            .cornerRadius(8)
+            .shadow(radius: 3)
+            
+            VStack {
+                Text("Friends")
+                    .font(.caption)
+                    .foregroundColor(.gray.opacity(0.8))
+
+                Text("100")
+                    .font(.headline)
+            }
+            .padding()
+            .background(Color.white.opacity(0.8))
+            .cornerRadius(8)
+            .shadow(radius: 3)
         }
         .padding()
     }
@@ -201,3 +242,4 @@ struct PostGrid: View {
             .padding()
     }
 }
+

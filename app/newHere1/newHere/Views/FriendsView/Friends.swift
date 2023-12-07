@@ -38,15 +38,13 @@ struct Friends: View {
                 Button(action: {
                     isPresented.toggle() // Close the popup
                 }) {
-                    Text("Close")
-                        .font(.headline)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
+                    Image(systemName: "xmark.circle")
+                        .font(.system(size: 28))
+                        .foregroundColor(Color.white)
+                        .shadow(radius: 2.0)
                 }
                 .padding(.trailing, 20) // Adjust the position of the close button
-            }
+            }.padding(.vertical, 8)
             
             // search bar and add friend button
             HStack {
@@ -93,7 +91,7 @@ struct Friends: View {
                            Text("Add Friend")
                                .padding(.horizontal, 16)
                                .padding(.vertical, 8)
-                               .background(Color.blue)
+                               .background(Color.white.opacity(0.5))
                                .foregroundColor(.white)
                                .cornerRadius(8)
                        }
@@ -134,17 +132,22 @@ struct Friends: View {
                             }
                         }){
                             Image(systemName: "minus.circle")
+                                .font(.system(size: 28))
+                                .foregroundColor(Color.gray)
                         }
                     }
-                }
+                }.background(Color.gray)
             }
         }
+        .frame(width: 350, height: 600)
+        .padding(.top, 10)
+        .padding(.bottom, 10)
         .onAppear {
             // Fetch Friends List on Appear
             getAllUserFriends(userId: userId) { result in
                 switch result {
                 case .success(let response):
-                    print("Friends fetched successfully: \(response)")                    
+                    print("Friends fetched successfully: \(response)")
                     self.friendsList = response.values.map { $0 }
                     
                 case .failure(let error):
@@ -158,3 +161,4 @@ struct Friends: View {
 
 // Make sure `getAllUserFriends` has a signature similar to this:
 // func getAllUserFriends(userId: String, completion: @escaping (Result<[String], Error>) -> Void)
+

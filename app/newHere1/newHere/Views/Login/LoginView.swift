@@ -47,7 +47,8 @@ struct LoginView: View {
         
         NavigationView {
             VStack {
-                Text("Login")
+                Spacer()
+                Text("Here!")
                     .font(.largeTitle)
                     .padding(.bottom, 50)
                 
@@ -57,6 +58,8 @@ struct LoginView: View {
                     .background(Color(.systemGray6))
                     .cornerRadius(5.0)
                     .padding(.bottom, 20)
+                    .padding(.leading, 20)
+                    .padding(.trailing, 20)
                 
                 // Password input field
                 SecureField("Password", text: $password)
@@ -64,6 +67,8 @@ struct LoginView: View {
                     .background(Color(.systemGray6))
                     .cornerRadius(5.0)
                     .padding(.bottom, 20)
+                    .padding(.leading, 20)
+                    .padding(.trailing, 20)
                 
                 // Login button
                 Button(action: LogInUser) {
@@ -72,7 +77,7 @@ struct LoginView: View {
                         .frame(height: 50)
                         .foregroundColor(.white)
                         .font(.system(size: 18, weight: .bold))
-                        .background(Color.blue)
+                        .background(Color.gray)
                         .cornerRadius(5.0)
                 }
                 .padding(.horizontal)
@@ -80,6 +85,7 @@ struct LoginView: View {
                 // Navigation link to registration view
                 NavigationLink(destination: RegistrationView(isRegistered: $isRegistered)) {
                     Text("Don't have an account? Signup")
+                        .foregroundColor(Color.gray)
                 }
                 .padding()
                 
@@ -89,7 +95,7 @@ struct LoginView: View {
             .alert(isPresented: $showingAlert) {
                 Alert(title: Text("Login Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
             }
-        }.navigationBarBackButtonHidden(true)
+        }
     }
     
         /// Function to handle user login
