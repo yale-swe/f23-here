@@ -77,7 +77,7 @@ struct PostsPopup: View {
                             HStack {
                                 
                                 Toggle(isOn: $onlyFriendsVisibility) {
-                                    Text("Friends")
+                                    Text("Friends Only")
                                     .frame(maxWidth: .infinity, alignment: .trailing)
                                 }
                                 

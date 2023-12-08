@@ -104,7 +104,7 @@ struct HomePageView: View {
                 // Each button toggles the state to show respective views or popups.
                 Spacer()
                 VStack{
-                    swipeableView()
+//                    swipeableView()
                     HStack{
                         HStack(alignment: .bottom, spacing: 28.0) {
                             Button(action: {updateARState.updateTrue = true})
