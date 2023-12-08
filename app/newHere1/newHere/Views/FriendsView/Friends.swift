@@ -86,6 +86,18 @@ struct Friends: View {
                                       self.errorMessage = error.localizedDescription
                                   }
                            }
+                           // Update friends after adding
+                           getAllUserFriends(userId: userId) { result in
+                               switch result {
+                               case .success(let response):
+                                   print("Friends fetched successfully: \(response)")
+                                   self.friendsList = response.values.map { $0 }
+                                   
+                               case .failure(let error):
+                                   print("Error getting friends: \(error.localizedDescription)")
+                                   self.errorMessage = error.localizedDescription
+                               }
+                           }
                            
                        }) {
                            Text("Add Friend")
@@ -129,6 +141,18 @@ struct Friends: View {
                                        print("Error deleting friend: \(error.localizedDescription)")
                                        self.errorMessage = error.localizedDescription
                                    }
+                            }
+                            // Update friends after adding
+                            getAllUserFriends(userId: userId) { result in
+                                switch result {
+                                case .success(let response):
+                                    print("Friends fetched successfully: \(response)")
+                                    self.friendsList = response.values.map { $0 }
+                                    
+                                case .failure(let error):
+                                    print("Error getting friends: \(error.localizedDescription)")
+                                    self.errorMessage = error.localizedDescription
+                                }
                             }
                         }){
                             Image(systemName: "minus.circle")
