@@ -37,6 +37,12 @@ class FriendIdListState: ObservableObject {
  * It utilizes @EnvironmentObject to inject and use LocationDataManager within the view hierarchy.
  */
 struct HomePageView: View {
+    enum SwipeSelection {
+        case friends, explore
+    }
+
+    @State private var currentSelection: SwipeSelection = .friends
+    @State private var offset: CGFloat = 0
     @State private var isShowingProfile = false
     @State private var isShowingMessages = false
     @State private var isShowingPosts = false
@@ -51,7 +57,37 @@ struct HomePageView: View {
     
     @EnvironmentObject var locationDataManager: LocationDataManager
     
-    
+    func swipeableView() -> some View {
+        HStack(spacing: 12) {
+            Text("Friends")
+                .fontWeight(currentSelection == .friends ? .bold : .regular)
+                .opacity(currentSelection == .friends ? 1 : 0.7)
+                .scaleEffect(currentSelection == .friends ? 1 : 0.8)
+                .offset(x: currentSelection == .friends ? offset : 0)
+
+            Text("Explore")
+                .fontWeight(currentSelection == .explore ? .bold : .regular)
+                .opacity(currentSelection == .explore ? 1 : 0.7)
+                .scaleEffect(currentSelection == .explore ? 1 : 0.8)
+                .offset(x: currentSelection == .explore ? offset : 0)
+        }
+        .foregroundColor(.white)
+        .gesture(
+            DragGesture()
+                .onChanged { gesture in
+                    self.offset = gesture.translation.width
+                }
+                .onEnded { _ in
+                    if self.offset > 50 {
+                        self.currentSelection = .friends
+                    } else if self.offset < -50 {
+                        self.currentSelection = .explore
+                    }
+                    self.offset = 0
+                }
+        )
+    }
+
     
     /// The body of the view, presenting the AR view along with overlay controls for navigation and interaction.
     var body: some View {
@@ -67,81 +103,84 @@ struct HomePageView: View {
                 // Overlay containing buttons for various features like map, messages, posts, etc.
                 // Each button toggles the state to show respective views or popups.
                 Spacer()
-                HStack{
-                    HStack(alignment: .bottom, spacing: 28.0) {
-                        Button(action: {updateARState.updateTrue = true})
-                        {
-                            Image(systemName: "map")
-                                .foregroundColor(.white)
-                        }
-                        
-                        Button{isShowingMessages.toggle()
+                VStack{
+                    swipeableView()
+                    HStack{
+                        HStack(alignment: .bottom, spacing: 28.0) {
+                            Button(action: {updateARState.updateTrue = true})
+                            {
+                                Image(systemName: "arrow.clockwise")
+                                    .foregroundColor(.white)
+                            }
                             
-                        }label:
-                        {
-                            Image(systemName: "message")
-                                .foregroundColor(.white)
-                        }
-                        
-                        Button{isShowingPosts.toggle()
+                            Button{isShowingMessages.toggle()
+                                
+                            }label:
+                            {
+                                Image(systemName: "message")
+                                    .foregroundColor(.white)
+                            }
                             
-                        }label:
-                        {
-                            Image(systemName: "plus.circle")
-                                .scaleEffect(2)
-                                .foregroundColor(.white)
-                        }
-                        
-                        Button(action: {
-                            updateMetrics { result in
-                                switch result {
-                                case .success(_):
-                                    print("Metrics incremented successfully")
-                                case .failure(let error):
-                                    print("Error incrementing metrics: \(error.localizedDescription)")
-//                                    self.errorMessage = error.localizedDescription
+                            Button{isShowingPosts.toggle()
+                                
+                            }label:
+                            {
+                                Image(systemName: "plus.circle")
+                                    .scaleEffect(2)
+                                    .foregroundColor(.white)
+                            }
+                            
+                            Button(action: {
+                                updateMetrics { result in
+                                    switch result {
+                                    case .success(_):
+                                        print("Metrics incremented successfully")
+                                    case .failure(let error):
+                                        print("Error incrementing metrics: \(error.localizedDescription)")
+    //                                    self.errorMessage = error.localizedDescription
+                                    }
+                                }
+
+                                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                                   let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
+                                    screenshot = captureScreenshot(of: window)
+                                    showCaptureAlert = true
+                                }
+                            }) {
+                                Image(systemName: "photo.on.rectangle.angled")
+                                    .foregroundColor(.white)
+                            }
+                            .sheet(isPresented: $shareSheetPresented, onDismiss: {
+                                screenshot = nil
+                            }) {
+                                if let screenshot = screenshot {
+                                    ShareSheet(items: [screenshot])
                                 }
                             }
-
-                            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                               let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
-                                screenshot = captureScreenshot(of: window)
-                                showCaptureAlert = true
+                            .alert(isPresented: $showCaptureAlert) {
+                                Alert(
+                                    title: Text("Screen captured!"),
+                                    message: Text("Wanna share it?"),
+                                    primaryButton: .default(Text("Share")) {
+                                        shareSheetPresented = true
+                                    },
+                                    secondaryButton: .cancel()
+                                )
                             }
-                        }) {
-                            Image(systemName: "photo.on.rectangle.angled")
-                                .foregroundColor(.white)
-                        }
-                        .sheet(isPresented: $shareSheetPresented, onDismiss: {
-                            screenshot = nil
-                        }) {
-                            if let screenshot = screenshot {
-                                ShareSheet(items: [screenshot])
-                            }
-                        }
-                        .alert(isPresented: $showCaptureAlert) {
-                            Alert(
-                                title: Text("Screen captured!"),
-                                message: Text("Wanna share it?"),
-                                primaryButton: .default(Text("Share")) {
-                                    shareSheetPresented = true
-                                },
-                                secondaryButton: .cancel()
-                            )
-                        }
 
-                        
-                        Button{isShowingProfile.toggle()
                             
-                        }label:
-                        {
-                            Image(systemName: "person")
-                                .foregroundColor(.white)
-                        }
-                        
-                    }.alignmentGuide(.bottom) { d in d[.bottom]}
-                        .font(.largeTitle)
-                        .padding(10)
+                            Button{isShowingProfile.toggle()
+                                
+                            }label:
+                            {
+                                Image(systemName: "person")
+                                    .foregroundColor(.white)
+                            }
+                            
+                        }.alignmentGuide(.bottom) { d in d[.bottom]}
+                            .font(.largeTitle)
+                            .padding(10)
+                    }
                 }
             }
         // Render popups upon state variables being true.

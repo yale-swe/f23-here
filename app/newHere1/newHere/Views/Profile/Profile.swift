@@ -12,11 +12,12 @@ import SwiftUI
  * Subviews:
  * - ProfileHeader: Displays the user's profile picture and basic information.
  * - ProfileStats: Shows key statistics like the number of notes and friends.
- * - PostGrid: A placeholder for displaying the user's posts in a grid layout.
  */
 struct ProfilePopup: View {
     @Binding var isPresented: Bool // Added binding to control visibility
+    @StateObject var viewModel = UserProfileViewModel()
     @State private var isShowingFriends: Bool = false
+    @State private var isShowingEditProfile: Bool = false
     
     var body: some View {
         ZStack {
@@ -35,30 +36,35 @@ struct ProfilePopup: View {
                         }
                         .padding(.trailing, 20) // Adjust the position of the close button
                     }
-                    ProfileHeader() // User profile header
+                    ProfileHeader(viewModel: viewModel) // User profile header
                     Divider()
                     
                     HStack {
                         VStack {
-                            Text("Notes")
+                            Text("Edit Profile")
                                 .font(.caption)
                                 .foregroundColor(.gray.opacity(0.8))
-
-                            Text("10")
-                                .font(.headline)
+                            
+                            Image (systemName: "pencil")
+                                .foregroundColor(Color.white)
                         }
                         .padding()
                         .background(Color.white.opacity(0.8))
                         .cornerRadius(8)
                         .shadow(radius: 3)
+                        .onTapGesture {
+                            isShowingEditProfile.toggle() // Toggle the state to show friends
+                        }
                         
                         VStack {
+                            
                             Text("Friends")
                                 .font(.caption)
                                 .foregroundColor(.gray.opacity(0.8))
+                            
+                            Image(systemName: "person.2.fill")
+                                .foregroundColor(Color.white)
 
-                            Text("100")
-                                .font(.headline)
                         }
                         .padding()
                         .background(Color.white.opacity(0.8))
@@ -71,7 +77,6 @@ struct ProfilePopup: View {
                     .padding()
                     
                     Divider()
-                    PostGrid() // Grid to show posts
                 }
                 .padding(.top, 10)
                 .padding(.bottom, 10)
@@ -83,6 +88,14 @@ struct ProfilePopup: View {
             
             if isShowingFriends {
                 Friends(isPresented: $isShowingFriends)
+                    .background(Color.gray)
+                    .cornerRadius(12)
+                    .shadow(radius: 10)
+                    .padding()
+            }
+            
+            if isShowingEditProfile {
+                EditProfile(isPresented: $isShowingEditProfile, viewModel: viewModel)
                     .background(Color.gray)
                     .cornerRadius(12)
                     .shadow(radius: 10)
@@ -103,25 +116,37 @@ struct ProfilePopup: View {
  * A subview within ProfilePopup that displays the user's profile picture, name, and a short bio.
  */
 struct ProfileHeader: View {
+    @ObservedObject var viewModel: UserProfileViewModel
     var body: some View {
         HStack {
             // Profile picture
-            Image("profilePicture")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 80, height: 80)
-                .clipShape(Circle())
-                .padding()
+            if let uiImage = viewModel.profileImage {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 80, height: 80)
+                                .clipShape(Circle())
+                                .padding()
+                        } else {
+                            Image(systemName: "person.crop.circle.fill") // Fallback image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .foregroundColor(Color.white)
+                                .frame(width: 80, height: 80)
+                                .clipShape(Circle())
+                                .padding()
+                        }
             // User name and bio
             VStack(alignment: .leading, spacing: 8) {
                 
-                Text(userName)
+                Text(viewModel.username)
                     .font(.title)
                     .bold()
+                    .foregroundColor(.white)
                 
-                Text("Bio or description")
+                Text(viewModel.email)
                     .font(.subheadline)
-                
+                    .foregroundColor(.white)
             }
 
             Spacer()
@@ -226,20 +251,6 @@ struct ProfileStatItem: View {
                 .font(.subheadline)
                 .foregroundColor(.gray.opacity(0.8))
         }
-    }
-}
-
-/**
- * PostGrid
- *
- * A subview within ProfilePopup intended to display the user's posts in a grid format. Currently serves as a placeholder.
- */
-struct PostGrid: View {
-    var body: some View {
-        // Placeholder for posts grid
-        Text("Posts Grid")
-            .font(.title)
-            .padding()
     }
 }
 
