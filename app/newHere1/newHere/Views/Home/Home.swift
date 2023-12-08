@@ -42,7 +42,11 @@ struct HomePageView: View {
     @State private var screenshot: UIImage?
     @State private var showCaptureAlert = false
     
+    @StateObject var updateARState = UpdateARState()
+    
     @EnvironmentObject var locationDataManager: LocationDataManager
+    
+    
     
     /// The body of the view, presenting the AR view along with overlay controls for navigation and interaction.
     var body: some View {
@@ -52,15 +56,14 @@ struct HomePageView: View {
             .environmentObject(messageState)
             .environmentObject(fetchedMessagesState)
             .environmentObject(locationDataManager)
+            .environmentObject(updateARState)
             .overlay(alignment: .bottom){
                 // Overlay containing buttons for various features like map, messages, posts, etc.
                 // Each button toggles the state to show respective views or popups.
                 Spacer()
                 HStack{
                     HStack(alignment: .bottom, spacing: 28.0) {
-                        Button{
-                            
-                        }label:
+                        Button(action: {updateARState.updateTrue = true})
                         {
                             Image(systemName: "map")
                                 .foregroundColor(.white)
