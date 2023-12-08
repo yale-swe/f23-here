@@ -17,12 +17,15 @@ import Foundation
  * Note:
  * - It includes a close button to dismiss the view and leverages environment objects like `messageState` and `locationDataManager`.
  */
+
 struct PostsPopup: View {
     @Binding var isPresented: Bool
     //    @Binding var storedMessages: [Message]
     
     @State var noteMessage: String = ""
     @State var isEditing = false
+    
+    @State private var onlyFriendsVisibility = false
     
     var messageState: MessageState
     
@@ -72,22 +75,32 @@ struct PostsPopup: View {
                             
                             // HStack for horizontal alignment of share and post buttons
                             HStack {
-                                // Share button (placeholder action)
-                                Button(action: {
-                                    // Share Action
-                                }, label: {
-                                    Image(systemName: "square.and.arrow.up.fill")
-                                        .resizable()
-                                        .foregroundColor(.white)
-                                        .frame(width: 24, height: 24)
-                                        .padding(.leading, 20)
-                                })
                                 
-                                Spacer()
+                                Toggle(isOn: $onlyFriendsVisibility) {
+                                    Text("Friends")
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                                }
+                                
+//                                Button(action: {
+//                                    // Share Action
+//                                }, label: {
+//                                    Image(systemName: "square.and.arrow.up.fill")
+//                                        .resizable()
+//                                        .foregroundColor(.white)
+//                                        .frame(width: 24, height: 24)
+//                                        .padding(.leading, 20)
+//                                        .scaledToFit()
+//                                })
+                                
+                                Spacer(minLength: 75)
                                 
                                 // Post button triggers message posting action
                                 Button(action: {
-                                    postMessage(user_id: userId, text: noteMessage, visibility: "friends", locationDataManager: locationDataManager) {
+                                    var visibilityState: String = "public"
+                                    if (onlyFriendsVisibility) {
+                                         visibilityState = "friends"
+                                    }
+                                    postMessage(user_id: userId, text: noteMessage, visibility: visibilityState, locationDataManager: locationDataManager) {
                                         result in
                                         switch result {
                                         case .success(let response):
@@ -100,13 +113,11 @@ struct PostsPopup: View {
                                                     user_id: userId,
                                                     location: response.location.toCLLocation(),
                                                     messageStr: response.text,
-                                                    visibility: "Public")
-                                                // Use newMessage here
-                                                //                                                    self.storedMessages.append(newMessage)
+                                                    visibility: response.visibility)
                                                 
                                                 // Update messageState with the new message
                                                 messageState.currentMessage = newMessage
-                                                
+                                                print("posted with \(newMessage.visibility) visiblity")
                                             } catch {
                                                 // Handle the error
                                                 print("Error: \(error)")
@@ -126,8 +137,8 @@ struct PostsPopup: View {
                                         .padding(.trailing, 20)
                                 })
                             }
-                            .padding(.horizontal, 30)
-                            .padding(.bottom, 25)
+//                            .padding(.horizontal, 30)
+//                            .padding(.bottom, 25)
                         }
                     }
                     .frame(width: geometry.size.width - 40, height: geometry.size.width - 40)

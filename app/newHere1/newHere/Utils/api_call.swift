@@ -402,6 +402,8 @@ func deleteFriendByName(userId: String, friendName: String, completion: @escapin
 
 func filterMessages(id: String, messages: [Message], location: (latitude: Double, longitude: Double), maxDistance: Double, friendsList: [String]) -> [Message] {
     return messages.filter { (message: Message) -> Bool in
+        print(friendsList.contains(message.user_id))
+        
         let messageLocation = (latitude: message.location.coordinate.latitude, longitude: message.location.coordinate.longitude)
         let distance = haversineDistance(la1: location.latitude, lo1: location.longitude, la2: messageLocation.latitude, lo2: messageLocation.longitude) * earthRadiusKm
 

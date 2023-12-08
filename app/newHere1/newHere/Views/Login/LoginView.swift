@@ -84,7 +84,7 @@ struct LoginView: View {
                 
                 // Navigation link to registration view
                 NavigationLink(destination: RegistrationView(isRegistered: $isRegistered)) {
-                    Text("Don't have an account? Signup")
+                    Text("Don't have an account? Sign Up")
                         .foregroundColor(Color.gray)
                 }
                 .padding()
