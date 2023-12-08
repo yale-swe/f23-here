@@ -131,6 +131,7 @@ struct ProfileHeader: View {
                             Image(systemName: "person.crop.circle.fill") // Fallback image
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
+                                .foregroundColor(Color.white)
                                 .frame(width: 80, height: 80)
                                 .clipShape(Circle())
                                 .padding()
@@ -141,9 +142,11 @@ struct ProfileHeader: View {
                 Text(viewModel.username)
                     .font(.title)
                     .bold()
+                    .foregroundColor(.white)
                 
                 Text(viewModel.email)
                     .font(.subheadline)
+                    .foregroundColor(.white)
             }
 
             Spacer()

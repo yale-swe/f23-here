@@ -188,7 +188,7 @@ struct CustomARViewRepresentable: UIViewRepresentable {
         textureAtlas.textureNames.forEach { print($0) } // Print each texture name
 
         for i in 0..<numImages {
-            let textureName = "bubble-final\(String(format: "%04d", i))"
+            let textureName = "bubble-final\(String(format: "%03d", i))"
             let texture = textureAtlas.textureNamed(textureName)
             frames.append(texture)
         }

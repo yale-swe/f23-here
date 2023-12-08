@@ -46,6 +46,7 @@ struct EditProfile: View {
                             .clipShape(Circle())
                             .frame(width: 100, height: 100)
                             .shadow(radius: 3)
+                            .foregroundColor(Color.white)
 
                         Text("Edit Profile Picture")
                             .foregroundColor(.white)

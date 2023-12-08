@@ -65,7 +65,7 @@ struct HomePageView: View {
                     HStack(alignment: .bottom, spacing: 28.0) {
                         Button(action: {updateARState.updateTrue = true})
                         {
-                            Image(systemName: "map")
+                            Image(systemName: "arrow.clockwise")
                                 .foregroundColor(.white)
                         }
                         
