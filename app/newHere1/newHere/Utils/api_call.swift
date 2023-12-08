@@ -48,6 +48,13 @@ struct MessageResponse: Codable {
     let location: GeoJSONPoint
 }
 
+//// Structure for updating user profile
+struct UpdateProfileRequest: Codable {
+    let userName: String?
+    let email: String?
+    let avatar: String? // Assuming avatar is a string (URL or base64 encoded image)
+}
+
 //// Structure for response of adding a friend
 struct AddFriendResponse: Codable {
     let message: String
@@ -73,6 +80,46 @@ struct UserMessage: Codable {
     let visibility: String
     let replies: [String]
 }
+
+//// api call to update user profile
+func updateUserProfile(userId: String, userName: String?, email: String?, avatar: String?, completion: @escaping (Result<Bool, Error>) -> Void) {
+    let urlString = "https://here-swe.vercel.app/user/\(userId)/update-profile" // Adjust URL as needed
+
+    guard let url = URL(string: urlString) else {
+        completion(.failure(URLError(.badURL)))
+        return
+    }
+
+    var request = URLRequest(url: url)
+    request.httpMethod = "PUT"
+    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.addValue(apiKey, forHTTPHeaderField: "X-API-Key")
+
+    let requestBody = UpdateProfileRequest(userName: userName, email: email, avatar: avatar)
+    do {
+        request.httpBody = try JSONEncoder().encode(requestBody)
+    } catch {
+        completion(.failure(error))
+        return
+    }
+
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        if let error = error {
+            completion(.failure(error))
+            return
+        }
+
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            completion(.failure(URLError(.badServerResponse)))
+            return
+        }
+
+        completion(.success(true))
+    }
+
+    task.resume()
+}
+
 
 //// Function to fetch user messages
 func getUserMessages(userId: String, completion: @escaping (Result<[MessageResponse], Error>) -> Void) {
@@ -474,6 +521,8 @@ func updateMetrics(completion: @escaping (Result<Bool, Error>) -> Void) {
     
     task.resume()
 }
+
+
 //getAllUserFriends(userId: <#T##String#>, completion: <#T##(Result<[String : String], Error>) -> Void#>) { friendsList in
 //    guard let friendsList = friendsList else {
 //        print("Failed to fetch friends list.")

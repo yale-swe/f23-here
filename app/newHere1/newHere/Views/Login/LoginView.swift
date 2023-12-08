@@ -6,7 +6,7 @@ let logApiKey = "qe5YT6jOgiA422_UcdbmVxxG1Z6G48aHV7fSV4TbAPs"
 
 let userId = UserDefaults.standard.string(forKey: "UserId") ?? ""
 let userName = UserDefaults.standard.string(forKey: "UserName") ?? ""
-
+let userEmail = UserDefaults.standard.string(forKey: "UserEmail") ?? ""
 
 /**
  * LoginView
@@ -158,6 +158,11 @@ struct LoginView: View {
                                             print("User Name:\(userName)")
                                             // Store the extracted username in UserDefaults.
                                             UserDefaults.standard.set(userName, forKey: "UserName")
+                                        }
+                                        if let email = json["email"] as? String {
+                                            print("Email:\(email)")
+                                            // Store the extracted username in UserDefaults.
+                                            UserDefaults.standard.set(email, forKey: "UserEmail")
                                         }
                                     }
                                 } catch {
