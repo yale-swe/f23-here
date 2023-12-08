@@ -20,7 +20,58 @@ class MessageState: ObservableObject {
  */
 class FetchedMessagesState: ObservableObject {
     var fetchedMessages: [Message]?
+    
 }
+
+class FetchedFriendsState: ObservableObject {
+    var fetchedFriends: [String: String]?
+}
+
+    
+func convertGeoJSONPointToCLLocation(_ geoJSONPoint: GeoJSONPoint) -> CLLocation {
+    // Your conversion logic here
+    // Example: Assuming GeoJSONPoint has latitude and longitude properties
+    return CLLocation(latitude: geoJSONPoint.coordinates[0], longitude: geoJSONPoint.coordinates[1])
+}
+    
+func fetchUserFriends(userId: String, completion: @escaping (Result<[String: String], Error>) -> Void) {
+    // Call the API or use your existing logic to fetch friends
+    // Update friendList when the data is available
+    getAllUserFriends(userId: userId) { result in
+        switch result {
+        case .success(let friends):
+            completion(.success(friends))
+
+        case .failure(let error):
+            completion(.failure(error))
+        }
+    }
+}
+
+
+//func fetchUserMessages(userId: String, completion: @escaping (Result<[Message], Error>) -> Void) {
+//    // Use your existing API call logic
+//    getUserMessages(userId: userId) { result in
+//        switch result {
+//        case .success(let messageResponses):
+//            // Map MessageResponse objects to Message objects
+//            let messages = messageResponses.map { response in
+//                Message(
+//                    id: response._id,
+//                    user_id: response.user_id,
+//                    // location is stored as GeoJSONPoint in response (convert to CLLocation)
+//                    location: convertGeoJSONPointToCLLocation(response.location),
+//                    messageStr: response.text,
+//                    visibility: response.visibility
+//                )
+//            }
+//            completion(.success(messages))
+//
+//        case .failure(let error):
+//            completion(.failure(error))
+//        }
+//    }
+//}
 
 /**
  * HomePageView
@@ -37,6 +88,7 @@ struct HomePageView: View {
     @State private var isShowingMessages = false
     @State private var isShowingPosts = false
     @StateObject var messageState = MessageState()
+    @StateObject var fetchedFriendsState = FetchedFriendsState()
     @StateObject var fetchedMessagesState = FetchedMessagesState()
     @State private var shareSheetPresented = false
     @State private var screenshot: UIImage?
@@ -153,29 +205,111 @@ struct HomePageView: View {
                 .padding()
         }
         
-        if isShowingMessages {
-            MessagesPopup(isPresented: $isShowingMessages)
-                .background(Color.white.opacity(0.5))
-                .cornerRadius(12)
-                .shadow(radius: 10)
-                .padding()
+            if isShowingMessages {
+                let defaultLocation = CLLocation(latitude: 37.7749, longitude: -122.4194)
+                MessagesPopup(isPresented: $isShowingMessages, fetchedMessages: fetchedMessagesState.fetchedMessages ?? [])
+                    .background(Color.white.opacity(0.5))
+                    .cornerRadius(12)
+                    .shadow(radius: 10)
+                    .padding()
+                    .environmentObject(fetchedMessagesState)
+                    .onAppear {
+                        if let friendList = fetchedFriendsState.fetchedFriends?.values.sorted() {
+                            getFilteredMessages(userId: userId, location:LocationDataManager().location ?? defaultLocation, friendList: friendList) {
+                                result in
+                                switch result {
+                                case .success(let messages):
+                                    fetchedMessagesState.fetchedMessages = messages
+                                case .failure(let error):
+                                    print("Error fetching messages: \(error)")
+
+                                }
+                            }
+                        } else {
+                            getAllUserFriends(userId: userId) { result in
+                                switch result {
+                                case .success(let friends):
+                                    getFilteredMessages(userId: userId, location: LocationDataManager().location ?? defaultLocation, friendList: friends.values.sorted()) { result in
+                                        switch result {
+                                        case .success(let messages):
+                                            fetchedMessagesState.fetchedMessages = messages
+                                        case .failure(let error):
+                                            print("Error fetching messages: \(error)")
+                                        }
+                                    }
+                                    
+                                case .failure(let error):
+                                    print("Error fetching friend list: \(error)")
+                                }
+                            }
+                        }
+                    }
+            
+//            if isShowingMessages {
+//                let defaultLocation = CLLocation(latitude: 37.7749, longitude: -122.4194)
+                
+                 //Rest of your original code..
+//            MessagesPopup(isPresented: $isShowingMessages, fetchedMessagesㄴ: fetchedMessagesState.fetchedMessages ?? [])
+//                .background(Color.white.opacity(0.5))
+//                .cornerRadius(12)
+//                .shadow(radius: 10)
+//                .padding()
+//                .environmentObject(fetchedMessagesState)
+//                .onAppear {
+//                    getFilteredMessages(userId: userId, location: LocationDataManager().location ?? defaultLocation, friendList: fetchUserFriends(userId: userId, completion: (Result<[String : String], Error>) -> Void)) { result in
+//                        switch result {
+//                        case .success(let messages):
+//                            fetchedMessagesState.fetchedMessages = messages
+//
+//                        case .failure (let error):
+//                            print("Error")
+//                        }
+//                    }
+//                }
+//                .onAppear {
+//                    if let friendList = fetchedFriendsState.fetchedFriends {
+//                        // Friend list is available
+//                        getFilteredMessages(userId: userId, location: LocationDataManager().location ?? defaultLocation, friendList: friendList) { result in
+//                            switch result {
+//                            case .success(let messages):
+//                                fetchedMessagesState.fetchedMessages = messages
+//
+//                            case .failure(let error):
+//                                print("Error fetching messages: \(error)")
+//                            }
+//                        }
+//                    } else {
+//                        // Fetch friend list first
+//                        fetchUserFriends(userId: userId) { result in
+//                            switch result {
+//                            case .success(let friends):
+//                                // Now the friend list is available, fetch messages
+//                                getFilteredMessages(userId: userId, location: LocationDataManager().location ?? defaultLocation, friendList: friends) { result in
+//                                    switch result {
+//                                    case .success(let messages):
+//                                        fetchedMessagesState.fetchedMessages = messages
+//
+//                                    case .failure(let error):
+//                                        print("Error fetching messages: \(error)")
+//                                    }
+//                                }
+//
+//                            case .failure(let error):
+//                                print("Error fetching friend list: \(error)")
+//                            }
+//                        }
+//                    }
+//                }
+
         }
     }
-            // Render popups upon state variables being true.
-//            .sheet(isPresented: $isShowingProfile) {
-//                ProfilePopup(isPresented: $isShowingProfile) // Pass the binding to control visibility
-//            }
-//            .sheet(isPresented: $isShowingMessages) {
-//                MessagesPopup(isPresented: $isShowingMessages)
-//            }
-//            .sheet(isPresented: $isShowingPosts){
-//                PostsPopup(isPresented: $isShowingPosts)
-//                    .environmentObject(messageState)
-//            }
+    
 
         }
     }
 
+
+    
 /**
  * HomePageView_Previews
  *

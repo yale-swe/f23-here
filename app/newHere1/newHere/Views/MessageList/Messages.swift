@@ -12,6 +12,7 @@ import SwiftUI
  */
 struct MessagesPopup: View {
     @Binding var isPresented: Bool // Binding to control the visibility of the popup
+    var fetchedMessages: [Message] // Fetched messages
     
     var body: some View {
         ZStack{
@@ -33,24 +34,40 @@ struct MessagesPopup: View {
                         }
                         .padding(.trailing, 20)
                     }
-                    // Loop to create message buttons
-                    ForEach(1...5, id: \.self) { count in
+                    ForEach(fetchedMessages, id: \.id) {message in
                         Button(action: {}) {
                             HStack {
                                 ProfilePicture()
-                                Text("Message Title")
+                                Text(message.messageStr)
                                     .foregroundColor(.white)
                                     .shadow(radius: 2.0)
                                 Image(systemName: "map")
                                     .foregroundColor(.white)
                                     .shadow(radius: 2.0)
                             }
-                            .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)) // Set margins for the entire button
+                            .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
                         }
                         .background(Color.white.opacity(0.5))
                         .cornerRadius(10)
-                        
                     }
+                    // Loop to create message buttons
+//                    ForEach(1...5, id: \.self) { count in
+//                        Button(action: {}) {
+//                            HStack {
+//                                ProfilePicture()
+//                                Text("Message Title")
+//                                    .foregroundColor(.white)
+//                                    .shadow(radius: 2.0)
+//                                Image(systemName: "map")
+//                                    .foregroundColor(.white)
+//                                    .shadow(radius: 2.0)
+//                            }
+//                            .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)) // Set margins for the entire button
+//                        }
+//                        .background(Color.white.opacity(0.5))
+//                        .cornerRadius(10)
+//                        
+//                    }
                 }
                 .padding(.top, 10)
                 .padding(.bottom, 10)
