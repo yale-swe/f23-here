@@ -17,7 +17,7 @@ let apiKey = "qe5YT6jOgiA422_UcdbmVxxG1Z6G48aHV7fSV4TbAPs"
 
 // Geo constants
 let earthRadiusKm: Double = 6371.0
-let distanceThreshold: Double = 0.2 // kilometers
+let distanceThreshold: Double = 0.01 // kilometers
 
 extension Double {
     // Degrees to radians
@@ -73,6 +73,59 @@ struct UserMessage: Codable {
     let visibility: String
     let replies: [String]
 }
+
+/// Function to get all messages
+func getAllMessages(completion: @escaping (Result<[MessageResponse], Error>) -> Void) {
+    // API URL
+    let urlString = "https://here-swe.vercel.app//message/get_all_messages"
+    
+    // URL validation
+    guard let url = URL(string: urlString) else {
+        completion(.failure(URLError(.badURL)))
+        return
+    }
+    
+    // Setup request
+    var request = URLRequest(url: url)
+    request.httpMethod = "GET"
+    request.addValue("application/json", forHTTPHeaderField: "Accept")
+    request.addValue(apiKey, forHTTPHeaderField: "X-API-Key")
+    
+    
+    // URLSession data task
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        // Error handling
+        if let error = error {
+            completion(.failure(error))
+            return
+        }
+        
+        // Response status code check
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            completion(.failure(URLError(.badServerResponse)))
+            return
+        }
+        
+        // Data validation
+        guard let data = data else {
+            completion(.failure(URLError(.cannotParseResponse)))
+            return
+        }
+        
+        // JSON decoding
+        do {
+            let messages = try JSONDecoder().decode([MessageResponse].self, from: data)
+            completion(.success(messages))
+                        
+            
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    // Start the task
+    task.resume()
+}
+
 
 //// Function to fetch user messages
 func getUserMessages(userId: String, completion: @escaping (Result<[MessageResponse], Error>) -> Void) {
@@ -355,7 +408,7 @@ func deleteFriendByName(userId: String, friendName: String, completion: @escapin
 
 func filterMessages(id: String, messages: [Message], location: (latitude: Double, longitude: Double), maxDistance: Double, friendsList: [String]) -> [Message] {
     return messages.filter { (message: Message) -> Bool in
-        print(friendsList.contains(message.user_id))
+//        print(friendsList)
         
         let messageLocation = (latitude: message.location.coordinate.latitude, longitude: message.location.coordinate.longitude)
         let distance = haversineDistance(la1: location.latitude, lo1: location.longitude, la2: messageLocation.latitude, lo2: messageLocation.longitude) * earthRadiusKm
@@ -364,6 +417,13 @@ func filterMessages(id: String, messages: [Message], location: (latitude: Double
         let isPublic = message.visibility == "public"
         let isFriend = message.visibility == "friends" && friendsList.contains(message.user_id)
         let byMe = message.user_id == id
+        
+        if (byMe == false) {
+            print("\(message.messageStr), isPublic: \(isPublic), isFriend: \(isFriend), byMe: \(byMe)")
+        }
+//
+        print("\(message.messageStr), isPublic: \(isPublic), isFriend: \(isFriend), byMe: \(byMe)")
+        print("display? \(isWithinDistance && (isPublic || isFriend || byMe))\n")
 
         return isWithinDistance && (isPublic || isFriend || byMe)
     }
@@ -388,7 +448,7 @@ func haversineDistance(la1: Double, lo1: Double, la2: Double, lo2: Double) -> Do
 }
 
 func getFilteredMessages(userId: String, location: CLLocation, friendList: [String], completion: @escaping (Result<[Message], Error>) -> Void) {
-    getUserMessages(userId: userId) {result in
+    getAllMessages() {result in
         switch result {
         case .success(let response):
             print("Messages fetched successfully: \(response)")
@@ -414,6 +474,11 @@ func getFilteredMessages(userId: String, location: CLLocation, friendList: [Stri
                 location: (location.coordinate.latitude, location.coordinate.longitude),
                 maxDistance: distanceThreshold,
                 friendsList: friendList)
+            
+//            print("Messages filtered successfully")
+//            for m in filteredMessages {
+//                print(m.user_id, m.visibility, m.messageStr)
+//            }
             
             // JSON decoding
             completion(.success(filteredMessages))

@@ -76,7 +76,7 @@ export const postMessage = async (req, res) => {
 		user.messages.push(saved_message._id);
 		await user.save();
 
-		// Add to the user's friends' notification log
+		// Add to the user's friends' notification logzŻ
 		if (user.notifyFriends) {
 			const notification = new NotificationModel({
 				user_id: user._id,

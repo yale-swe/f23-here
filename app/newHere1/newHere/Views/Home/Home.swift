@@ -19,7 +19,11 @@ class MessageState: ObservableObject {
  * It is an observable object that tracks an array of 'Message' objects.
  */
 class FetchedMessagesState: ObservableObject {
-    var fetchedMessages: [Message]?
+    @Published var fetchedMessages: [Message]?
+}
+
+class FriendIdListState: ObservableObject {
+    @Published var friendIdList: [String] = []
 }
 
 /**
@@ -36,13 +40,14 @@ struct HomePageView: View {
     @State private var isShowingProfile = false
     @State private var isShowingMessages = false
     @State private var isShowingPosts = false
-    @StateObject var messageState = MessageState()
-    @StateObject var fetchedMessagesState = FetchedMessagesState()
     @State private var shareSheetPresented = false
     @State private var screenshot: UIImage?
     @State private var showCaptureAlert = false
     
+    @StateObject var fetchedMessagesState = FetchedMessagesState()
+    @StateObject var messageState = MessageState()
     @StateObject var updateARState = UpdateARState()
+    @StateObject var friendIDListState = FriendIdListState()
     
     @EnvironmentObject var locationDataManager: LocationDataManager
     
@@ -57,6 +62,7 @@ struct HomePageView: View {
             .environmentObject(fetchedMessagesState)
             .environmentObject(locationDataManager)
             .environmentObject(updateARState)
+            .environmentObject(friendIDListState)
             .overlay(alignment: .bottom){
                 // Overlay containing buttons for various features like map, messages, posts, etc.
                 // Each button toggles the state to show respective views or popups.
